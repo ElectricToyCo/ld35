@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ludum Dare 35</title>
+	<style>
+		html, body, div, canvas { margin: 0; padding: 0; }
+		body { color: #303060; background: black; }
+		canvas
+		{
+			display: block;
+			padding-left: 0;
+		    padding-right: 0;
+		    margin-left: auto;
+		    margin-right: auto;
+		    background: black;
+		}
+	</style>
+</head>
+
+<body>
+	<canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+	<script type="text/javascript">
+		var canvas = document.getElementById("canvas");
+		
+		// Tell the Emscripten environment where the canvas is.
+		var Module = {};
+		Module.canvas = canvas;
+	</script>
+	<script src="ld35.js"></script>
+</body>
+</html>

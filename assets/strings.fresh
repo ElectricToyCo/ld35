@@ -1,0 +1,7 @@
+// ld35 strings 
+
+object StringTable strings {
+	table {
+		AppTitle "ld35"
+	}
+}

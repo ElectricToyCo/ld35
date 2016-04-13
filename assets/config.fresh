@@ -1,0 +1,14 @@
+// ld35 Application Configuration - Any Platform 
+
+object AppStageConfig config {
+	desiredTitle "Ludum Dare 35"
+	documentsSubfolder "The Electric Toy Co/ld35"
+	logFileName "runlog.txt"
+	desiredFramesPerSecond "60"
+	desiredWindowRect "0, 0, 960, 640"
+	classPath "assets/classes.fresh"
+	stringTablePath "assets/strings.fresh"
+	assetDatabasePath "assets/asset-database.fresh"
+	stageManifestPath "assets/stage.fresh"
+}
+
