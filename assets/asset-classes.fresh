@@ -3,8 +3,8 @@
 class TextureLoaderConfigured extends TextureLoader {
 	basePath assets/art/
 	extension png
-	doMipMap false
-	filterMode Nearest
+	doMipMap true
+	filterMode Bilinear
 }
 
 class AudioCueLoaderConfigured extends AudioCueLoader {

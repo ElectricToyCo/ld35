@@ -2,85 +2,60 @@
 
 object AppStage theStage {
 
-	stageDimensions "960,0"
+	stageDimensions "160,0"
 
 	children [
 
-		// TODO Example stage 
-		object MovieClip $^_spinner {
-			scale "200"
+		object ScreenEffects screenEffects {
+			inheritParentFrame true
+			inner DisplayObjectContainer'$^_inner'
+			shaderProgramPrimaryPost ShaderProgram'tv_post'
+			shaderProgram ShaderProgram'CRT'
+			shaderProgramCopy ShaderProgram'copy'
+			shaderProgramBloomTonemap ShaderProgram'bloom_tonemap'
+			shaderProgramHorizontalBlur ShaderProgram'horizontal_blur'
+			shaderProgramVerticalBlur ShaderProgram'vertical_blur'
+			shaderProgramComposite ShaderProgram'composite'
 
-			children [
+			barrelDistortion 0.1
 			
-				object MovieClip $^_pulsar {
-					
-					children [
-						object Sprite {
-							texture "Texture'white_simple'"
-						}
-					]
+			noiseTexture Texture'noise'
+			pixelBevelTexture Texture'bevel_03'
 
-					passthrough [
-						object keyframe {
-							children [
-								object child "$1" {
-									color "Red"
-								}
-							]
-							tween object Linear {
-							}
-						}
-						object keyframe {
-							rel_s "1.0"
-							children [
-								// 1 second later 
-								object child "$1" {
-									color "Green"
-								}
-							]
-							tween object Linear {
-							}
-						}
-						object keyframe {
-							rel_s "1.0"
-							children [
-								object child "$1" {
-									color "Blue"
-								}
-							]
-							tween object Linear {
-							}
-						}
-						object keyframe {
-							rel_s "1.0"
-							children [
-								object child "$1" {
-									color "Red"
-								}
-							]
-							tween object Linear {
-							}
-						}
-					]
-				}
-			]
+			currentStateName "normal"
 
-			passthrough [
-				object keyframe {
-					children [
-						object child "$1" {
-							rotation "0"
-						}
-					]
-					tween object Linear {
+			shaderStates {
+				normal << EOF {
+					bloomBrightness = 0 ,
+					bloomContrast = 1 ,
+					bloomIntensity = 0.5 ,
+					burnIn = 0.1 ,
+					chromaticAberration = 0 ,
+					noiseIntensity = 0.02 ,
+					rescanColor = (0.6) ,
+					saturation = 1.0 ,
+					colorMultiplied = (1) ,
+					bevelIntensity = 0.1 ,
+				} EOF
+			}
+			
+			children [				
+				object DisplayObjectContainer $^_inner {
+					inheritParentFrame true
+
+					renderTarget object RenderTarget {
+						width "160"
+						height "96"
+						clearColor 08080a
+						doInitialClearOnCapture "true"
+						depthBufferFormat <<EOF {
+							colorComponentType = UnsignedByte,
+							outputType = Renderbuffer
+						} EOF
 					}
-				}
-				object keyframe {
-					rel_s "6.1"
+
 					children [
-						object child "$1" {
-							rotation "359"
-						}
+						object ScreenContents {}
 					]
 				}
 			]
