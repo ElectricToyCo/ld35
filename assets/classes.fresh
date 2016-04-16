@@ -241,6 +241,7 @@ class CharacterPlayer extends Character04 {				// TODO which?
 }
 
 class CameraDefault extends Camera {
+	rectBounds 1,-2,255,272
 }
 
 class WorldDefault extends World {
