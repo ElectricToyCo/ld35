@@ -56,6 +56,8 @@ namespace ld
 	using fr::ObjectId;
 	using fr::ClassFilter;
 	using fr::dynamic_freshptr_cast;
+	
+	const real UNITS_PER_TILE = 16;
 }
 
 #endif

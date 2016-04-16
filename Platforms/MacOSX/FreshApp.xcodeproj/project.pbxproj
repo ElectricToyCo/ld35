@@ -256,22 +256,22 @@
 		1F8BF06118C67355007C5E7F /* src */ = {
 			isa = PBXGroup;
 			children = (
-				1F51FBE81A324548008EEAA1 /* AppStage.cpp */,
-				1F51FBE91A324548008EEAA1 /* AppStage.h */,
-				1F51FBEA1A324548008EEAA1 /* Essentials.h */,
-				1F8BF06418C67355007C5E7F /* main.cpp */,
-				1F9567801CC1F866008499A7 /* TileGrid.cpp */,
-				1F9567811CC1F866008499A7 /* TileGrid.h */,
-				1F95678A1CC211A6008499A7 /* Character.cpp */,
-				1F95678B1CC211A6008499A7 /* Character.h */,
 				1F95678D1CC211E2008499A7 /* Actor.cpp */,
 				1F95678E1CC211E2008499A7 /* Actor.h */,
+				1F51FBE81A324548008EEAA1 /* AppStage.cpp */,
+				1F51FBE91A324548008EEAA1 /* AppStage.h */,
+				1F95678A1CC211A6008499A7 /* Character.cpp */,
+				1F95678B1CC211A6008499A7 /* Character.h */,
 				1F9567901CC21245008499A7 /* CharacterController.cpp */,
 				1F9567911CC21245008499A7 /* CharacterController.h */,
-				1F9567931CC21340008499A7 /* World.cpp */,
-				1F9567941CC21340008499A7 /* World.h */,
+				1F51FBEA1A324548008EEAA1 /* Essentials.h */,
+				1F8BF06418C67355007C5E7F /* main.cpp */,
 				1F9567961CC214AC008499A7 /* PlayerController.cpp */,
 				1F9567971CC214AC008499A7 /* PlayerController.h */,
+				1F9567801CC1F866008499A7 /* TileGrid.cpp */,
+				1F9567811CC1F866008499A7 /* TileGrid.h */,
+				1F9567931CC21340008499A7 /* World.cpp */,
+				1F9567941CC21340008499A7 /* World.h */,
 			);
 			name = src;
 			path = ../../src;

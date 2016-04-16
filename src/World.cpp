@@ -7,6 +7,7 @@
 //
 
 #include "World.h"
+#include "TileGrid.h"
 using namespace fr;
 
 namespace ld
@@ -15,7 +16,25 @@ namespace ld
 	
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( World )
 	
-	// TODO
+	TileGrid& World::tileGrid() const
+	{
+		return getExpectedDescendant< TileGrid >( *this, "_tileGrid" );
+	}
+
+	DisplayObjectContainer& World::actorHost() const
+	{
+		return getExpectedDescendant< DisplayObjectContainer >( *this, "_actorHost" );
+	}
+	
+	void World::update()
+	{
+		Super::update();
+		
+		actorHost().sortChildren( []( const DisplayObject::ptr& a, const DisplayObject::ptr& b )
+								 {
+									 return a->position().y < b->position().y;
+								 } );
+	}
 	
 }
 

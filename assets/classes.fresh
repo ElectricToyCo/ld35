@@ -43,12 +43,6 @@ class TileGridDefault extends TileGrid {
 class CharacterVisualDefault extends MovieClip {
 	pivot 0,6
 
-	passthrough [
-		object keyframe {
-			texture Texture'character_01'
-		}
-	]
-
 	filters [
 		object FilterBlur {
 			size 2
@@ -61,10 +55,59 @@ class CharacterVisualDefault extends MovieClip {
 	]
 }
 
+class CharacterVisual01 extends CharacterVisualDefault {
+	passthrough [
+		object keyframe {
+			texture Texture'character_01'
+		}
+	]
+}
+
+class CharacterVisual02 extends CharacterVisualDefault {
+	passthrough [
+		object keyframe {
+			texture Texture'character_02'
+		}
+	]
+}
+
+class CharacterVisual03 extends CharacterVisualDefault {
+	passthrough [
+		object keyframe {
+			texture Texture'character_03'
+		}
+	]
+}
+
+class CharacterVisual04 extends CharacterVisualDefault {
+	passthrough [
+		object keyframe {
+			texture Texture'character_04'
+		}
+	]
+}
+
+class CharacterVisual05 extends CharacterVisualDefault {
+	passthrough [
+		object keyframe {
+			texture Texture'character_05'
+		}
+	]
+}
+
+class CharacterVisual06 extends CharacterVisualDefault {
+	passthrough [
+		object keyframe {
+			texture Texture'character_06'
+		}
+	]
+}
+
 class PlayerControllerDefault extends PlayerController {	
 }
 
 class CharacterControllerDefault extends CharacterController {
+	state Idle
 }
 
 class CharacterDefault extends Actor {
@@ -75,7 +118,8 @@ class CharacterDefault extends Actor {
 	dimensions 6,2
 	positionQuantum 1	
 
-	controller object PlayerControllerDefault {}
+	controller object CharacterControllerDefault {}
+	
 	children [
 		object CharacterVisualDefault $^_visual {
 		}
@@ -85,23 +129,63 @@ class CharacterDefault extends Actor {
 class CameraDefault extends Camera {
 }
 
-class WorldDefault extends FreshWorld {
+class WorldDefault extends World {
 	gravity 0
 	positionQuantum 1
 	children [
 		object TileGridDefault $^_tileGrid {}
 
-		object DisplayObjectContainer $^_characterHost {
+		object DisplayObjectContainer $^_actorHost {
 			children [
-				object CharacterDefault character {
+				object CharacterDefault {
 					position 64
+					children [
+						object CharacterVisual01 $^_visual {
+						}
+					]
+				}
+				object CharacterDefault {
+					position 20
+					children [
+						object CharacterVisual02 $^_visual {
+						}
+					]
+				}
+				object CharacterDefault {
+					position 128
+					children [
+						object CharacterVisual03 $^_visual {
+						}
+					]
+				}
+				object CharacterDefault player {
+					position 192
+					controller object PlayerControllerDefault {}
+					children [
+						object CharacterVisual04 $^_visual {
+						}
+					]
+				}
+				object CharacterDefault {
+					position 200,64
+					children [
+						object CharacterVisual05 $^_visual {
+						}
+					]
+				}
+				object CharacterDefault {
+					position 64,200
+					children [
+						object CharacterVisual06 $^_visual {
+						}
+					]
 				}
 			]
 		}
 	]
 
 	camera object CameraDefault {
-		target CharacterDefault'character'
+		target CharacterDefault'player'
 	}	
 }
 

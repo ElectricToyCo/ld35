@@ -12,19 +12,29 @@
 #include "Essentials.h"
 #include "FreshActor.h"
 #include "FreshActorController.h"
+#include "TileGrid.h"
 
 namespace ld
 {
+	class World;
 	
 	class Actor : public fr::FreshActor
 	{
 		FRESH_DECLARE_CLASS( Actor, FreshActor );
 	public:
 		
-		// TODO
+		World& world() const;
+		
+		void travelTo( const vec2& pos );
+		
+		virtual void update() override;
+		
+		real coarseCollisionRadius() const;
 		
 	private:
-		
+
+		VAR( TileGrid::WorldSpacePath, m_path );
+		DVAR( size_t, m_nextPathDestination, 0 );
 	};
 	
 }

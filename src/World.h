@@ -15,13 +15,17 @@
 
 namespace ld
 {
+	class TileGrid;
 	
 	class World : public fr::FreshWorld
 	{
 		FRESH_DECLARE_CLASS( World, FreshWorld );
 	public:
 		
-		// TODO
+		TileGrid& tileGrid() const;
+		DisplayObjectContainer& actorHost() const;
+		
+		virtual void update() override;
 		
 	private:
 		
