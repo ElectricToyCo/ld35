@@ -24,6 +24,12 @@
 		1F8BF25818C6746A007C5E7F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F8BF25718C6746A007C5E7F /* libz.dylib */; };
 		1F8BF25A18C6746E007C5E7F /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F8BF25918C6746E007C5E7F /* Carbon.framework */; };
 		1F8BF26718C674E3007C5E7F /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 1F8BF26618C674E3007C5E7F /* assets */; };
+		1F9567821CC1F866008499A7 /* TileGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F9567801CC1F866008499A7 /* TileGrid.cpp */; };
+		1F95678C1CC211A6008499A7 /* Character.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F95678A1CC211A6008499A7 /* Character.cpp */; };
+		1F95678F1CC211E2008499A7 /* Actor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F95678D1CC211E2008499A7 /* Actor.cpp */; };
+		1F9567921CC21245008499A7 /* CharacterController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F9567901CC21245008499A7 /* CharacterController.cpp */; };
+		1F9567951CC21340008499A7 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F9567931CC21340008499A7 /* World.cpp */; };
+		1F9567981CC214AC008499A7 /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F9567961CC214AC008499A7 /* PlayerController.cpp */; };
 		1FB348F01A2D0D0300536EC8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1FB348EC1A2D0D0300536EC8 /* InfoPlist.strings */; };
 		1FB348F11A2D0D0300536EC8 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1FB348EE1A2D0D0300536EC8 /* MainMenu.xib */; };
 /* End PBXBuildFile section */
@@ -134,6 +140,18 @@
 		1F8BF25718C6746A007C5E7F /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		1F8BF25918C6746E007C5E7F /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		1F8BF26618C674E3007C5E7F /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../assets; sourceTree = "<group>"; };
+		1F9567801CC1F866008499A7 /* TileGrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TileGrid.cpp; sourceTree = "<group>"; };
+		1F9567811CC1F866008499A7 /* TileGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileGrid.h; sourceTree = "<group>"; };
+		1F95678A1CC211A6008499A7 /* Character.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Character.cpp; sourceTree = "<group>"; };
+		1F95678B1CC211A6008499A7 /* Character.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Character.h; sourceTree = "<group>"; };
+		1F95678D1CC211E2008499A7 /* Actor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Actor.cpp; sourceTree = "<group>"; };
+		1F95678E1CC211E2008499A7 /* Actor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Actor.h; sourceTree = "<group>"; };
+		1F9567901CC21245008499A7 /* CharacterController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterController.cpp; sourceTree = "<group>"; };
+		1F9567911CC21245008499A7 /* CharacterController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterController.h; sourceTree = "<group>"; };
+		1F9567931CC21340008499A7 /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
+		1F9567941CC21340008499A7 /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
+		1F9567961CC214AC008499A7 /* PlayerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerController.cpp; sourceTree = "<group>"; };
+		1F9567971CC214AC008499A7 /* PlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerController.h; sourceTree = "<group>"; };
 		1FB348ED1A2D0D0300536EC8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = FreshApp/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		1FB348EF1A2D0D0300536EC8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = FreshApp/en.lproj/MainMenu.xib; sourceTree = SOURCE_ROOT; };
 		1FE0FE3B192EFA9700B86F2F /* Fresh.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Fresh.xcodeproj; path = ../../Fresh/Platforms/MacOSX/Fresh.xcodeproj; sourceTree = "<group>"; };
@@ -242,6 +260,18 @@
 				1F51FBE91A324548008EEAA1 /* AppStage.h */,
 				1F51FBEA1A324548008EEAA1 /* Essentials.h */,
 				1F8BF06418C67355007C5E7F /* main.cpp */,
+				1F9567801CC1F866008499A7 /* TileGrid.cpp */,
+				1F9567811CC1F866008499A7 /* TileGrid.h */,
+				1F95678A1CC211A6008499A7 /* Character.cpp */,
+				1F95678B1CC211A6008499A7 /* Character.h */,
+				1F95678D1CC211E2008499A7 /* Actor.cpp */,
+				1F95678E1CC211E2008499A7 /* Actor.h */,
+				1F9567901CC21245008499A7 /* CharacterController.cpp */,
+				1F9567911CC21245008499A7 /* CharacterController.h */,
+				1F9567931CC21340008499A7 /* World.cpp */,
+				1F9567941CC21340008499A7 /* World.h */,
+				1F9567961CC214AC008499A7 /* PlayerController.cpp */,
+				1F9567971CC214AC008499A7 /* PlayerController.h */,
 			);
 			name = src;
 			path = ../../src;
@@ -393,8 +423,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F9567821CC1F866008499A7 /* TileGrid.cpp in Sources */,
+				1F9567951CC21340008499A7 /* World.cpp in Sources */,
 				1F51FBEB1A324548008EEAA1 /* AppStage.cpp in Sources */,
 				1F8BF06618C67355007C5E7F /* main.cpp in Sources */,
+				1F9567921CC21245008499A7 /* CharacterController.cpp in Sources */,
+				1F95678C1CC211A6008499A7 /* Character.cpp in Sources */,
+				1F9567981CC214AC008499A7 /* PlayerController.cpp in Sources */,
+				1F95678F1CC211E2008499A7 /* Actor.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

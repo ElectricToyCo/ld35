@@ -119,6 +119,7 @@ UI
     Mission reminder display
     Tutorial elements
     Mission introduction
+    Mission complete
     Logo
     Intro/Tutorial text
     Doppelganger transform selection
@@ -170,6 +171,7 @@ Walking around to think and wake up (11:12pm)
 -   (Mission reminder)
 
 ##   Expansion
+-   Mission completion
 -   Shapeshifting
 -   Character avoidance behavior
 -   Character panic

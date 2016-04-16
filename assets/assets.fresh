@@ -59,6 +59,11 @@ object TextureLoaderConfigured wendy {
 
 // Textures 
 
+object TextureLoaderConfigured environment {
+	extension png
+	retainTexelData true
+}
+
 object TextureLoaderConfigured noise {
 	clampModeU Wrap
 	clampModeV Wrap

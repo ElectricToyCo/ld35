@@ -1,88 +1,111 @@
 // ld35 classes 
 
 
-class ScreenContents extends DisplayObjectContainer {
+class FloorTileTemplate extends ldTileTemplate {
+	isSolid false
+	doesBlockLight false
+}
+
+class WallTileTemplate extends ldTileTemplate {
+	isSolid true
+	doesBlockLight true
+}
+
+class TileGridDefault extends TileGrid {
+	tileClass ldTile
+	texture Texture'tile_atlas'
+	atlasSubdivisions 2,2
+	texturesSubdivisionsPerTile 1
+	tileSize 16
+
+	creationGridImage Texture'environment'
+
+	templates [
+		object FloorTileTemplate floor_hallway {
+			atlasSubTexture 1,0
+			creationColor White
+		}
+		object FloorTileTemplate floor_classroom {
+			atlasSubTexture 1,0
+			creationColor Yellow
+		}
+		object FloorTileTemplate floor_shapeshift {
+			atlasSubTexture 1,1
+			creationColor Red
+		}
+		object WallTileTemplate wall_basic {
+			atlasSubTexture 0,0
+			creationColor Blue
+		}
+	]
+}
+
+class CharacterVisualDefault extends MovieClip {
+	pivot 0,6
+
+	passthrough [
+		object keyframe {
+			texture Texture'character_01'
+		}
+	]
+
+	filters [
+		object FilterBlur {
+			size 2
+			step 0.5
+			glow true
+			blurOffset 0,2
+			color 20000000
+		}
+		object DisplayFilter {}
+	]
+}
+
+class PlayerControllerDefault extends PlayerController {	
+}
+
+class CharacterControllerDefault extends CharacterController {
+}
+
+class CharacterDefault extends Actor {
+	airControl 1
+	controllerImpulseScale 600
+	airDrag 10
+	groundedDrag 10
+	dimensions 6,2
+
+	controller object PlayerControllerDefault {}
 	children [
+		object CharacterVisualDefault $^_visual {
+		}
+	]
+}
 
-		// TODO Example stage 
-		object MovieClip $^_spinner {
-			scale "20"
+class CameraDefault extends Camera {
+}
 
+class WorldDefault extends FreshWorld {
+	gravity 0
+	children [
+		object TileGridDefault $^_tileGrid {}
+
+		object DisplayObjectContainer $^_characterHost {
 			children [
-			
-				object MovieClip $^_pulsar {
-					
-					children [
-						object Sprite {
-							texture "Texture'white_simple'"
-						}
-					]
-
-					passthrough [
-						object keyframe {
-							children [
-								object child "$1" {
-									color "Red"
-								}
-							]
-							tween object Linear {
-							}
-						}
-						object keyframe {
-							rel_s "1.0"
-							children [
-								// 1 second later 
-								object child "$1" {
-									color "Green"
-								}
-							]
-							tween object Linear {
-							}
-						}
-						object keyframe {
-							rel_s "1.0"
-							children [
-								object child "$1" {
-									color "Blue"
-								}
-							]
-							tween object Linear {
-							}
-						}
-						object keyframe {
-							rel_s "1.0"
-							children [
-								object child "$1" {
-									color "Red"
-								}
-							]
-							tween object Linear {
-							}
-						}
-					]
-				}
-			]
-
-			passthrough [
-				object keyframe {
-					children [
-						object child "$1" {
-							rotation "0"
-						}
-					]
-					tween object Linear {
-					}
-				}
-				object keyframe {
-					rel_s "6.1"
-					children [
-						object child "$1" {
-							rotation "359"
-						}
-					]
+				object CharacterDefault character {
+					position 64
 				}
 			]
 		}
+	]
+
+	camera object CameraDefault {
+		target CharacterDefault'character'
+	}	
+}
+
+class ScreenContents extends DisplayObjectContainer {
+	children [
+		object WorldDefault $^_world {}
 	]
 }
 
