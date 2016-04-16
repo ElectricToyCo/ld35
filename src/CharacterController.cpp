@@ -18,6 +18,13 @@ namespace
 	const real MAX_WANDER_DISTANCE = 4 * UNITS_PER_TILE;
 }
 
+#if 0
+#	define ai_trace( x ) dev_trace( x )
+#else
+#	define ai_trace( x )
+#endif
+
+
 namespace ld
 {	
 	FRESH_DEFINE_CLASS( CharacterController )
@@ -110,7 +117,7 @@ namespace ld
 			{
 				desiredRoom = world.randomRoom( currentRoom );
 				
-				dev_trace( "Going to new room " << desiredRoom );
+				ai_trace( "Going to new room " << desiredRoom );
 				desiredPosition = world.randomPointInRoom( desiredRoom );
 			}
 			else
@@ -125,7 +132,7 @@ namespace ld
 				desiredPosition = actor().position() + makeRandomVector2( MAX_WANDER_DISTANCE );
 			}
 			
-			dev_trace( "Trying destination " << desiredPosition );
+			ai_trace( "Trying destination " << desiredPosition );
 			
 			const auto newPos = tileGrid.findClearLocationNearby( desiredPosition, 3.0 * UNITS_PER_TILE, [&]( const vec2& p )
 																 {
@@ -157,7 +164,7 @@ namespace ld
 					continue;
 				}
 				
-				dev_trace( "Found new destination: " << newPos );
+				ai_trace( "Found new destination: " << newPos );
 				
 				// Found a good one. Use it.
 				// TODO!!! Verify in the same room, or path not too long.
@@ -171,10 +178,10 @@ namespace ld
 			}
 			else
 			{
-				dev_trace( "Found no valid destination near: " << desiredPosition );
+				ai_trace( "Found no valid destination near: " << desiredPosition );
 			}
 		}
-		dev_trace( "Done (maybe gave up) finding a wander destination." );
+		ai_trace( "Done (maybe gave up) finding a wander destination." );
 	}
 	
 	void CharacterController::onTravelCompleted()

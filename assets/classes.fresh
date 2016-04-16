@@ -14,7 +14,7 @@ class WallTileTemplate extends ldTileTemplate {
 class TileGridDefault extends TileGrid {
 	tileClass ldTile
 	texture Texture'tile_atlas'
-	atlasSubdivisions 2,2
+	atlasSubdivisions 8,4
 	texturesSubdivisionsPerTile 1
 	tileSize 16
 
@@ -33,10 +33,74 @@ class TileGridDefault extends TileGrid {
 			atlasSubTexture 1,1
 			creationColor Red
 		}
-		object WallTileTemplate wall_basic {
+		
+		object WallTileTemplate wall_face {
 			atlasSubTexture 0,0
-			creationColor Blue
+			doesBlockLight true
+			creationColor 00007f
 		}
+
+		object WallTileTemplate wall_end_e {
+			atlasSubTexture 2,0
+			creationColor 2222a1
+		}
+		object WallTileTemplate wall_end_s {
+			atlasSubTexture 3,0
+			creationColor 6680ae
+		}
+		object WallTileTemplate wall_end_w {
+			atlasSubTexture 3,1
+			creationColor 6769ff
+		}
+		object WallTileTemplate wall_end_n {
+			atlasSubTexture 2,1
+			creationColor 4040ff
+		}
+
+		object WallTileTemplate wall_pocket {
+			atlasSubTexture 0,3
+			creationColor 8080ff
+		}
+
+		object WallTileTemplate wall_vertical {
+			atlasSubTexture 0,2
+			creationColor 00807f
+		}
+		object WallTileTemplate wall_horizontal {
+			atlasSubTexture 1,2
+			creationColor 80807f
+		}
+
+		object WallTileTemplate wall_corner_ne {
+			atlasSubTexture 2,2
+			creationColor 8000ff
+		}
+
+		object WallTileTemplate wall_corner_nw {
+			atlasSubTexture 2,3
+			creationColor 0080ff
+		}
+
+		object WallTileTemplate wall_corner_se {
+			atlasSubTexture 3,2
+			creationColor 214eff
+		}
+
+		object WallTileTemplate wall_corner_sw {
+			atlasSubTexture 3,3
+			creationColor 5380c4
+		}
+
+		object WallTileTemplate wall_tee_n {
+			atlasSubTexture 4,1
+			creationColor 80407f
+		}
+
+		object WallTileTemplate wall_tee_s {
+			atlasSubTexture 5,0
+			creationColor 8047fb
+		}
+
 	]
 }
 
@@ -114,11 +178,13 @@ class CharacterControllerDefault extends CharacterController {
 
 class CharacterDefault extends Actor {
 	airControl 1
-	controllerImpulseScale 600
+	jumpImpulseScale 0
+	controllerImpulseScale 400
 	airDrag 10
 	groundedDrag 10
 	dimensions 6,2
 	positionQuantum 1
+	collisionRefusalMask 1
 
 	controller object CharacterControllerDefault {}
 	
@@ -126,6 +192,51 @@ class CharacterDefault extends Actor {
 		object CharacterVisualDefault $^_visual {
 		}
 	]
+}
+
+class Character01 extends CharacterDefault {
+	children [
+		object CharacterVisual01 $^_visual {
+		}
+	]
+}
+class Character02 extends CharacterDefault {
+	dimensions 8,2
+	children [
+		object CharacterVisual02 $^_visual {
+		}
+	]
+}
+class Character03 extends CharacterDefault {
+	children [
+		object CharacterVisual03 $^_visual {
+		}
+	]
+}
+class Character04 extends CharacterDefault {
+	dimensions 10,2
+	children [
+		object CharacterVisual04 $^_visual {
+		}
+	]
+}
+class Character05 extends CharacterDefault {
+	children [
+		object CharacterVisual05 $^_visual {
+		}
+	]
+}
+class Character06 extends CharacterDefault {
+	dimensions 10,2
+	children [
+		object CharacterVisual06 $^_visual {
+		}
+	]
+}
+
+class CharacterPlayer extends Character04 {				// TODO which?
+	controllerImpulseScale 600
+	controller object PlayerControllerDefault {}
 }
 
 class CameraDefault extends Camera {
@@ -147,55 +258,30 @@ class WorldDefault extends World {
 
 		object DisplayObjectContainer $^_actorHost {
 			children [
-				object CharacterDefault {
+				object Character01 {
 					position 64
-					children [
-						object CharacterVisual01 $^_visual {
-						}
-					]
 				}
-				object CharacterDefault {
-					position 20
-					children [
-						object CharacterVisual02 $^_visual {
-						}
-					]
+				object Character02 {
+					position 64,80
 				}
-				object CharacterDefault {
+				object Character03 {
 					position 128
-					children [
-						object CharacterVisual03 $^_visual {
-						}
-					]
 				}
-				object CharacterDefault player {
+				object CharacterPlayer player {
 					position 80
-					controller object PlayerControllerDefault {}
-					children [
-						object CharacterVisual04 $^_visual {
-						}
-					]
 				}
-				object CharacterDefault {
+				object Character05 {
 					position 200,64
-					children [
-						object CharacterVisual05 $^_visual {
-						}
-					]
 				}
-				object CharacterDefault {
+				object Character06 {
 					position 64,200
-					children [
-						object CharacterVisual06 $^_visual {
-						}
-					]
 				}
 			]
 		}
 	]
 
 	camera object CameraDefault {
-		target CharacterDefault'player'
+		target CharacterPlayer'player'
 	}	
 }
 
