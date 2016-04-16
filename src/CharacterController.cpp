@@ -392,12 +392,13 @@ namespace ld
 	
 	void CharacterController::onConversationEnding()
 	{
-		ASSERT( m_state == Talking );
-		ASSERT( !m_targetConversant );
-		m_conversationInitiator = nullptr;
-		m_conversant = nullptr;
-		m_state = Idle;
-		
+		if( m_state == Talking )
+		{
+			ASSERT( !m_targetConversant );
+			m_conversationInitiator = nullptr;
+			m_conversant = nullptr;
+			m_state = Idle;
+		}
 		PROMISES( !occupied() );
 	}
 }
