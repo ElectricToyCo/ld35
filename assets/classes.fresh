@@ -108,6 +108,7 @@ class PlayerControllerDefault extends PlayerController {
 
 class CharacterControllerDefault extends CharacterController {
 	state Idle
+	wanderDelayRange 1,1
 }
 
 class CharacterDefault extends Actor {
@@ -116,7 +117,7 @@ class CharacterDefault extends Actor {
 	airDrag 10
 	groundedDrag 10
 	dimensions 6,2
-	positionQuantum 1	
+	positionQuantum 1
 
 	controller object CharacterControllerDefault {}
 	
@@ -144,20 +145,20 @@ class WorldDefault extends World {
 						}
 					]
 				}
-				object CharacterDefault {
-					position 20
-					children [
-						object CharacterVisual02 $^_visual {
-						}
-					]
-				}
-				object CharacterDefault {
-					position 128
-					children [
-						object CharacterVisual03 $^_visual {
-						}
-					]
-				}
+//				object CharacterDefault {
+//					position 20
+//					children [
+//						object CharacterVisual02 $^_visual {
+//						}
+//					]
+//				}
+//				object CharacterDefault {
+//					position 128
+//					children [
+//						object CharacterVisual03 $^_visual {
+//						}
+//					]
+//				}
 				object CharacterDefault player {
 					position 192
 					controller object PlayerControllerDefault {}
@@ -166,20 +167,20 @@ class WorldDefault extends World {
 						}
 					]
 				}
-				object CharacterDefault {
-					position 200,64
-					children [
-						object CharacterVisual05 $^_visual {
-						}
-					]
-				}
-				object CharacterDefault {
-					position 64,200
-					children [
-						object CharacterVisual06 $^_visual {
-						}
-					]
-				}
+//				object CharacterDefault {
+//					position 200,64
+//					children [
+//						object CharacterVisual05 $^_visual {
+//						}
+//					]
+//				}
+//				object CharacterDefault {
+//					position 64,200
+//					children [
+//						object CharacterVisual06 $^_visual {
+//						}
+//					]
+//				}
 			]
 		}
 	]

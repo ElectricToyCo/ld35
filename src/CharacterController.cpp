@@ -93,23 +93,47 @@ namespace ld
 		const World& world = actor().world();
 		const TileGrid& tileGrid = world.tileGrid();
 		
-		// Pick a new destination that is not too far from my current position, and not in a wall.
-		//
-		for( size_t tries = 0; tries < 10; ++tries )
+		for( size_t tries = 0; tries < 4; ++tries )
 		{
-			const auto newPos = actor().position() + makeRandomVector2( MAX_WANDER_DISTANCE );
+			// Pick a new destination that is not too far from my current position, and not in a wall.
+			//
+			const auto randomPosition = actor().position() + makeRandomVector2( MAX_WANDER_DISTANCE );
 			
-			if( tileGrid.isInBounds( newPos ) && tileGrid.getTile( newPos ).isSolid() == false )
+			dev_trace( "Trying random destination " << randomPosition );
+			
+			const auto newPos = tileGrid.findClearLocationNearby( randomPosition, 3.0 * UNITS_PER_TILE, [&]( const vec2& p )
+																 {
+																	 const auto dist = distance( p, randomPosition );
+																	 if( dist > 0 )
+																	 {
+																		 return 1.0f / dist;
+																	 }
+																	 else
+																	 {
+																		 return 1000.0f;
+																	 }
+																 } );
+
+			if( newPos.x >= 0 && newPos.y >= 0 )
 			{
+				dev_trace( "Found new destination: " << newPos );
+				
 				// Found a good one. Use it.
 				// TODO!!! Verify in the same room, or path not too long.
 				//
-				actor().travelTo( newPos );
-				
-				m_nextWanderTime = world.time() + randInRange( m_wanderDelayRange );
-				break;
+				bool foundPath = actor().travelTo( newPos );
+				if( foundPath )
+				{
+					m_nextWanderTime = world.time() + randInRange( m_wanderDelayRange );
+					break;
+				}
+			}
+			else
+			{
+				dev_trace( "Found no valid destination near: " << randomPosition );
 			}
 		}
+		dev_trace( "Done (maybe gave up) finding a wander destination." );
 	}
 }
 

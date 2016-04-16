@@ -29,7 +29,7 @@ namespace ld
 		return static_cast< World& >( FreshActor::world() );
 	}
 
-	void Actor::travelTo( const vec2& pos )
+	bool Actor::travelTo( const vec2& pos )
 	{
 		const World& theWorld = world();
 		TileGrid& tileGrid = theWorld.tileGrid();
@@ -39,10 +39,18 @@ namespace ld
 		
 		if( didFind )
 		{
+			dev_trace( "Found path to: " << pos );
+
 			// Smooth?
 			//
 			tileGrid.smoothPath( m_path, position(), coarseCollisionRadius(), MAX_TOUCH_PATH_NODE_DISTANCE_SQUARED );
 		}
+		else
+		{
+			dev_trace( "Found no path to: " << pos );
+		}
+		
+		return didFind;
 	}
 
 	void Actor::update()
@@ -65,11 +73,13 @@ namespace ld
 			{
 				// Yes.
 				//
+				dev_trace( "Reached: " << currentDestination );
 				++m_nextPathDestination;
 				continue;
 			}
 			else
 			{
+				dev_trace( "Moving toward: " << currentDestination );
 				const auto normal = delta / std::sqrt( distSquared );
 				applyControllerImpulse( normal );
 				
