@@ -26,8 +26,18 @@ namespace ld
 		DisplayObjectContainer& actorHost() const;
 		
 		virtual void update() override;
+
+		// ROOMS
+		
+		size_t numRooms() const;
+		size_t roomContainingPoint( const vec2& p ) const;		// Returns -1 if none.
+		size_t randomRoom( size_t excludedRoom = -1 ) const;
+		
+		vec2 randomPointInRoom( size_t room ) const;
 		
 	private:
+		
+		VAR( std::vector< rect >, m_roomRects );
 		
 	};
 	

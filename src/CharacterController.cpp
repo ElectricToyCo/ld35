@@ -24,7 +24,7 @@ namespace ld
 	DEFINE_DVAR( CharacterController, State, m_state );
 	DEFINE_DVAR( CharacterController, TimeType, m_nextWanderTime );
 	DEFINE_DVAR( CharacterController, Range< TimeType >, m_wanderDelayRange );
-
+	DEFINE_DVAR( CharacterController, real, m_percentChanceWanderToNewRoom );
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( CharacterController )
 	
 	Actor& CharacterController::actor() const
@@ -92,18 +92,50 @@ namespace ld
 	{
 		const World& world = actor().world();
 		const TileGrid& tileGrid = world.tileGrid();
-		
+
+		// Should I go to a whole new room?
+		//
+		const auto wantNewRoom = pctChance( m_percentChanceWanderToNewRoom );
+		const bool wantNonRoom = wantNewRoom && pctChance( 10 );
+
 		for( size_t tries = 0; tries < 4; ++tries )
 		{
 			// Pick a new destination that is not too far from my current position, and not in a wall.
 			//
-			const auto randomPosition = actor().position() + makeRandomVector2( MAX_WANDER_DISTANCE );
+			vec2 desiredPosition = actor().position();
+			const auto currentRoom = world.roomContainingPoint( desiredPosition );	// Might return -1.
+			size_t desiredRoom = currentRoom;
+
+			if( wantNewRoom && !wantNonRoom )
+			{
+				desiredRoom = world.randomRoom( currentRoom );
+				
+				dev_trace( "Going to new room " << desiredRoom );
+				desiredPosition = world.randomPointInRoom( desiredRoom );
+			}
+			else
+			{
+				if( wantNonRoom )
+				{
+					// Be willing to go to a non-room, like a bathroom or hall.
+					//
+					desiredRoom = -1;
+				}
+				
+				desiredPosition = actor().position() + makeRandomVector2( MAX_WANDER_DISTANCE );
+			}
 			
-			dev_trace( "Trying random destination " << randomPosition );
+			dev_trace( "Trying destination " << desiredPosition );
 			
-			const auto newPos = tileGrid.findClearLocationNearby( randomPosition, 3.0 * UNITS_PER_TILE, [&]( const vec2& p )
+			const auto newPos = tileGrid.findClearLocationNearby( desiredPosition, 3.0 * UNITS_PER_TILE, [&]( const vec2& p )
 																 {
-																	 const auto dist = distance( p, randomPosition );
+																	 const auto newRoom = world.roomContainingPoint( p );
+																	 if( desiredRoom != -1 && desiredRoom != newRoom )
+																	 {
+																		 return 0.0f;	// Give it no score.
+																	 }
+																	 
+																	 const auto dist = distance( p, desiredPosition );
 																	 if( dist > 0 )
 																	 {
 																		 return 1.0f / dist;
@@ -116,6 +148,15 @@ namespace ld
 
 			if( newPos.x >= 0 && newPos.y >= 0 )
 			{
+				// Make sure the new position is in the desired room.
+				//
+				const auto newRoom = world.roomContainingPoint( newPos );
+				if( desiredRoom != -1 && desiredRoom != newRoom )
+				{
+					// Not cool.
+					continue;
+				}
+				
 				dev_trace( "Found new destination: " << newPos );
 				
 				// Found a good one. Use it.
@@ -124,16 +165,21 @@ namespace ld
 				bool foundPath = actor().travelTo( newPos );
 				if( foundPath )
 				{
-					m_nextWanderTime = world.time() + randInRange( m_wanderDelayRange );
+					m_nextWanderTime = world.time() + 30.0;		// Escape clause just in case onTravelCompleted is never called.
 					break;
 				}
 			}
 			else
 			{
-				dev_trace( "Found no valid destination near: " << randomPosition );
+				dev_trace( "Found no valid destination near: " << desiredPosition );
 			}
 		}
 		dev_trace( "Done (maybe gave up) finding a wander destination." );
+	}
+	
+	void CharacterController::onTravelCompleted()
+	{
+		m_nextWanderTime = actor().world().time() + randInRange( m_wanderDelayRange );
 	}
 }
 

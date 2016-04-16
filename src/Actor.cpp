@@ -8,12 +8,13 @@
 
 #include "Actor.h"
 #include "World.h"
+#include "CharacterController.h"
 using namespace fr;
 
 namespace
 {
 	using namespace ld;
-	const real MAX_TOUCH_PATH_NODE_DISTANCE = 0.75f * UNITS_PER_TILE;
+	const real MAX_TOUCH_PATH_NODE_DISTANCE = 0.15f * UNITS_PER_TILE;
 	const real MAX_TOUCH_PATH_NODE_DISTANCE_SQUARED = MAX_TOUCH_PATH_NODE_DISTANCE * MAX_TOUCH_PATH_NODE_DISTANCE;
 }
 
@@ -39,15 +40,15 @@ namespace ld
 		
 		if( didFind )
 		{
-			dev_trace( "Found path to: " << pos );
+//			dev_trace( "Found path to: " << pos );
 
-			// Smooth?
+			// Smooth the path.
 			//
 			tileGrid.smoothPath( m_path, position(), coarseCollisionRadius(), MAX_TOUCH_PATH_NODE_DISTANCE_SQUARED );
 		}
 		else
 		{
-			dev_trace( "Found no path to: " << pos );
+//			dev_trace( "Found no path to: " << pos );
 		}
 		
 		return didFind;
@@ -73,13 +74,24 @@ namespace ld
 			{
 				// Yes.
 				//
-				dev_trace( "Reached: " << currentDestination );
+//				dev_trace( "Reached: " << currentDestination );
 				++m_nextPathDestination;
+				
+				if( m_nextPathDestination >= m_path.size() )
+				{
+					// Let the controller know we're done.
+					//
+					if( auto characterController = controller()->as< CharacterController >() )
+					{
+						characterController->onTravelCompleted();
+					}
+				}
+				
 				continue;
 			}
 			else
 			{
-				dev_trace( "Moving toward: " << currentDestination );
+//				dev_trace( "Moving toward: " << currentDestination );
 				const auto normal = delta / std::sqrt( distSquared );
 				applyControllerImpulse( normal );
 				

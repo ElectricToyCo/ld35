@@ -32,6 +32,8 @@ namespace ld
 		Actor& actor() const;
 		
 		virtual void update() override;
+		
+		void onTravelCompleted();
 
 	protected:
 		
@@ -47,6 +49,7 @@ namespace ld
 		DVAR( State, m_state, State::Idle );
 		DVAR( TimeType, m_nextWanderTime, -1.0 );
 		DVAR( Range< TimeType >, m_wanderDelayRange, Range< TimeType >( 4.0, 8.0 ) );
+		DVAR( real, m_percentChanceWanderToNewRoom, 50 );
 	};
 	
 	FRESH_ENUM_STREAM_IN_BEGIN( CharacterController, State )
