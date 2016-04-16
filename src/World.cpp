@@ -8,6 +8,7 @@
 
 #include "World.h"
 #include "TileGrid.h"
+#include "Character.h"
 using namespace fr;
 
 namespace ld
@@ -74,6 +75,23 @@ namespace ld
 		
 		const auto rect = m_roomRects[ room ];
 		return randInRange( rect.ulCorner() * UNITS_PER_TILE, rect.brCorner() * UNITS_PER_TILE );
+	}
+	
+	SmartPtr< Character > World::bestCharacter( std::function< real( const Character& ) >&& scoringFunction )
+	{
+		real bestScore = 0;
+		Character::ptr bestCharacter;
+		actorHost().forEachDescendant< Character >( [&]( Character& character )
+												   {
+													   const auto score = scoringFunction( character );
+													   if( score > 0 && score > bestScore )
+													   {
+														   bestScore = score;
+														   bestCharacter = &character;
+													   }
+												   } );
+													   
+		return bestCharacter;
 	}
 }
 

@@ -7,7 +7,7 @@
 //
 
 #include "CharacterController.h"
-#include "Actor.h"
+#include "Character.h"
 #include "World.h"
 #include "TileGrid.h"
 using namespace fr;
@@ -29,21 +29,38 @@ namespace ld
 {	
 	FRESH_DEFINE_CLASS( CharacterController )
 	DEFINE_DVAR( CharacterController, State, m_state );
-	DEFINE_DVAR( CharacterController, TimeType, m_nextWanderTime );
+	DEFINE_DVAR( CharacterController, TimeType, m_nextThinkTime );
 	DEFINE_DVAR( CharacterController, Range< TimeType >, m_wanderDelayRange );
 	DEFINE_DVAR( CharacterController, real, m_percentChanceWanderToNewRoom );
+	DEFINE_DVAR( CharacterController, real, m_percentChanceToInitiateTalk );
+	DEFINE_VAR( CharacterController, SmartPtr< Character >, m_conversant );
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( CharacterController )
 	
-	Actor& CharacterController::actor() const
+	Character& CharacterController::character() const
 	{
-		ASSERT( dynamic_cast< Actor* >( host().get() ));
-		auto actor = static_cast< Actor* >( host().get() );
-		ASSERT( actor );
-		return *actor;
+		ASSERT( dynamic_cast< Character* >( host().get() ));
+		auto character = static_cast< Character* >( host().get() );
+		ASSERT( character );
+		return *character;
+	}
+	
+	bool CharacterController::occupied() const
+	{
+		return !!m_conversant;
 	}
 	
 	void CharacterController::update()
 	{
+		const auto now = character().world().time();
+		
+		if( m_nextThinkTime < 0 || now >= m_nextThinkTime )
+		{
+			if( !occupied() )
+			{
+				chooseNextBehavior();
+			}
+		}
+
 		switch( m_state )
 		{
 			case Idle:
@@ -63,16 +80,62 @@ namespace ld
 		Super::update();
 	}
 	
+	bool CharacterController::travelNear( const vec2& pos, size_t room )
+	{
+		ai_trace( "Trying destination " << desiredPosition );
+		
+		const auto& world = character().world();
+		const auto& tileGrid = world.tileGrid();
+
+		const auto newPos = tileGrid.findClearLocationNearby( pos, 3.0 * UNITS_PER_TILE, [&]( const vec2& p )
+															 {
+																 const auto newRoom = world.roomContainingPoint( p );
+																 if( room != -1 && room != newRoom )
+																 {
+																	 return 0.0f;	// Give it no score.
+																 }
+																 
+																 const auto dist = distance( p, pos );
+																 if( dist > 0 )
+																 {
+																	 return 1.0f / dist;
+																 }
+																 else
+																 {
+																	 return 1000.0f;
+																 }
+															 } );
+		
+		if( newPos.x >= 0 && newPos.y >= 0 )
+		{
+			// Make sure the new position is in the desired room.
+			//
+			const auto newRoom = world.roomContainingPoint( newPos );
+			if( room != -1 && room != newRoom )
+			{
+				// Not cool.
+				return false;
+			}
+			
+			ai_trace( "Found new destination: " << newPos );
+			
+			// Found a good one. Use it.
+			// TODO!!! Verify in the same room, or path not too long.
+			//
+			bool foundPath = character().travelTo( newPos );
+			if( foundPath )
+			{
+				return true;
+			}
+		}
+
+		ai_trace( "Found no valid destination near: " << pos );
+		return false;
+	}
+	
 	void CharacterController::updateIdle()
 	{
-		const auto now = actor().world().time();
-		
-		// Wander around.
-		//
-		if( m_nextWanderTime < 0 || now >= m_nextWanderTime )
-		{
-			wanderSomewhere();
-		}
+		// TODO
 	}
 	
 	void CharacterController::updatePursuing()
@@ -97,8 +160,7 @@ namespace ld
 	
 	void CharacterController::wanderSomewhere()
 	{
-		const World& world = actor().world();
-		const TileGrid& tileGrid = world.tileGrid();
+		const World& world = character().world();
 
 		// Should I go to a whole new room?
 		//
@@ -109,7 +171,7 @@ namespace ld
 		{
 			// Pick a new destination that is not too far from my current position, and not in a wall.
 			//
-			vec2 desiredPosition = actor().position();
+			vec2 desiredPosition = character().position();
 			const auto currentRoom = world.roomContainingPoint( desiredPosition );	// Might return -1.
 			size_t desiredRoom = currentRoom;
 
@@ -129,56 +191,15 @@ namespace ld
 					desiredRoom = -1;
 				}
 				
-				desiredPosition = actor().position() + makeRandomVector2( MAX_WANDER_DISTANCE );
+				desiredPosition = character().position() + makeRandomVector2( MAX_WANDER_DISTANCE );
 			}
-			
-			ai_trace( "Trying destination " << desiredPosition );
-			
-			const auto newPos = tileGrid.findClearLocationNearby( desiredPosition, 3.0 * UNITS_PER_TILE, [&]( const vec2& p )
-																 {
-																	 const auto newRoom = world.roomContainingPoint( p );
-																	 if( desiredRoom != -1 && desiredRoom != newRoom )
-																	 {
-																		 return 0.0f;	// Give it no score.
-																	 }
-																	 
-																	 const auto dist = distance( p, desiredPosition );
-																	 if( dist > 0 )
-																	 {
-																		 return 1.0f / dist;
-																	 }
-																	 else
-																	 {
-																		 return 1000.0f;
-																	 }
-																 } );
 
-			if( newPos.x >= 0 && newPos.y >= 0 )
+			bool foundDestination = travelNear( desiredPosition, desiredRoom );
+			
+			if( foundDestination )
 			{
-				// Make sure the new position is in the desired room.
-				//
-				const auto newRoom = world.roomContainingPoint( newPos );
-				if( desiredRoom != -1 && desiredRoom != newRoom )
-				{
-					// Not cool.
-					continue;
-				}
-				
-				ai_trace( "Found new destination: " << newPos );
-				
-				// Found a good one. Use it.
-				// TODO!!! Verify in the same room, or path not too long.
-				//
-				bool foundPath = actor().travelTo( newPos );
-				if( foundPath )
-				{
-					m_nextWanderTime = world.time() + 30.0;		// Escape clause just in case onTravelCompleted is never called.
-					break;
-				}
-			}
-			else
-			{
-				ai_trace( "Found no valid destination near: " << desiredPosition );
+				m_nextThinkTime = world.time() + 30.0;		// Escape clause just in case onTravelCompleted is never called.
+				break;
 			}
 		}
 		ai_trace( "Done (maybe gave up) finding a wander destination." );
@@ -186,7 +207,101 @@ namespace ld
 	
 	void CharacterController::onTravelCompleted()
 	{
-		m_nextWanderTime = actor().world().time() + randInRange( m_wanderDelayRange );
+		if( m_state == Pursuing && m_conversant && distanceSquared( character().position(), m_conversant->position() ))
+		{
+			// Start talking if possible.
+			//
+			ASSERT( m_conversant && &character() != m_conversant );
+			initiateConversation( *m_conversant );
+			
+			return;
+		}
+		
+		m_nextThinkTime = character().world().time() + randInRange( m_wanderDelayRange );
 	}
+	
+	void CharacterController::initiateConversation( Character& withCharacter )
+	{
+		auto& me = character();
+		
+		dev_trace( &me << " talks to " << &withCharacter );
+		
+		// TODO!!!
+	}
+	
+	void CharacterController::chooseNextBehavior()
+	{
+		ASSERT( !m_conversant );
+		
+		// Should we go talk to someone?
+		//
+		if( pctChance( m_percentChanceToInitiateTalk ))
+		{
+			m_conversant = findConversant();
+			if( m_conversant )
+			{
+				m_state = Pursuing;
+				
+				// Move to the conversant.
+				bool foundDestination = travelNear( m_conversant->position() );
+				
+				if( !foundDestination )
+				{
+					m_conversant = nullptr;
+					m_nextThinkTime = -1;	// Immediately.
+				}
+			}
+		}
+		else
+		{
+			// Just wandering.
+			//
+			m_state = Idle;
+			wanderSomewhere();
+		}
+	}
+	
+	Character::ptr CharacterController::findConversant() const
+	{
+		const auto& me = character();
+		const auto myPosition = me.position();
+		const auto myCurrentRoom = me.currentRoom();
+		auto& world = character().world();
+		
+		return world.bestCharacter( [&]( const Character& character )
+								   {
+									   if( &character == &me )
+									   {
+										   return -1.0f;
+									   }
+									   else
+									   {
+										   const auto attitudeScore = attitudeToward( character );
+
+										   const auto tooSoonScore = static_cast< real >( timeSinceLastConversation( character ));
+										   
+										   const auto distSquared = distanceSquared( character.position(), myPosition );
+										   real distanceScore = 1.0f / ( distSquared > 0 ? distSquared : 100.0f );
+										   distanceScore *= ( myCurrentRoom == character.currentRoom() ? 2.0f : 1.0f );
+										   
+										   return distanceScore * 1.0f
+										   +	  attitudeScore * 1.0f
+										   +	  tooSoonScore  * 0.1f;
+									   }
+								   } );
+	}
+	
+	real CharacterController::attitudeToward( const Character& withCharacter ) const
+	{
+		// TODO Psychology.
+		return 0.0f;
+	}
+	
+	TimeType CharacterController::timeSinceLastConversation( const Character& withCharacter ) const
+	{
+		// TODO Memory
+		return 60.0f;
+	}
+	
 }
 

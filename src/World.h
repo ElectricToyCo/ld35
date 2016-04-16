@@ -16,6 +16,7 @@
 namespace ld
 {
 	class TileGrid;
+	class Character;
 	
 	class World : public fr::FreshWorld
 	{
@@ -34,6 +35,8 @@ namespace ld
 		size_t randomRoom( size_t excludedRoom = -1 ) const;
 		
 		vec2 randomPointInRoom( size_t room ) const;
+
+		SmartPtr< Character > bestCharacter( std::function< real( const Character& ) >&& scoringFunction );
 		
 	private:
 		

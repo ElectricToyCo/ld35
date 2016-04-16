@@ -104,5 +104,10 @@ namespace ld
 	{
 		return std::abs( dimensions().majorAxisValue() );
 	}
+	
+	size_t Actor::currentRoom() const
+	{
+		return world().roomContainingPoint( position() );
+	}
 }
 

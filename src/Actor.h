@@ -31,6 +31,8 @@ namespace ld
 		
 		real coarseCollisionRadius() const;
 		
+		size_t currentRoom() const;
+		
 	private:
 
 		VAR( TileGrid::WorldSpacePath, m_path );

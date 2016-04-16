@@ -14,7 +14,7 @@
 
 namespace ld
 {
-	class Actor;
+	class Character;
 	
 	class CharacterController : public fr::FreshActorController
 	{
@@ -29,13 +29,17 @@ namespace ld
 			Panicked
 		};
 	
-		Actor& actor() const;
+		Character& character() const;
+		
+		bool occupied() const;
 		
 		virtual void update() override;
 		
 		void onTravelCompleted();
 
 	protected:
+
+		bool travelNear( const vec2& pos, size_t room = -1 );
 		
 		virtual void updateIdle();
 		virtual void updatePursuing();
@@ -44,12 +48,26 @@ namespace ld
 		
 		void wanderSomewhere();
 		
+		void chooseNextBehavior();
+		
+		SmartPtr< Character > findConversant() const;
+		
+		void initiateConversation( Character& withCharacter );
+		
+		real attitudeToward( const Character& withCharacter ) const;
+		TimeType timeSinceLastConversation( const Character& withCharacter ) const;
+		
 	private:
 		
 		DVAR( State, m_state, State::Idle );
-		DVAR( TimeType, m_nextWanderTime, -1.0 );
+		DVAR( TimeType, m_nextThinkTime, -1.0 );
 		DVAR( Range< TimeType >, m_wanderDelayRange, Range< TimeType >( 4.0, 8.0 ) );
+		
 		DVAR( real, m_percentChanceWanderToNewRoom, 50 );
+		DVAR( real, m_percentChanceToInitiateTalk, 10 );
+
+		VAR( SmartPtr< Character >, m_conversant );
+
 	};
 	
 	FRESH_ENUM_STREAM_IN_BEGIN( CharacterController, State )

@@ -144,6 +144,7 @@ class CharacterVisual03 extends CharacterVisualDefault {
 }
 
 class CharacterVisual04 extends CharacterVisualDefault {
+	pivot -1,6
 	passthrough [
 		object keyframe {
 			texture Texture'character_04'
@@ -176,7 +177,7 @@ class CharacterControllerDefault extends CharacterController {
 	percentChanceWanderToNewRoom 10
 }
 
-class CharacterDefault extends Actor {
+class CharacterDefault extends Character {
 	airControl 1
 	jumpImpulseScale 0
 	controllerImpulseScale 400
