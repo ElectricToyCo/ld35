@@ -20,12 +20,17 @@ namespace
 	const real MAX_CONVERSATION_DISTANCE = 2.0 * UNITS_PER_TILE;
 }
 
-#if 1
+#if 0
 #	define ai_trace( x ) dev_trace( x )
 #else
 #	define ai_trace( x )
 #endif
 
+#if 0
+#	define conversation_trace( x ) dev_trace( x )
+#else
+#	define conversation_trace( x )
+#endif
 
 namespace ld
 {	
@@ -153,7 +158,12 @@ namespace ld
 	void CharacterController::updateTalking()
 	{
 		// Stand here.
-		// TODO
+		//
+		// TODO development
+		if( m_conversationInitiator == &character() && pctChance( 1 ))
+		{
+			endConversation();
+		}
 	}
 	
 	void CharacterController::updatePanicked()
@@ -237,7 +247,7 @@ namespace ld
 	{
 		auto& me = character();
 		
-		dev_trace( &me << " talks to " << &withCharacter );
+		conversation_trace( &me << " talks to " << &withCharacter );
 		
 		const bool wasConversationAccepted = withCharacter.onAddressedBy( &me );
 
@@ -249,9 +259,8 @@ namespace ld
 			
 			onConversationBeginning();
 			
-			// TODO!!!
+			// TODO!!! Setup UI etc.
 			
-			endConversation();
 		}
 		
 		return wasConversationAccepted;
@@ -270,7 +279,7 @@ namespace ld
 			
 			if( m_targetConversant )
 			{
-				trace( &character() << " pursuing " << m_targetConversant );
+				conversation_trace( &character() << " pursuing " << m_targetConversant );
 
 				m_state = Pursuing;
 				
@@ -313,7 +322,7 @@ namespace ld
 										   const auto tooSoonScore = static_cast< real >( timeSinceLastConversation( character ));
 										   
 										   const auto distSquared = distanceSquared( character.position(), myPosition );
-										   real distanceScore = 1.0f / ( distSquared > 0 ? distSquared : 100.0f );
+										   real distanceScore = 1.0f / ( distSquared > 0 ? distSquared : 0.1f );
 										   distanceScore *= ( myCurrentRoom == character.currentRoom() ? 2.0f : 1.0f );
 										   
 										   return distanceScore * 1.0f
@@ -342,7 +351,7 @@ namespace ld
 		
 		if( m_conversant || ( m_targetConversant && m_targetConversant != other ) )
 		{
-			return false;
+			onConversationInterrupted();
 		}		
 		
 		m_targetConversant = nullptr;
@@ -372,6 +381,12 @@ namespace ld
 		ASSERT( !m_targetConversant );
 		
 		m_conversant->onConversationEnding();
+		onConversationEnding();
+	}
+	
+	void CharacterController::onConversationInterrupted()
+	{
+		// TODO!!!
 		onConversationEnding();
 	}
 	

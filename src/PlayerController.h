@@ -26,6 +26,14 @@ namespace ld
 		bool onAddressedBy( SmartPtr< Character > other );
 		void onConversationEnding();
 
+	protected:
+		
+		virtual void onActionKeyDown( fr::Keyboard::Key key ) override;
+		virtual void onActionButtonDown( fr::Gamepad::Button button ) override;
+
+		void attemptInitiatingConversation();
+		void beginConversationWith( SmartPtr< Character > other );
+
 	private:
 		
 	};

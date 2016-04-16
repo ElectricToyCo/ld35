@@ -265,18 +265,18 @@ class WorldDefault extends World {
 				object Character02 {
 					position 64,80
 				}
-//				object Character03 {
-//					position 128
-//				}
+				object Character03 {
+					position 128
+				}
 				object CharacterPlayer player {
 					position 80
 				}
-//				object Character05 {
-//					position 200,64
-//				}
-//				object Character06 {
-//					position 64,200
-//				}
+				object Character05 {
+					position 200,64
+				}
+				object Character06 {
+					position 64,200
+				}
 			]
 		}
 	]

@@ -18,6 +18,12 @@ namespace
 	const real MAX_TOUCH_PATH_NODE_DISTANCE_SQUARED = MAX_TOUCH_PATH_NODE_DISTANCE * MAX_TOUCH_PATH_NODE_DISTANCE;
 }
 
+#if 0
+#	define travel_trace( x ) dev_trace( x )
+#else
+#	define travel_trace( x )
+#endif
+
 namespace ld
 {	
 	FRESH_DEFINE_CLASS( Actor )
@@ -40,7 +46,7 @@ namespace ld
 		
 		if( didFind )
 		{
-//			dev_trace( "Found path to: " << pos );
+			travel_trace( "Found path to: " << pos );
 
 			// Smooth the path.
 			//
@@ -48,7 +54,7 @@ namespace ld
 		}
 		else
 		{
-//			dev_trace( "Found no path to: " << pos );
+			travel_trace( "Found no path to: " << pos );
 		}
 		
 		return didFind;
@@ -80,7 +86,7 @@ namespace ld
 			{
 				// Yes.
 				//
-//				dev_trace( "Reached: " << currentDestination );
+				travel_trace( "Reached: " << currentDestination );
 				++m_nextPathDestination;
 				
 				if( m_nextPathDestination >= m_path.size() )
@@ -97,7 +103,7 @@ namespace ld
 			}
 			else
 			{
-//				dev_trace( "Moving toward: " << currentDestination );
+				travel_trace( "Moving toward: " << currentDestination );
 				const auto normal = delta / std::sqrt( distSquared );
 				applyControllerImpulse( normal );
 				

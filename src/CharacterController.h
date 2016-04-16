@@ -44,6 +44,7 @@ namespace ld
 	protected:
 
 		void onConversationBeginning();
+		void onConversationInterrupted();
 		
 		bool travelNear( const vec2& pos, real maxDistance, size_t room = -1, real minDistance = 0 );
 		
