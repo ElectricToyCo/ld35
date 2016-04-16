@@ -33,5 +33,10 @@ namespace ld
 		
 		return false;		// TODO!!!
 	}
+	
+	void PlayerController::onConversationEnding()
+	{
+		// TODO
+	}
 }
 

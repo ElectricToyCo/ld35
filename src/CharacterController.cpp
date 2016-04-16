@@ -20,7 +20,7 @@ namespace
 	const real MAX_CONVERSATION_DISTANCE = 2.0 * UNITS_PER_TILE;
 }
 
-#if 0
+#if 1
 #	define ai_trace( x ) dev_trace( x )
 #else
 #	define ai_trace( x )
@@ -35,7 +35,9 @@ namespace ld
 	DEFINE_DVAR( CharacterController, Range< TimeType >, m_wanderDelayRange );
 	DEFINE_DVAR( CharacterController, real, m_percentChanceWanderToNewRoom );
 	DEFINE_DVAR( CharacterController, real, m_percentChanceToInitiateTalk );
+	DEFINE_VAR( CharacterController, SmartPtr< Character >, m_targetConversant );
 	DEFINE_VAR( CharacterController, SmartPtr< Character >, m_conversant );
+	DEFINE_VAR( CharacterController, WeakPtr< Character >, m_conversationInitiator );
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( CharacterController )
 	
 	Character& CharacterController::character() const
@@ -48,7 +50,7 @@ namespace ld
 	
 	bool CharacterController::occupied() const
 	{
-		return !!m_conversant;
+		return m_conversant != nullptr || m_targetConversant != nullptr;
 	}
 	
 	void CharacterController::update()
@@ -84,7 +86,7 @@ namespace ld
 	
 	bool CharacterController::travelNear( const vec2& pos, real maxDistance, size_t room, real minDistance )
 	{
-		ai_trace( "Trying destination " << desiredPosition );
+		ai_trace( "Trying destination " << pos );
 		
 		const auto& world = character().world();
 		const auto& tileGrid = world.tileGrid();
@@ -124,7 +126,6 @@ namespace ld
 			ai_trace( "Found new destination: " << newPos );
 			
 			// Found a good one. Use it.
-			// TODO!!! Verify in the same room, or path not too long.
 			//
 			bool foundPath = character().travelTo( newPos );
 			if( foundPath )
@@ -211,16 +212,21 @@ namespace ld
 	
 	void CharacterController::onTravelCompleted()
 	{
-		if( m_state == Pursuing && m_conversant && distanceSquared( character().position(), m_conversant->position() ))
+		if( m_state == Pursuing && m_targetConversant && distanceSquared( character().position(), m_targetConversant->position() ))
 		{
 			// Start talking if possible.
 			//
-			ASSERT( m_conversant && &character() != m_conversant );
-			const auto succeeded = initiateConversation( *m_conversant );
+			ASSERT( m_targetConversant && &character() != m_targetConversant );
+			const auto succeeded = initiateConversation( *m_targetConversant );
 			
 			if( succeeded )
 			{
 				return;
+			}
+			else
+			{
+				ASSERT( !m_conversant );
+				m_targetConversant = nullptr;
 			}
 		}
 		
@@ -233,13 +239,19 @@ namespace ld
 		
 		dev_trace( &me << " talks to " << &withCharacter );
 		
-		me.stopTravel();
-		
 		const bool wasConversationAccepted = withCharacter.onAddressedBy( &me );
 
 		if( wasConversationAccepted )
 		{
+			m_conversationInitiator = &me;
+			m_conversant = m_targetConversant;
+			ASSERT( m_conversant == &withCharacter );
+			
+			onConversationBeginning();
+			
 			// TODO!!!
+			
+			endConversation();
 		}
 		
 		return wasConversationAccepted;
@@ -248,22 +260,26 @@ namespace ld
 	void CharacterController::chooseNextBehavior()
 	{
 		ASSERT( !m_conversant );
+		ASSERT( !m_targetConversant );
 		
 		// Should we go talk to someone?
 		//
 		if( pctChance( m_percentChanceToInitiateTalk ))
 		{
-			m_conversant = findConversant();
-			if( m_conversant )
+			m_targetConversant = findConversant();
+			
+			if( m_targetConversant )
 			{
+				trace( &character() << " pursuing " << m_targetConversant );
+
 				m_state = Pursuing;
 				
 				// Move to the conversant.
-				bool foundDestination = travelNear( m_conversant->position(), MAX_CONVERSATION_DISTANCE, -1 /*room don't care*/, MIN_CONVERSATION_DISTANCE );
+				bool foundDestination = travelNear( m_targetConversant->position(), MAX_CONVERSATION_DISTANCE, -1 /*room don't care*/, MIN_CONVERSATION_DISTANCE );
 				
 				if( !foundDestination )
 				{
-					m_conversant = nullptr;
+					m_targetConversant = nullptr;
 					m_nextThinkTime = -1;	// Immediately.
 				}
 			}
@@ -324,12 +340,14 @@ namespace ld
 		REQUIRES( other );
 		REQUIRES( other != &character() );
 		
-		if( occupied() )
+		if( m_conversant || ( m_targetConversant && m_targetConversant != other ) )
 		{
 			return false;
 		}		
 		
+		m_targetConversant = nullptr;
 		m_conversant = other;
+		m_conversationInitiator = m_conversant;
 		onConversationBeginning();
 		
 		travelNear( m_conversant->position(), MAX_CONVERSATION_DISTANCE, -1 /* room don't care */, MIN_CONVERSATION_DISTANCE );
@@ -341,12 +359,29 @@ namespace ld
 	{
 		REQUIRES( m_conversant );
 		
+		m_targetConversant = nullptr;
+		m_state = Talking;
 		character().stopTravel();
 	}
 	
 	void CharacterController::endConversation()
 	{
+		REQUIRES( m_conversant );
+		REQUIRES( m_conversationInitiator == &character() );
+		ASSERT( m_state == Talking );
+		ASSERT( !m_targetConversant );
+		
+		m_conversant->onConversationEnding();
+		onConversationEnding();
+	}
+	
+	void CharacterController::onConversationEnding()
+	{
+		ASSERT( m_state == Talking );
+		ASSERT( !m_targetConversant );
+		m_conversationInitiator = nullptr;
 		m_conversant = nullptr;
+		m_state = Idle;
 		
 		PROMISES( !occupied() );
 	}

@@ -21,6 +21,7 @@ namespace ld
 	public:
 		
 		virtual bool onAddressedBy( SmartPtr< Character > initator );
+		virtual void onConversationEnding();
 		
 	private:
 		

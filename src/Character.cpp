@@ -34,5 +34,19 @@ namespace ld
 		return false;
 	}
 	
+	void Character::onConversationEnding()
+	{
+		if( controller() )
+		{
+			if( auto playerController = controller()->as< PlayerController >() )
+			{
+				return playerController->onConversationEnding();
+			}
+			else if( auto characterController = controller()->as< CharacterController >() )
+			{
+				return characterController->onConversationEnding();
+			}
+		}
+	}
 }
 

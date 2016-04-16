@@ -24,7 +24,8 @@ namespace ld
 		Character& character() const;
 		
 		bool onAddressedBy( SmartPtr< Character > other );
-		
+		void onConversationEnding();
+
 	private:
 		
 	};

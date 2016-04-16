@@ -39,6 +39,7 @@ namespace ld
 		virtual void update() override;
 		
 		void onTravelCompleted();
+		void onConversationEnding();
 
 	protected:
 
@@ -71,7 +72,9 @@ namespace ld
 		DVAR( real, m_percentChanceWanderToNewRoom, 50 );
 		DVAR( real, m_percentChanceToInitiateTalk, 10 );
 
+		VAR( SmartPtr< Character >, m_targetConversant );
 		VAR( SmartPtr< Character >, m_conversant );
+		VAR( WeakPtr< Character >, m_conversationInitiator );
 
 	};
 	
