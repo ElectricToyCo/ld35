@@ -73,6 +73,7 @@ class CharacterDefault extends Actor {
 	airDrag 10
 	groundedDrag 10
 	dimensions 6,2
+	positionQuantum 1	
 
 	controller object PlayerControllerDefault {}
 	children [
@@ -86,6 +87,7 @@ class CameraDefault extends Camera {
 
 class WorldDefault extends FreshWorld {
 	gravity 0
+	positionQuantum 1
 	children [
 		object TileGridDefault $^_tileGrid {}
 
