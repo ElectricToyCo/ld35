@@ -9,12 +9,15 @@
 #include "World.h"
 #include "TileGrid.h"
 #include "Character.h"
+#include "ConversationDisplay.h"
 using namespace fr;
 
 namespace ld
 {	
 	FRESH_DEFINE_CLASS( World )
 	DEFINE_VAR( World, std::vector< rect >, m_roomRects );
+	DEFINE_VAR( World, ClassInfo::cptr, m_conversationDisplayClass );
+	DEFINE_VAR( World, std::vector< SmartPtr< Character >>, m_characters );
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( World )
 	
 	TileGrid& World::tileGrid() const
@@ -25,6 +28,21 @@ namespace ld
 	DisplayObjectContainer& World::actorHost() const
 	{
 		return getExpectedDescendant< DisplayObjectContainer >( *this, "_actorHost" );
+	}
+
+	DisplayObjectContainer& World::hudOverlayHost() const
+	{
+		return getExpectedDescendant< DisplayObjectContainer >( *this, "_hudOverlayHost" );
+	}
+	
+	SmartPtr< ConversationDisplay > World::createConversationDisplay()
+	{
+		ASSERT( m_conversationDisplayClass );
+		auto display = createObject< ConversationDisplay >( *m_conversationDisplayClass );
+		ASSERT( display );
+		
+		hudOverlayHost().addChild( display );
+		return display;
 	}
 	
 	void World::update()
@@ -93,5 +111,88 @@ namespace ld
 													   
 		return bestCharacter;
 	}
+	
+	size_t World::numCharacters() const
+	{
+		return m_characters.size();
+	}
+	
+	SmartPtr< Character > World::characterAt( size_t iCharacter ) const
+	{
+		ASSERT( iCharacter < m_characters.size() );
+		return m_characters[ iCharacter ];
+	}
+	
+	void World::postLoad()
+	{
+		Super::postLoad();
+		
+		ASSERT( m_characters.empty() );
+		actorHost().forEachDescendant< Character >( [&]( Character& character )
+												   {
+													   m_characters.push_back( &character );
+												   } );
+	}
+	
+	std::string World::descriptiveForValue( Value value ) const
+	{
+		std::vector< std::string > options;
+		
+		switch( value )
+		{
+			case Value::Hate:
+				options = { "despise", "loathe", "hate", "really hate", "am disgusted by" };
+				break;
+			case Value::Dislike:
+				options = { "don't like", "dislike", "don't really like" };
+				break;
+			case Value::Neutral:
+				options = { "don't know about", "am not sure about" };
+				break;
+			case Value::Like:
+				options = { "like", "dig", "am into" };
+				break;
+			case Value::Love:
+				break;
+				options = { "love", "adore", "can't get enough of" };
+		}
+		
+		ASSERT( options.empty() == false );
+		return randomElement( options );
+	}
+	
+	std::string World::descriptiveForTopic( Topic topic ) const
+	{
+		switch( topic.first )
+		{
+			case TopicType::Goodbye:
+				ASSERT( false );
+				return "";
+			case TopicType::Food:
+				return "food";
+			case TopicType::Sports:
+				return "sports";
+			case TopicType::Music:
+				return "music";
+			case TopicType::Character:
+			{
+				auto character = characterAt( topic.second );
+				return character->characterName();
+			}
+		}
+	}
+	
+	std::string World::createInitiatingSpeechText( Topic topic, real value ) const
+	{
+		auto discrete = discreteValue( value );
+		
+		const std::string attitude = descriptiveForValue( discrete );
+		const std::string topicDescription = descriptiveForTopic( topic );
+		
+		std::ostringstream stream;
+		stream << "I " << attitude << " " << topicDescription << ".";
+		return stream.str();
+	}
+
 }
 

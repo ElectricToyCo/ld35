@@ -1,5 +1,6 @@
 // ld35 classes 
 
+include "assets/hud.fresh"
 
 class FloorTileTemplate extends ldTileTemplate {
 	isSolid false
@@ -242,6 +243,8 @@ class CharacterPlayer extends Character04 {				// TODO which?
 
 class CameraDefault extends Camera {
 	rectBounds 1,-2,255,272
+	targetZoomRatio 2
+	zoomRatio 2
 }
 
 class WorldDefault extends World {
@@ -254,6 +257,8 @@ class WorldDefault extends World {
 		(1,10,6,15),
 		(10,10,15,15),
 	]
+
+	conversationDisplayClass ConversationDisplayDefault
 
 	children [
 		object TileGridDefault $^_tileGrid {}
@@ -279,6 +284,9 @@ class WorldDefault extends World {
 					position 64,200
 				}
 			]
+		}
+
+		object DisplayObjectContainer $^_hudOverlayHost {
 		}
 	]
 

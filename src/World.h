@@ -17,6 +17,7 @@ namespace ld
 {
 	class TileGrid;
 	class Character;
+	class ConversationDisplay;
 	
 	class World : public fr::FreshWorld
 	{
@@ -25,8 +26,16 @@ namespace ld
 		
 		TileGrid& tileGrid() const;
 		DisplayObjectContainer& actorHost() const;
-		
+		DisplayObjectContainer& hudOverlayHost() const;
+
 		virtual void update() override;
+		
+		// CONVERSATION
+		
+		SmartPtr< ConversationDisplay > createConversationDisplay();
+		std::string descriptiveForValue( Value value ) const;
+		std::string descriptiveForTopic( Topic topic ) const;
+		std::string createInitiatingSpeechText( Topic topic, real value ) const;
 
 		// ROOMS
 		
@@ -36,11 +45,20 @@ namespace ld
 		
 		vec2 randomPointInRoom( size_t room ) const;
 
+		// CHARACTERS
+		
 		SmartPtr< Character > bestCharacter( std::function< real( const Character& ) >&& scoringFunction );
+		
+		size_t numCharacters() const;
+		SmartPtr< Character > characterAt( size_t iCharacter ) const;
+		
+		virtual void postLoad() override;
 		
 	private:
 		
 		VAR( std::vector< rect >, m_roomRects );
+		VAR( ClassInfo::cptr, m_conversationDisplayClass );
+		VAR( std::vector< SmartPtr< Character >>, m_characters );
 		
 	};
 	

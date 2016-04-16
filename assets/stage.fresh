@@ -2,7 +2,7 @@
 
 object AppStage theStage {
 
-	stageDimensions "160,0"
+	stageDimensions "320,0"
 
 	children [
 
@@ -44,8 +44,8 @@ object AppStage theStage {
 					inheritParentFrame true
 
 					renderTarget object RenderTarget {
-						width "160"
-						height "96"
+						width "320"
+						height "192"
 						clearColor 08080a
 						doInitialClearOnCapture "true"
 						depthBufferFormat <<EOF {

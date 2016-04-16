@@ -9,6 +9,7 @@
 #include "PlayerController.h"
 #include "World.h"
 #include "Character.h"
+#include "ConversationDisplay.h"
 using namespace fr;
 
 namespace ld
@@ -92,6 +93,16 @@ namespace ld
 		
 		other->onAddressedBy( me );
 		
+		// TODO!!!
+	}
+	
+	void PlayerController::receiveSpeechStatement( SmartPtr< ConversationDisplay > display, Character& from, const Topic& topic, real value, size_t speechIndex )
+	{
+		// TODO!!!
+	}
+	
+	void PlayerController::displaySpeech( SmartPtr< ConversationDisplay > display, Topic topic, real value, size_t speechIndex )
+	{
 		// TODO!!!
 	}
 }

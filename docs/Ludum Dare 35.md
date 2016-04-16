@@ -188,3 +188,9 @@ Walking around to think and wake up (11:12pm)
 4 AM. Taking a little break.
 
 5:10 AM. Not a bad stopping point. Time to sleep.
+
+9:25 AM Saturday. Up!
+
+4:20 PM Saturday. Time for a break.
+
+5:04 PM. Back.

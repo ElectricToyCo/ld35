@@ -1,0 +1,24 @@
+// ld35 HUD
+
+class DefaultText extends TextField {
+	font Font'04b03_8'
+	fontSize 4
+	color White
+	textSpacing 1
+	lineHeight 1
+	alignment Left
+	enforcement Wrap
+	enforcedBounds 300,0
+}
+
+class ConversationSpeechText extends DefaultText {
+
+}
+
+class ConversationDisplayDefault extends ConversationDisplay {
+	speechTextClass ConversationSpeechText
+	speechTextOffset -2,-8
+	speechSpacing 0,4
+	defaultShowDuration 0.25
+	defaultHideDuration 2.0
+}

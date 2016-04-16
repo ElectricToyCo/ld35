@@ -14,6 +14,7 @@
 
 namespace ld
 {
+	class ConversationDisplay;
 	
 	class Character : public Actor
 	{
@@ -22,8 +23,15 @@ namespace ld
 		
 		virtual bool onAddressedBy( SmartPtr< Character > initator );
 		virtual void onConversationEnding();
+	
+		void receiveSpeechStatement( SmartPtr< ConversationDisplay > display, Character& from, const Topic& topic, real value, size_t speechIndex );
+		void displaySpeech( SmartPtr< ConversationDisplay > display, Topic topic, real value, size_t speechIndex );
+		
+		virtual std::string characterName() const;
 		
 	private:
+		
+		VAR( std::string, m_characterName );
 		
 	};
 	

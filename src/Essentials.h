@@ -58,6 +58,74 @@ namespace ld
 	using fr::dynamic_freshptr_cast;
 	
 	const real UNITS_PER_TILE = 16;
+	
+	enum class TopicType
+	{
+		Goodbye,
+		Food,
+		Sports,
+		Music,
+		Character
+	};
+	
+	using Topic = std::pair< TopicType, size_t >;
+	
+	FRESH_ENUM_STREAM_IN_BEGIN( ld, TopicType )
+	FRESH_ENUM_STREAM_IN_CASE( TopicType, Goodbye )
+	FRESH_ENUM_STREAM_IN_CASE( TopicType, Food )
+	FRESH_ENUM_STREAM_IN_CASE( TopicType, Sports )
+	FRESH_ENUM_STREAM_IN_CASE( TopicType, Music )
+	FRESH_ENUM_STREAM_IN_CASE( TopicType, Character )
+	FRESH_ENUM_STREAM_IN_END()
+	
+	FRESH_ENUM_STREAM_OUT_BEGIN( ld, TopicType )
+	FRESH_ENUM_STREAM_OUT_CASE( TopicType, Goodbye )
+	FRESH_ENUM_STREAM_OUT_CASE( TopicType, Food )
+	FRESH_ENUM_STREAM_OUT_CASE( TopicType, Sports )
+	FRESH_ENUM_STREAM_OUT_CASE( TopicType, Music )
+	FRESH_ENUM_STREAM_OUT_CASE( TopicType, Character )
+	FRESH_ENUM_STREAM_OUT_END()
+
+	enum class Value
+	{
+		Hate,
+		Dislike,
+		Neutral,
+		Like,
+		Love
+	};
+	
+	
+	// |   |   |   |   |   |
+	// |         +         |
+	
+	inline Value discreteValue( real value )
+	{
+		const size_t divisions = 5;
+		const real span = 1.0f / divisions;
+		
+		if( value < -1.5f * span )
+		{
+			return Value::Hate;
+		}
+		else if( value < -0.5f * span )
+		{
+			return Value::Dislike;
+		}
+		else if( value > 0.5f * span )
+		{
+			return Value::Like;
+		}
+		else if( value > 1.5f * span )
+		{
+			return Value::Love;
+		}
+		else
+		{
+			return Value::Neutral;
+		}
+		
+	}
 }
 
 #endif

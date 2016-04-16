@@ -15,6 +15,7 @@
 namespace ld
 {
 	class Character;
+	class ConversationDisplay;
 	
 	class PlayerController : public fr::FreshPlayerController
 	{
@@ -25,6 +26,8 @@ namespace ld
 		
 		bool onAddressedBy( SmartPtr< Character > other );
 		void onConversationEnding();
+		void receiveSpeechStatement( SmartPtr< ConversationDisplay > display, Character& from, const Topic& topic, real value, size_t speechIndex );
+		void displaySpeech( SmartPtr< ConversationDisplay > display, Topic topic, real value, size_t speechIndex );
 
 	protected:
 		
