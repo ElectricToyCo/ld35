@@ -33,13 +33,18 @@ namespace ld
 		
 		bool occupied() const;
 		
+		bool onAddressedBy( SmartPtr< Character > other );
+		void endConversation();
+		
 		virtual void update() override;
 		
 		void onTravelCompleted();
 
 	protected:
 
-		bool travelNear( const vec2& pos, size_t room = -1 );
+		void onConversationBeginning();
+		
+		bool travelNear( const vec2& pos, real maxDistance, size_t room = -1, real minDistance = 0 );
 		
 		virtual void updateIdle();
 		virtual void updatePursuing();
@@ -52,7 +57,7 @@ namespace ld
 		
 		SmartPtr< Character > findConversant() const;
 		
-		void initiateConversation( Character& withCharacter );
+		bool initiateConversation( Character& withCharacter );
 		
 		real attitudeToward( const Character& withCharacter ) const;
 		TimeType timeSinceLastConversation( const Character& withCharacter ) const;

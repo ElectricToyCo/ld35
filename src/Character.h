@@ -20,7 +20,7 @@ namespace ld
 		FRESH_DECLARE_CLASS( Character, Actor );
 	public:
 		
-		// TODO
+		virtual bool onAddressedBy( SmartPtr< Character > initator );
 		
 	private:
 		

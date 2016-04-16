@@ -16,6 +16,8 @@ namespace
 {
 	using namespace ld;
 	const real MAX_WANDER_DISTANCE = 4 * UNITS_PER_TILE;
+	const real MIN_CONVERSATION_DISTANCE = 0.5 * UNITS_PER_TILE;
+	const real MAX_CONVERSATION_DISTANCE = 2.0 * UNITS_PER_TILE;
 }
 
 #if 0
@@ -80,14 +82,14 @@ namespace ld
 		Super::update();
 	}
 	
-	bool CharacterController::travelNear( const vec2& pos, size_t room )
+	bool CharacterController::travelNear( const vec2& pos, real maxDistance, size_t room, real minDistance )
 	{
 		ai_trace( "Trying destination " << desiredPosition );
 		
 		const auto& world = character().world();
 		const auto& tileGrid = world.tileGrid();
 
-		const auto newPos = tileGrid.findClearLocationNearby( pos, 3.0 * UNITS_PER_TILE, [&]( const vec2& p )
+		const auto newPos = tileGrid.findClearLocationNearby( pos, maxDistance, [&]( const vec2& p )
 															 {
 																 const auto newRoom = world.roomContainingPoint( p );
 																 if( room != -1 && room != newRoom )
@@ -104,7 +106,9 @@ namespace ld
 																 {
 																	 return 1000.0f;
 																 }
-															 } );
+															 },
+															 minDistance
+															 );
 		
 		if( newPos.x >= 0 && newPos.y >= 0 )
 		{
@@ -194,7 +198,7 @@ namespace ld
 				desiredPosition = character().position() + makeRandomVector2( MAX_WANDER_DISTANCE );
 			}
 
-			bool foundDestination = travelNear( desiredPosition, desiredRoom );
+			bool foundDestination = travelNear( desiredPosition, 3.0 * UNITS_PER_TILE, desiredRoom );
 			
 			if( foundDestination )
 			{
@@ -212,21 +216,33 @@ namespace ld
 			// Start talking if possible.
 			//
 			ASSERT( m_conversant && &character() != m_conversant );
-			initiateConversation( *m_conversant );
+			const auto succeeded = initiateConversation( *m_conversant );
 			
-			return;
+			if( succeeded )
+			{
+				return;
+			}
 		}
 		
 		m_nextThinkTime = character().world().time() + randInRange( m_wanderDelayRange );
 	}
 	
-	void CharacterController::initiateConversation( Character& withCharacter )
+	bool CharacterController::initiateConversation( Character& withCharacter )
 	{
 		auto& me = character();
 		
 		dev_trace( &me << " talks to " << &withCharacter );
 		
-		// TODO!!!
+		me.stopTravel();
+		
+		const bool wasConversationAccepted = withCharacter.onAddressedBy( &me );
+
+		if( wasConversationAccepted )
+		{
+			// TODO!!!
+		}
+		
+		return wasConversationAccepted;
 	}
 	
 	void CharacterController::chooseNextBehavior()
@@ -243,7 +259,7 @@ namespace ld
 				m_state = Pursuing;
 				
 				// Move to the conversant.
-				bool foundDestination = travelNear( m_conversant->position() );
+				bool foundDestination = travelNear( m_conversant->position(), MAX_CONVERSATION_DISTANCE, -1 /*room don't care*/, MIN_CONVERSATION_DISTANCE );
 				
 				if( !foundDestination )
 				{
@@ -302,6 +318,37 @@ namespace ld
 		// TODO Memory
 		return 60.0f;
 	}
+
+	bool CharacterController::onAddressedBy( SmartPtr< Character > other )
+	{
+		REQUIRES( other );
+		REQUIRES( other != &character() );
+		
+		if( occupied() )
+		{
+			return false;
+		}		
+		
+		m_conversant = other;
+		onConversationBeginning();
+		
+		travelNear( m_conversant->position(), MAX_CONVERSATION_DISTANCE, -1 /* room don't care */, MIN_CONVERSATION_DISTANCE );
+
+		return true;
+	}
 	
+	void CharacterController::onConversationBeginning()
+	{
+		REQUIRES( m_conversant );
+		
+		character().stopTravel();
+	}
+	
+	void CharacterController::endConversation()
+	{
+		m_conversant = nullptr;
+		
+		PROMISES( !occupied() );
+	}
 }
 

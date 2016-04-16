@@ -54,6 +54,12 @@ namespace ld
 		return didFind;
 	}
 
+	void Actor::stopTravel()
+	{
+		m_path.clear();
+		m_nextPathDestination = 0;
+	}
+	
 	void Actor::update()
 	{
 		Super::update();

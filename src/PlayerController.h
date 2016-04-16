@@ -14,13 +14,16 @@
 
 namespace ld
 {
+	class Character;
 	
 	class PlayerController : public fr::FreshPlayerController
 	{
 		FRESH_DECLARE_CLASS( PlayerController, fr::FreshPlayerController );
 	public:
 		
-		// TODO
+		Character& character() const;
+		
+		bool onAddressedBy( SmartPtr< Character > other );
 		
 	private:
 		

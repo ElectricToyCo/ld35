@@ -7,6 +7,9 @@
 //
 
 #include "Character.h"
+#include "CharacterController.h"
+#include "PlayerController.h"
+
 using namespace fr;
 
 namespace ld
@@ -15,7 +18,21 @@ namespace ld
 	
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( Character )
 	
-	// TODO
+	bool Character::onAddressedBy( SmartPtr< Character > initiator )
+	{
+		if( controller() )
+		{
+			if( auto playerController = controller()->as< PlayerController >() )
+			{
+				return playerController->onAddressedBy( initiator );
+			}
+			else if( auto characterController = controller()->as< CharacterController >() )
+			{
+				return characterController->onAddressedBy( initiator );
+			}
+		}
+		return false;
+	}
 	
 }
 

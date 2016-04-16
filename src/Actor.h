@@ -26,6 +26,7 @@ namespace ld
 		World& world() const;
 		
 		bool travelTo( const vec2& pos );
+		void stopTravel();
 		
 		virtual void update() override;
 		

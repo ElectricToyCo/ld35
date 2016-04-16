@@ -7,6 +7,7 @@
 //
 
 #include "PlayerController.h"
+#include "Character.h"
 using namespace fr;
 
 namespace ld
@@ -15,7 +16,22 @@ namespace ld
 	
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( PlayerController )
 	
-	// TODO
+	Character& PlayerController::character() const
+	{
+		ASSERT( dynamic_cast< Character* >( host().get() ));
+		auto character = static_cast< Character* >( host().get() );
+		ASSERT( character );
+		return *character;
+	}
 	
+	bool PlayerController::onAddressedBy( SmartPtr< Character > other )
+	{
+		REQUIRES( other );
+		REQUIRES( other != &character() );
+
+		// TODO!!!
+		
+		return false;		// TODO!!!
+	}
 }
 
