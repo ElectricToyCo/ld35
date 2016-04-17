@@ -345,8 +345,10 @@ class WorldDefault extends World {
 }
 
 class ScreenContents extends DisplayObjectContainer {
+	inheritParentFrame true
 	children [
 		object WorldDefault $^_world {}
+		object HUDDefault $^_hud {}
 	]
 }
 

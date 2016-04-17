@@ -15,7 +15,10 @@ namespace ld
 	
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( AppStage )
 	
-	// TODO
+	HUD& AppStage::hud() const
+	{
+		return getExpectedDescendant< HUD >( *this );
+	}
 	
 }
 

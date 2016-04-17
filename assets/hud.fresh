@@ -31,3 +31,54 @@ class ConversationDisplayDefault extends ConversationDisplay {
 	defaultShowDuration 0.1
 	defaultHideDuration 0.5
 }
+
+class CharacterInspectorDefault extends CharacterInspector {
+	children [
+		object DefaultText $^_charName {
+			fontSize 12
+			position 0,-70
+			alignment Centered
+			enforcedBounds 80,1
+			color b3a398
+		}
+	]
+}
+
+class CharacterInspectorPanel extends UIPopup {
+	ignoreFrameAttachment false
+	parentFrameAttachPoint 1,0
+	position -40,0
+	startHidden true
+	hiddenTranslation 80,0
+	hiddenColor White
+	defaultShowDuration 0.35
+	defaultHideDuration 0.25
+
+	children [
+
+		object Sprite {
+			texture Texture'white_simple'
+			scale 40,108
+			color DarkGray
+		}
+
+		object CharacterInspectorDefault {			
+		}
+
+		object SimpleButton {
+			position -32,-96
+			color 80
+			onTapCallee CharacterInspectorPanel'$^^'
+			onTapCalleeMethodExpression "hide"
+			texture Texture'button_close'
+		}
+	]
+}
+
+
+class HUDDefault extends HUD {
+	inheritParentFrame true
+	children [
+		object CharacterInspectorPanel {}
+	]
+}

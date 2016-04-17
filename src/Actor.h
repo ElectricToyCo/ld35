@@ -16,6 +16,7 @@
 
 namespace ld
 {
+	class AppStage;
 	class World;
 	
 	class Actor : public fr::FreshActor
@@ -24,6 +25,7 @@ namespace ld
 	public:
 		
 		World& world() const;
+		AppStage& ldStage() const;
 		
 		bool travelTo( const vec2& pos );
 		void stopTravel();

@@ -22,13 +22,13 @@ namespace
 	const real MAX_CONVERSATION_DISTANCE = 2.0 * UNITS_PER_TILE;
 }
 
-#if 1
+#if 0
 #	define ai_trace( x ) dev_trace( character().characterName() << ": " << x )
 #else
 #	define ai_trace( x )
 #endif
 
-#if 1
+#if 0
 #	define conversation_trace( x ) dev_trace( character().characterName() << ": " << x )
 #else
 #	define conversation_trace( x )

@@ -10,6 +10,7 @@
 #include "CharacterController.h"
 #include "PlayerController.h"
 #include "ConversationDisplay.h"
+#include "AppStage.h"
 
 using namespace fr;
 
@@ -187,10 +188,16 @@ namespace ld
 		}
 	}
 
-
 	std::string Character::characterName() const
 	{
 		return m_characterName;
+	}
+	
+	void Character::onTapped( const EventTouch& event )
+	{
+		Super::onTapped( event );
+		
+		ldStage().hud().inspectCharacter( this );
 	}
 }
 

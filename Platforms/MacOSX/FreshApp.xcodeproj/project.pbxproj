@@ -34,6 +34,8 @@
 		1F9567A11CC2FFA0008499A7 /* Conversation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F95679F1CC2FFA0008499A7 /* Conversation.cpp */; };
 		1F9567A41CC30389008499A7 /* ConversationOpinion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F9567A21CC30389008499A7 /* ConversationOpinion.cpp */; };
 		1F9567A71CC31114008499A7 /* Mission.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F9567A51CC31114008499A7 /* Mission.cpp */; };
+		1F9567AA1CC338B2008499A7 /* CharacterInspector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F9567A81CC338B2008499A7 /* CharacterInspector.cpp */; };
+		1F9567AD1CC33E23008499A7 /* HUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F9567AB1CC33E23008499A7 /* HUD.cpp */; };
 		1FB348F01A2D0D0300536EC8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1FB348EC1A2D0D0300536EC8 /* InfoPlist.strings */; };
 		1FB348F11A2D0D0300536EC8 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1FB348EE1A2D0D0300536EC8 /* MainMenu.xib */; };
 /* End PBXBuildFile section */
@@ -164,6 +166,10 @@
 		1F9567A31CC30389008499A7 /* ConversationOpinion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationOpinion.h; sourceTree = "<group>"; };
 		1F9567A51CC31114008499A7 /* Mission.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mission.cpp; sourceTree = "<group>"; };
 		1F9567A61CC31114008499A7 /* Mission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mission.h; sourceTree = "<group>"; };
+		1F9567A81CC338B2008499A7 /* CharacterInspector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterInspector.cpp; sourceTree = "<group>"; };
+		1F9567A91CC338B2008499A7 /* CharacterInspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterInspector.h; sourceTree = "<group>"; };
+		1F9567AB1CC33E23008499A7 /* HUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HUD.cpp; sourceTree = "<group>"; };
+		1F9567AC1CC33E23008499A7 /* HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUD.h; sourceTree = "<group>"; };
 		1FB348ED1A2D0D0300536EC8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = FreshApp/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		1FB348EF1A2D0D0300536EC8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = FreshApp/en.lproj/MainMenu.xib; sourceTree = SOURCE_ROOT; };
 		1FE0FE3B192EFA9700B86F2F /* Fresh.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Fresh.xcodeproj; path = ../../Fresh/Platforms/MacOSX/Fresh.xcodeproj; sourceTree = "<group>"; };
@@ -276,6 +282,8 @@
 				1F95678B1CC211A6008499A7 /* Character.h */,
 				1F9567901CC21245008499A7 /* CharacterController.cpp */,
 				1F9567911CC21245008499A7 /* CharacterController.h */,
+				1F9567A81CC338B2008499A7 /* CharacterInspector.cpp */,
+				1F9567A91CC338B2008499A7 /* CharacterInspector.h */,
 				1F95679F1CC2FFA0008499A7 /* Conversation.cpp */,
 				1F9567A01CC2FFA0008499A7 /* Conversation.h */,
 				1F9567991CC2D2B2008499A7 /* ConversationDisplay.cpp */,
@@ -284,14 +292,16 @@
 				1F9567A31CC30389008499A7 /* ConversationOpinion.h */,
 				1F51FBEA1A324548008EEAA1 /* Essentials.h */,
 				1F8BF06418C67355007C5E7F /* main.cpp */,
+				1F9567A51CC31114008499A7 /* Mission.cpp */,
+				1F9567A61CC31114008499A7 /* Mission.h */,
 				1F9567961CC214AC008499A7 /* PlayerController.cpp */,
 				1F9567971CC214AC008499A7 /* PlayerController.h */,
 				1F9567801CC1F866008499A7 /* TileGrid.cpp */,
 				1F9567811CC1F866008499A7 /* TileGrid.h */,
 				1F9567931CC21340008499A7 /* World.cpp */,
 				1F9567941CC21340008499A7 /* World.h */,
-				1F9567A51CC31114008499A7 /* Mission.cpp */,
-				1F9567A61CC31114008499A7 /* Mission.h */,
+				1F9567AB1CC33E23008499A7 /* HUD.cpp */,
+				1F9567AC1CC33E23008499A7 /* HUD.h */,
 			);
 			name = src;
 			path = ../../src;
@@ -446,6 +456,7 @@
 				1F9567821CC1F866008499A7 /* TileGrid.cpp in Sources */,
 				1F9567951CC21340008499A7 /* World.cpp in Sources */,
 				1F51FBEB1A324548008EEAA1 /* AppStage.cpp in Sources */,
+				1F9567AD1CC33E23008499A7 /* HUD.cpp in Sources */,
 				1F8BF06618C67355007C5E7F /* main.cpp in Sources */,
 				1F9567921CC21245008499A7 /* CharacterController.cpp in Sources */,
 				1F95678C1CC211A6008499A7 /* Character.cpp in Sources */,
@@ -453,6 +464,7 @@
 				1F9567A11CC2FFA0008499A7 /* Conversation.cpp in Sources */,
 				1F9567A41CC30389008499A7 /* ConversationOpinion.cpp in Sources */,
 				1F9567981CC214AC008499A7 /* PlayerController.cpp in Sources */,
+				1F9567AA1CC338B2008499A7 /* CharacterInspector.cpp in Sources */,
 				1F95679B1CC2D2B2008499A7 /* ConversationDisplay.cpp in Sources */,
 				1F95678F1CC211E2008499A7 /* Actor.cpp in Sources */,
 			);

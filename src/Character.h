@@ -37,6 +37,8 @@ namespace ld
 		
 		virtual std::string characterName() const;
 		
+		virtual void onTapped( const fr::EventTouch& event ) override;
+		
 	private:
 		
 		VAR( std::string, m_characterName );

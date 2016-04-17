@@ -5,60 +5,6 @@ object AppStage theStage {
 	stageDimensions "320,0"
 
 	children [
-
-		object ScreenEffects screenEffects {
-			inheritParentFrame true
-			inner DisplayObjectContainer'$^_inner'
-			shaderProgramPrimaryPost ShaderProgram'tv_post'
-			shaderProgram ShaderProgram'CRT'
-			shaderProgramCopy ShaderProgram'copy'
-			shaderProgramBloomTonemap ShaderProgram'bloom_tonemap'
-			shaderProgramHorizontalBlur ShaderProgram'horizontal_blur'
-			shaderProgramVerticalBlur ShaderProgram'vertical_blur'
-			shaderProgramComposite ShaderProgram'composite'
-
-			barrelDistortion 0.0
-			
-			noiseTexture Texture'noise'
-			pixelBevelTexture Texture'bevel_01'
-
-			currentStateName "normal"
-
-			shaderStates {
-				normal << EOF {
-					bloomBrightness = 0 ,
-					bloomContrast = 1 ,
-					bloomIntensity = 0.0 ,
-					burnIn = 0.0 ,
-					chromaticAberration = 0 ,
-					noiseIntensity = 0.0 ,
-					rescanColor = (0.0) ,
-					saturation = 1.0 ,
-					colorMultiplied = (1) ,
-					bevelIntensity = 0.1 ,
-				} EOF
-			}
-			
-			children [				
-				object DisplayObjectContainer $^_inner {
-					inheritParentFrame true
-
-					renderTarget object RenderTarget {
-						width "320"
-						height "192"
-						clearColor 08080a
-						doInitialClearOnCapture "true"
-						depthBufferFormat <<EOF {
-							colorComponentType = UnsignedByte,
-							outputType = Renderbuffer
-						} EOF
-					}
-
-					children [
-						object ScreenContents {}
-					]
-				}
-			]
-		}
+		object ScreenContents {}
 	]
 }

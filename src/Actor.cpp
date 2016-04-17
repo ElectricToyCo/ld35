@@ -7,6 +7,7 @@
 //
 
 #include "Actor.h"
+#include "AppStage.h"
 #include "World.h"
 #include "CharacterController.h"
 using namespace fr;
@@ -36,6 +37,11 @@ namespace ld
 		return static_cast< World& >( FreshActor::world() );
 	}
 
+	AppStage& Actor::ldStage() const
+	{
+		return static_cast< AppStage& >( stage() );
+	}
+	
 	bool Actor::travelTo( const vec2& pos )
 	{
 		const World& theWorld = world();

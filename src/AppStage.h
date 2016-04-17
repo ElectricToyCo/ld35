@@ -11,6 +11,7 @@
 
 #include "Essentials.h"
 #include "Stage.h"
+#include "HUD.h"
 
 namespace ld
 {
@@ -20,7 +21,7 @@ namespace ld
 		FRESH_DECLARE_CLASS( AppStage, Stage );
 	public:
 		
-		// TODO
+		HUD& hud() const;
 		
 	private:
 		
