@@ -11,6 +11,7 @@
 
 #include "Essentials.h"
 #include "FreshPlayerController.h"
+#include "Conversation.h"
 
 namespace ld
 {
@@ -38,7 +39,9 @@ namespace ld
 		virtual std::string getOpinionResponseText( const Character& forUseWithCharacter, const Topic& topic, Value value ) const;
 		
 		virtual void hearSpeech( const Character& fromCharacter, const Topic& topic, Value value );
-
+		
+		void sayOpinion( SmartPtr< Character > to, const Topic& topic, Value value );
+		
 	protected:
 		
 		virtual void onActionKeyDown( fr::Keyboard::Key key ) override;
@@ -50,6 +53,10 @@ namespace ld
 
 	private:
 		
+		Topic m_pendingTopic = std::make_pair( TopicType::Undecided, -1 );
+		Value m_pendingValue = Value::Undecided;
+
+		Conversation::ptr m_conversation;
 	};
 	
 }

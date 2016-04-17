@@ -11,7 +11,7 @@
 #include "AppStage.h"
 #include "HUD.h"
 #include "Character.h"
-#include "ConversationDisplay.h"
+#include "ConversationOpinion.h"
 using namespace fr;
 
 namespace ld
@@ -51,7 +51,9 @@ namespace ld
 	
 	void PlayerController::onConversationEnding()
 	{
-		// TODO
+		m_conversation = nullptr;
+		m_pendingTopic = std::make_pair( TopicType::Undecided, -1 );
+		m_pendingValue = Value::Undecided;
 	}
 	
 	void PlayerController::onActionKeyDown( Keyboard::Key key )
@@ -111,8 +113,7 @@ namespace ld
 	
 	Topic PlayerController::pickTopic( const Character& forUseWithCharacter ) const
 	{
-		// TODO!!! Prompt the human.
-		return std::make_pair( TopicType::Undecided, -1 );
+		return m_pendingTopic;
 	}
 	
 	Value PlayerController::pickTopicResponse( const Character& forUseWithCharacter, const Topic& topic ) const
@@ -124,7 +125,7 @@ namespace ld
 	Value PlayerController::valueForTopic( const Character& forUseWithCharacter, const Topic& topic ) const
 	{
 		// TODO!!! Prompt the human.
-		return Value::Undecided;
+		return m_pendingValue;
 	}
 	
 	std::string PlayerController::getOpinionInitiatingText( const Character& forUseWithCharacter, const Topic& topic, Value value ) const
@@ -142,6 +143,17 @@ namespace ld
 	void PlayerController::hearSpeech( const Character& fromCharacter, const Topic& topic, Value value )
 	{
 		// TODO!!! Possibly add to memory/known facts.
+	}
+	
+	void PlayerController::sayOpinion( SmartPtr< Character > to, const Topic& topic, Value value )
+	{
+		REQUIRES( to );
+		m_pendingTopic = topic;
+		m_pendingValue = value;
+		
+		ASSERT( !m_conversation );
+		
+		m_conversation = character().world().createConversation< ConversationOpinion >( &character(), to );
 	}
 
 	void PlayerController::toggleInspectNearest()

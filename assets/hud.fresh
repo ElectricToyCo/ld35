@@ -189,6 +189,143 @@ class ConversationTypeSelector extends DisplayObjectContainer {
 	]
 }
 
+class PlayerConversationButtonLabelText extends PlayerConversationButtonText {
+	alignment Centered
+	position 0,16
+}
+
+class OpinionTopicSelector extends DisplayObjectContainer {
+	children [
+		object PlayerConversationPromptText $^_instructions {
+			text "What will you talk about?"
+		}
+
+		object DisplayObjectContainer {
+			position 106,26
+			children [
+				object ChoiceButton $^_food {
+					position -40,0
+					children [
+						object PlayerConversationButtonLabelText {
+							text "1"
+						}
+						object Sprite {
+							scale 2
+							texture Texture'topic_food'
+						}	    
+				    ]
+				}
+
+				object ChoiceButton $^_sports {
+					position 0
+					children [
+						object PlayerConversationButtonLabelText {
+							text "2"
+						}		    
+						object Sprite {
+							scale 2
+							texture Texture'topic_sports'
+						}	    
+				    ]
+				}	
+
+				object ChoiceButton $^_music {
+					position 40,0
+					children [
+						object PlayerConversationButtonLabelText {
+							text "3"
+						}	
+						object Sprite {
+							scale 2
+							texture Texture'topic_music'
+						}	    	    
+				    ]
+				}	
+			]
+		}
+	]
+}
+
+class OpinionValueSelector extends DisplayObjectContainer {
+	children [
+		object PlayerConversationPromptText $^_instructions {
+			text "What will you say about it?"
+		}
+
+		object DisplayObjectContainer {
+			position 106,26
+			children [
+				object ChoiceButton $^_hate {
+					position -80,0
+					children [
+						object PlayerConversationButtonLabelText {
+							text "1"
+						}
+						object Sprite {
+							scale 2
+							texture Texture'value_display_hate'
+						}	    
+				    ]
+				}
+
+				object ChoiceButton $^_dislike {
+					position -40,0
+					children [
+						object PlayerConversationButtonLabelText {
+							text "2"
+						}
+						object Sprite {
+							scale 2
+							texture Texture'value_display_dislike'
+						}	    
+				    ]
+				}
+
+				object ChoiceButton $^_neutral {
+					position 0,0
+					children [
+						object PlayerConversationButtonLabelText {
+							text "3"
+						}
+						object Sprite {
+							scale 2
+							texture Texture'value_display_neutral'
+						}	    
+				    ]
+				}
+
+				object ChoiceButton $^_like {
+					position 40,0
+					children [
+						object PlayerConversationButtonLabelText {
+							text "4"
+						}
+						object Sprite {
+							scale 2
+							texture Texture'value_display_like'
+						}	    
+				    ]
+				}
+
+				object ChoiceButton $^_love {
+					position 80,0
+					children [
+						object PlayerConversationButtonLabelText {
+							text "5"
+						}
+						object Sprite {
+							scale 2
+							texture Texture'value_display_love'
+						}	    
+				    ]
+				}
+
+
+			]
+		}
+	]
+}
+
 class PlayerConversationPanelDefault extends PlayerConversationPanel {
 	ignoreFrameAttachment false
 	parentFrameAttachPoint -1,1
@@ -217,9 +354,15 @@ class PlayerConversationPanelDefault extends PlayerConversationPanel {
 			]
 		}
 
-		object PlayerConversationContentHost $^_opinionHost {
+		object PlayerConversationContentHost $^_topicHost {
 			children [
-				
+				object OpinionTopicSelector $^_proper {}
+			]
+		}
+
+		object PlayerConversationContentHost $^_valueHost {
+			children [
+				object OpinionValueSelector $^_proper {}
 			]
 		}
 	]

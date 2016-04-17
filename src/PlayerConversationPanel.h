@@ -30,12 +30,19 @@ namespace ld
 		
 		void chooseConversationType( int type );
 		
+		// Opinion conversations.
+		void chooseOpinionTopic( TopicType topicType );
+		void chooseOpinionValue( Value topicType );
+
 	private:
 		
 		SmartPtr< Character > m_player;
 		SmartPtr< Character > m_conversant;
 		
 		int m_chosenType = -1;
+		
+		TopicType m_opinionTopic = TopicType::Undecided;
+		Value m_opinionValue = Value::Undecided;
 
 		FRESH_DECLARE_CALLBACK( PlayerConversationPanel, onStageKeyUp, fr::EventKeyboard );
 
