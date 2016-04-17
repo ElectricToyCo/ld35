@@ -29,6 +29,8 @@ namespace ld
 		void update();
 		virtual void end();
 		
+		virtual size_t nextStep() const;
+		
 	protected:
 		
 		TimeType now() const;

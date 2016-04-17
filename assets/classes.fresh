@@ -249,15 +249,6 @@ class Character04 extends CharacterDefault {
 	]
 }
 class Character05 extends CharacterDefault {
-	characterName "Amber"
-	favoriteColor ff9000
-	children [
-		object CharacterHighlighter $^_highlighter {}
-		object CharacterVisual05 $^_visual {
-		}
-	]
-}
-class Character06 extends CharacterDefault {
 	characterName "Ambrosia"
 	favoriteColor b075b7
 	dimensions 10,2
@@ -268,9 +259,16 @@ class Character06 extends CharacterDefault {
 	]
 }
 
-class CharacterPlayer extends Character04 {				// TODO which?
+class CharacterPlayer extends CharacterDefault {
 	controllerImpulseScale 600
 	controller object PlayerControllerDefault {}
+	characterName "Emma"
+	favoriteColor ff9000
+	children [
+		object CharacterHighlighter $^_highlighter {}
+		object CharacterVisual05 $^_visual {
+		}
+	]
 }
 
 class CameraDefault extends Camera {

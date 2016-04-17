@@ -144,6 +144,11 @@ namespace ld
 		return Value::Undecided;
 	}
 
+	Value Character::valueForTopic( const Topic& topic ) const
+	{
+		return valueForTopic( *this, topic );
+	}
+	
 	Value Character::valueForTopic( const Character& forUseWithCharacter, const Topic& topic ) const
 	{
 		if( controller() )

@@ -25,6 +25,10 @@ namespace ld
 		void togglePlayerInitiatedConversation( SmartPtr< Character > player, SmartPtr< Character > character );
 		
 		virtual void onAddedToStage() override;
+		
+		SYNTHESIZE_GET( int, chosenType );
+		SYNTHESIZE_GET( TopicType, opinionTopic );
+		SYNTHESIZE_GET( Value, opinionValue );
 
 	protected:
 		
@@ -39,8 +43,7 @@ namespace ld
 		SmartPtr< Character > m_player;
 		SmartPtr< Character > m_conversant;
 		
-		int m_chosenType = -1;
-		
+		int m_chosenType = -1;		
 		TopicType m_opinionTopic = TopicType::Undecided;
 		Value m_opinionValue = Value::Undecided;
 

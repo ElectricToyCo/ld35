@@ -38,6 +38,7 @@ namespace ld
 		virtual Topic pickTopic( const Character& forUseWithCharacter ) const;
 		virtual Value pickTopicResponse( const Character& forUseWithCharacter, const Topic& topic ) const;
 
+		virtual Value valueForTopic( const Topic& topic ) const;
 		virtual Value valueForTopic( const Character& forUseWithCharacter, const Topic& topic ) const;
 		virtual std::string getOpinionInitiatingText( const Character& forUseWithCharacter, const Topic& topic, Value value ) const;
 		virtual std::string getOpinionResponseText( const Character& forUseWithCharacter, const Topic& topic, Value value ) const;

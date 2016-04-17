@@ -23,6 +23,8 @@ namespace ld
 		
 		HUD& hud() const;
 		
+		virtual void onStageLoaded() override;
+		
 	private:
 		
 	};

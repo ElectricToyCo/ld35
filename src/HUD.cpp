@@ -52,23 +52,28 @@ namespace ld
 		popup.hide();
 	}
 
+	PlayerConversationPanel& HUD::playerConversationPanel() const
+	{
+		return getExpectedDescendant< PlayerConversationPanel >( *this, "_playerConversationPanel" );
+	}
+	
 	bool HUD::isPlayerConversationPanelShowing() const
 	{
-		auto& popup = getExpectedDescendant< PlayerConversationPanel >( *this, "_playerConversationPanel" );
+		auto& popup = playerConversationPanel();
 		return popup.isFullyShown();
 	}
 	
 	void HUD::beginPlayerInitiatedConversation( SmartPtr< Character > player, SmartPtr< Character > character )
 	{
 		REQUIRES( player );
-		auto& popup = getExpectedDescendant< PlayerConversationPanel >( *this, "_playerConversationPanel" );
+		auto& popup = playerConversationPanel();
 		popup.beginPlayerInitiatedConversation( player, character );
 	}
 	
 	void HUD::togglePlayerInitiatedConversation( SmartPtr< Character > player, SmartPtr< Character > character )
 	{
 		REQUIRES( player );
-		auto& popup = getExpectedDescendant< PlayerConversationPanel >( *this, "_playerConversationPanel" );
+		auto& popup = playerConversationPanel();
 		popup.togglePlayerInitiatedConversation( player, character );
 	}
 }

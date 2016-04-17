@@ -14,6 +14,7 @@
 #include "World.h"
 #include "HUD.h"
 #include "Character.h"
+#include "PlayerConversationPanel.h"
 
 namespace ld
 {
@@ -64,7 +65,96 @@ namespace ld
 		}
 		
 	};
+	
+	class TutorialStep01_04 : public TutorialStep
+	{
+		FRESH_DECLARE_CLASS( TutorialStep01_04, TutorialStep );
+	public:
+		
+		virtual void begin( WeakPtr< World > world ) override
+		{
+			Super::begin( world );
+			// TODO!!! Disable non-opinion conversations?
+		}
+		
+		virtual bool conditionCompleted() const override
+		{
+			return hud().playerConversationPanel().chosenType() >= 0;
+		}
+		
+	};
+	
+	class TutorialStep01_05 : public TutorialStep
+	{
+		FRESH_DECLARE_CLASS( TutorialStep01_05, TutorialStep );
+	public:
+		
+		virtual bool conditionCompleted() const override
+		{
+			return hud().playerConversationPanel().opinionTopic() != TopicType::Undecided;
+		}
+		
+	};
+	
+	class TutorialStep01_06 : public TutorialStep
+	{
+		FRESH_DECLARE_CLASS( TutorialStep01_06, TutorialStep );
+	public:
+		
+		virtual bool conditionCompleted() const override
+		{
+			return hud().playerConversationPanel().opinionValue() != Value::Undecided;
+		}
+	};
+	
+	class TutorialStep01_Decision : public TutorialStep
+	{
+		FRESH_DECLARE_CLASS( TutorialStep01_Decision, TutorialStep );
+	public:
 
+		Value tiffanyValue() const
+		{
+			return world().characterAt( 1 )->valueForTopic( std::make_pair( TopicType::Sports, -1 )) ;
+		}
+
+		virtual size_t nextStep() const override
+		{
+			return tiffanyValue() >= Value::Like ? 7 : 8;
+		}
+		
+		virtual bool conditionCompleted() const override
+		{
+			return true;
+		}
+	};
+	
+	class TutorialStep01_Correct : public TutorialStep
+	{
+		FRESH_DECLARE_CLASS( TutorialStep01_Correct, TutorialStep );
+	public:
+		
+		virtual bool conditionCompleted() const override
+		{
+			return false;
+		}
+	};
+	
+	class TutorialStep01_Incorrect : public TutorialStep
+	{
+		FRESH_DECLARE_CLASS( TutorialStep01_Incorrect, TutorialStep );
+	public:
+		
+		virtual size_t nextStep() const override
+		{
+			return 3;
+		}
+		
+		virtual bool conditionCompleted() const override
+		{
+			return hud().isPlayerConversationPanelShowing();
+		}
+		
+	};
 }
 
 #endif

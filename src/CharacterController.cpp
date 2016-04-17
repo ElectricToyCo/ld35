@@ -26,7 +26,9 @@ namespace
 		const auto influencerAmount = valueToInfluence( valueForInfluencer );
 		const auto valueInt = valueToInfluence( influencersValue );
 		
-		return clamp( influencerAmount * valueInt, -2, 2 );		// TODO!!! Significant game logic.
+		const auto maxChange = std::min( std::abs( influencerAmount ), std::abs( valueInt ));
+		
+		return clamp( influencerAmount * valueInt, -maxChange, maxChange );		// TODO!!! Significant game logic.
 	}
 	
 	Value influencedValue( Value value, int influence )

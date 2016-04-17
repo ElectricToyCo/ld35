@@ -50,6 +50,11 @@ namespace ld
 		return world().time();
 	}
 	
+	size_t TutorialStep::nextStep() const
+	{
+		return -1;
+	}
+	
 	bool TutorialStep::completed() const
 	{
 		return isMarkedCompleted() && now() >= m_completionTime + m_postDelay;
@@ -155,7 +160,15 @@ namespace ld
 			
 			if( currentStep->completed() )
 			{
-				advanceStep();
+				const auto nextStep = currentStep->nextStep();
+				if( nextStep < m_steps.size() )
+				{
+					gotoStep( nextStep );
+				}
+				else
+				{
+					advanceStep();
+				}
 			}
 		}
 	}

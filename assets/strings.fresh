@@ -12,11 +12,13 @@ object StringTable strings {
 
 		TutorialMission "Tiffany is indifferent to SPORTS. That's too bad. You should help her appreciate SPORTS.\n\nHit the Z key to talk to Tiffany."
 
+		TutorialType "Press 1 to pick an OPINION conversation."
+
 		TutorialTalk "Pick the SPORTS topic."
 
 		TutorialValue "Tell Tiffany you LOVE this topic."
 
-		TutorialCorrectResult "You just changed Tiffany's opinion! Because Tiffany LIKES you, she listened to what you said about SPORTS and now LIKES them too."
+		TutorialCorrectResult "You just changed Tiffany's opinion! Because Tiffany LIKES you, she listened to what you said about SPORTS and now LIKES them too.\n\nWell done. You completed this mission!"
 
 		TutorialIncorrectResult "Oops. You need to tell Tiffany you LOVE SPORTS. Hit the Z key to talk to her again."
 	}

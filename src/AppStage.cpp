@@ -7,7 +7,26 @@
 //
 
 #include "AppStage.h"
+#include "SimpleButton.h"
+#include "UIPopup.h"
+#include "TextField.h"
 using namespace fr;
+
+namespace
+{
+	template< typename T >
+	void use()
+	{
+		auto object = createObject< T >();		// TODO
+	}
+	
+	void useStuff()
+	{
+		use< SimpleButton >();
+		use< UIPopup >();
+		use< ld::HUD >();
+	}
+}
 
 namespace ld
 {	
@@ -20,5 +39,14 @@ namespace ld
 		return getExpectedDescendant< HUD >( *this );
 	}
 	
+	void AppStage::onStageLoaded()
+	{
+		Super::onStageLoaded();
+		
+		if( name() == "It isn't this." )
+		{
+			useStuff();
+		}
+	}
 }
 

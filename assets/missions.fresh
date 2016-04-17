@@ -34,8 +34,8 @@ class PlayerCharacterSetupDefault extends MissionCharacterSetup {
 }
 
 class TutorialStepDefault extends TutorialStep {
-	preDelay 1.0
-	postDelay 1.0
+	preDelay 0.5
+	postDelay 0.5
 }
 
 class Mission01 extends Mission {
@@ -43,7 +43,9 @@ class Mission01 extends Mission {
 		object PlayerCharacterSetupDefault {
 		}
 		object MissionCharacterSetup {
-			character object Character01 {}
+			character object Character01 {
+				percentChanceWanderToNewRoom 0
+			}
 			initialRoom 0
 			opinions [
 				object MissionCharacterOpinion {
@@ -78,16 +80,32 @@ class Mission01 extends Mission {
 			object TutorialStep01_03 {
 				message "!TutorialMission"
 			}
-			object TutorialStepDefault {
+			object TutorialStep01_04 {
+				preDelay 0.5
+				postDelay 0.0
+				message "!TutorialType"
+			}			
+			object TutorialStep01_05 {
+				preDelay 0.5
+				postDelay 0.0
 				message "!TutorialTalk"
 			}
-			object TutorialStepDefault {
+			object TutorialStep01_06 {
+				preDelay 0.5
+				postDelay 4.0
 				message "!TutorialValue"
 			}
-			object TutorialStepDefault {
+			object TutorialStep01_Decision {
+				preDelay 0.0
+				postDelay 0.0
+			}
+			object TutorialStep01_Correct {
+				preDelay 0.0
+				postDelay 4.0
 				message "!TutorialCorrectResult"
 			}
-			object TutorialStepDefault {
+			object TutorialStep01_Incorrect {
+				preDelay 0.0
 				message "!TutorialIncorrectResult"
 			}
 		]
@@ -112,7 +130,7 @@ class Mission02 extends Mission {
 			initialRoom 1
 		}
 		object MissionCharacterSetupDefault {
-			character object Character05 {}
+			character object Character04 {}
 			initialRoom 2
 		}
 		object MissionCharacterSetupDefault {

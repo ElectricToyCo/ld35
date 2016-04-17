@@ -66,7 +66,10 @@ namespace ld
 		m_player = player;
 		m_conversant = character;
 		
-
+		m_chosenType = -1;
+		m_opinionTopic = TopicType::Undecided;
+		m_opinionValue = Value::Undecided;
+		
 		auto& typeSelector = getExpectedDescendant< UIPopup >( *this, "_conversationTypeSelectorHost" );
 		typeSelector.showWithDuration( 0 );
 		

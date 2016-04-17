@@ -34,6 +34,7 @@ class CloseButton extends SimpleButton {
 
 class ConversationSpeechText extends DefaultText {
 	fontSize 4
+	alignment Centered
 }
 
 class ConversationSpeechPopup extends UIPopup {
@@ -47,8 +48,8 @@ class ConversationSpeechPopup extends UIPopup {
 class ConversationDisplayDefault extends ConversationDisplay {
 	speechTextClass ConversationSpeechText
 	speechPopupClass ConversationSpeechPopup
-	speechTextOffset -8,-16
-	speechSpacing 0,6
+	speechTextOffset 0,-16
+	speechSpacing 0,0
 	defaultShowDuration 0.1
 	defaultHideDuration 0.5
 }

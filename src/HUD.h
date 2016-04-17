@@ -14,6 +14,7 @@
 namespace ld
 {
 	class Character;
+	class PlayerConversationPanel;
 	
 	class HUD : public fr::MovieClip
 	{
@@ -27,10 +28,11 @@ namespace ld
 		void showTutorialMessage( const std::string& message );
 		void hideTutorialMessage();
 
+		PlayerConversationPanel& playerConversationPanel() const;
+		
 		bool isPlayerConversationPanelShowing() const;
 		void beginPlayerInitiatedConversation( SmartPtr< Character > player, SmartPtr< Character > character );
 		void togglePlayerInitiatedConversation( SmartPtr< Character > player, SmartPtr< Character > character );
-		
 	};
 	
 }
