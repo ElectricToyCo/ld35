@@ -26,8 +26,15 @@ namespace ld
 		
 		bool onAddressedBy( SmartPtr< Character > other );
 		void onConversationEnding();
-		void receiveSpeechStatement( SmartPtr< ConversationDisplay > display, Character& from, const Topic& topic, real value, size_t speechIndex );
-		void displaySpeech( SmartPtr< ConversationDisplay > display, Topic topic, real value, size_t speechIndex );
+
+		virtual Topic pickTopic( const Character& forUseWithCharacter ) const;
+		virtual Value pickTopicResponse( const Character& forUseWithCharacter, const Topic& topic ) const;
+
+		virtual Value valueForTopic( const Character& forUseWithCharacter, const Topic& topic ) const;
+		virtual std::string getOpinionInitiatingText( const Character& forUseWithCharacter, const Topic& topic, Value value ) const;
+		virtual std::string getOpinionResponseText( const Character& forUseWithCharacter, const Topic& topic, Value value ) const;
+		
+		virtual void hearSpeech( const Character& fromCharacter, const Topic& topic, Value value );
 
 	protected:
 		

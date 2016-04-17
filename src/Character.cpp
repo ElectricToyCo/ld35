@@ -49,42 +49,106 @@ namespace ld
 			}
 		}
 	}
-	
-	void Character::receiveSpeechStatement( SmartPtr< ConversationDisplay > display, Character& from, const Topic& topic, real value, size_t speechIndex )
+
+	Topic Character::pickTopic( const Character& forUseWithCharacter ) const
 	{
 		if( controller() )
 		{
 			if( auto playerController = controller()->as< PlayerController >() )
 			{
-				return playerController->receiveSpeechStatement( display, from, topic, value, speechIndex );
+				return playerController->pickTopic( forUseWithCharacter );
 			}
 			else if( auto characterController = controller()->as< CharacterController >() )
 			{
-				return characterController->receiveSpeechStatement( display, from, topic, value, speechIndex );
+				return characterController->pickTopic( forUseWithCharacter );
+			}
+		}
+		return std::make_pair( TopicType::Undecided, -1 );
+	}
+
+	Value Character::pickTopicResponse( const Character& forUseWithCharacter, const Topic& topic ) const
+	{
+		if( controller() )
+		{
+			if( auto playerController = controller()->as< PlayerController >() )
+			{
+				return playerController->pickTopicResponse( forUseWithCharacter, topic );
+			}
+			else if( auto characterController = controller()->as< CharacterController >() )
+			{
+				return characterController->pickTopicResponse( forUseWithCharacter, topic );
+			}
+		}
+		return Value::Undecided;
+	}
+
+	Value Character::valueForTopic( const Character& forUseWithCharacter, const Topic& topic ) const
+	{
+		if( controller() )
+		{
+			if( auto playerController = controller()->as< PlayerController >() )
+			{
+				return playerController->valueForTopic( forUseWithCharacter, topic );
+			}
+			else if( auto characterController = controller()->as< CharacterController >() )
+			{
+				return characterController->valueForTopic( forUseWithCharacter, topic );
+			}
+		}
+		return Value::Undecided;
+	}
+
+	std::string Character::getOpinionInitiatingText( const Character& forUseWithCharacter, const Topic& topic, Value value ) const
+	{
+		if( controller() )
+		{
+			if( auto playerController = controller()->as< PlayerController >() )
+			{
+				return playerController->getOpinionInitiatingText( forUseWithCharacter, topic, value );
+			}
+			else if( auto characterController = controller()->as< CharacterController >() )
+			{
+				return characterController->getOpinionInitiatingText( forUseWithCharacter, topic, value );
+			}
+		}
+		return {};
+	}
+
+	std::string Character::getOpinionResponseText( const Character& forUseWithCharacter, const Topic& topic, Value value ) const
+	{
+		if( controller() )
+		{
+			if( auto playerController = controller()->as< PlayerController >() )
+			{
+				return playerController->getOpinionResponseText( forUseWithCharacter, topic, value );
+			}
+			else if( auto characterController = controller()->as< CharacterController >() )
+			{
+				return characterController->getOpinionResponseText( forUseWithCharacter, topic, value );
+			}
+		}
+		return {};
+	}
+
+	void Character::hearSpeech( const Character& fromCharacter, const Topic& topic, Value value )
+	{
+		if( controller() )
+		{
+			if( auto playerController = controller()->as< PlayerController >() )
+			{
+				return playerController->hearSpeech( fromCharacter, topic, value );
+			}
+			else if( auto characterController = controller()->as< CharacterController >() )
+			{
+				return characterController->hearSpeech( fromCharacter, topic, value );
 			}
 		}
 	}
 
-	void Character::displaySpeech( SmartPtr< ConversationDisplay > display, Topic topic, real value, size_t speechIndex )
-	{
-		if( controller() )
-		{
-			if( auto playerController = controller()->as< PlayerController >() )
-			{
-				return playerController->displaySpeech( display, topic, value, speechIndex );
-			}
-			else if( auto characterController = controller()->as< CharacterController >() )
-			{
-				return characterController->displaySpeech( display, topic, value, speechIndex );
-			}
-		}
-	}
 
 	std::string Character::characterName() const
 	{
 		return m_characterName;
 	}
-	
-
 }
 

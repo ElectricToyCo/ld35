@@ -61,7 +61,7 @@ namespace ld
 	
 	enum class TopicType
 	{
-		Goodbye,
+		Undecided,
 		Food,
 		Sports,
 		Music,
@@ -71,7 +71,7 @@ namespace ld
 	using Topic = std::pair< TopicType, size_t >;
 	
 	FRESH_ENUM_STREAM_IN_BEGIN( ld, TopicType )
-	FRESH_ENUM_STREAM_IN_CASE( TopicType, Goodbye )
+	FRESH_ENUM_STREAM_IN_CASE( TopicType, Undecided )
 	FRESH_ENUM_STREAM_IN_CASE( TopicType, Food )
 	FRESH_ENUM_STREAM_IN_CASE( TopicType, Sports )
 	FRESH_ENUM_STREAM_IN_CASE( TopicType, Music )
@@ -79,7 +79,7 @@ namespace ld
 	FRESH_ENUM_STREAM_IN_END()
 	
 	FRESH_ENUM_STREAM_OUT_BEGIN( ld, TopicType )
-	FRESH_ENUM_STREAM_OUT_CASE( TopicType, Goodbye )
+	FRESH_ENUM_STREAM_OUT_CASE( TopicType, Undecided )
 	FRESH_ENUM_STREAM_OUT_CASE( TopicType, Food )
 	FRESH_ENUM_STREAM_OUT_CASE( TopicType, Sports )
 	FRESH_ENUM_STREAM_OUT_CASE( TopicType, Music )
@@ -88,13 +88,32 @@ namespace ld
 
 	enum class Value
 	{
+		Undecided,
 		Hate,
 		Dislike,
 		Neutral,
 		Like,
-		Love
+		Love,
 	};
+
+	FRESH_ENUM_STREAM_IN_BEGIN( ld, Value )
+	FRESH_ENUM_STREAM_IN_CASE( Value, Undecided )
+	FRESH_ENUM_STREAM_IN_CASE( Value, Hate )
+	FRESH_ENUM_STREAM_IN_CASE( Value, Dislike )
+	FRESH_ENUM_STREAM_IN_CASE( Value, Neutral )
+	FRESH_ENUM_STREAM_IN_CASE( Value, Like )
+	FRESH_ENUM_STREAM_IN_CASE( Value, Love )
+	FRESH_ENUM_STREAM_IN_END()
 	
+	FRESH_ENUM_STREAM_OUT_BEGIN( ld, Value )
+	FRESH_ENUM_STREAM_OUT_CASE( Value, Undecided )
+	FRESH_ENUM_STREAM_OUT_CASE( Value, Hate )
+	FRESH_ENUM_STREAM_OUT_CASE( Value, Dislike )
+	FRESH_ENUM_STREAM_OUT_CASE( Value, Neutral )
+	FRESH_ENUM_STREAM_OUT_CASE( Value, Like )
+	FRESH_ENUM_STREAM_OUT_CASE( Value, Love )
+	FRESH_ENUM_STREAM_OUT_END()
+
 	
 	// |   |   |   |   |   |
 	// |         +         |
@@ -124,7 +143,6 @@ namespace ld
 		{
 			return Value::Neutral;
 		}
-		
 	}
 }
 

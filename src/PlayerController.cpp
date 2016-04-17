@@ -96,14 +96,40 @@ namespace ld
 		// TODO!!!
 	}
 	
-	void PlayerController::receiveSpeechStatement( SmartPtr< ConversationDisplay > display, Character& from, const Topic& topic, real value, size_t speechIndex )
+	Topic PlayerController::pickTopic( const Character& forUseWithCharacter ) const
 	{
-		// TODO!!!
+		// TODO!!! Prompt the human.
+		return std::make_pair( TopicType::Undecided, -1 );
 	}
 	
-	void PlayerController::displaySpeech( SmartPtr< ConversationDisplay > display, Topic topic, real value, size_t speechIndex )
+	Value PlayerController::pickTopicResponse( const Character& forUseWithCharacter, const Topic& topic ) const
 	{
-		// TODO!!!
+		// TODO!!! Prompt the human.
+		return Value::Undecided;
 	}
+	
+	Value PlayerController::valueForTopic( const Character& forUseWithCharacter, const Topic& topic ) const
+	{
+		// TODO!!! Prompt the human.
+		return Value::Undecided;
+	}
+	
+	std::string PlayerController::getOpinionInitiatingText( const Character& forUseWithCharacter, const Topic& topic, Value value ) const
+	{
+		// TODO!!! Just concoct it.
+		return "I love it or something TODO.";
+	}
+	
+	std::string PlayerController::getOpinionResponseText( const Character& forUseWithCharacter, const Topic& topic, Value value ) const
+	{
+		// TODO!!! Just concoct it.
+		return "I love it or something TODO.";
+	}
+	
+	void PlayerController::hearSpeech( const Character& fromCharacter, const Topic& topic, Value value )
+	{
+		// TODO!!! Possibly add to memory/known facts.
+	}
+
 }
 

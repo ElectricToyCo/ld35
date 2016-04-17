@@ -8,8 +8,6 @@
 
 #include "World.h"
 #include "TileGrid.h"
-#include "Character.h"
-#include "ConversationDisplay.h"
 using namespace fr;
 
 namespace ld
@@ -18,6 +16,7 @@ namespace ld
 	DEFINE_VAR( World, std::vector< rect >, m_roomRects );
 	DEFINE_VAR( World, ClassInfo::cptr, m_conversationDisplayClass );
 	DEFINE_VAR( World, std::vector< SmartPtr< Character >>, m_characters );
+	DEFINE_VAR( World, std::vector< SmartPtr< Conversation >>, m_conversations );
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( World )
 	
 	TileGrid& World::tileGrid() const
@@ -33,16 +32,6 @@ namespace ld
 	DisplayObjectContainer& World::hudOverlayHost() const
 	{
 		return getExpectedDescendant< DisplayObjectContainer >( *this, "_hudOverlayHost" );
-	}
-	
-	SmartPtr< ConversationDisplay > World::createConversationDisplay()
-	{
-		ASSERT( m_conversationDisplayClass );
-		auto display = createObject< ConversationDisplay >( *m_conversationDisplayClass );
-		ASSERT( display );
-		
-		hudOverlayHost().addChild( display );
-		return display;
 	}
 	
 	void World::update()
@@ -140,6 +129,9 @@ namespace ld
 		
 		switch( value )
 		{
+			case Value::Undecided:
+				options = { "don't know anything about", "have never heard of" };
+				break;
 			case Value::Hate:
 				options = { "despise", "loathe", "hate", "really hate", "am disgusted by" };
 				break;
@@ -165,9 +157,9 @@ namespace ld
 	{
 		switch( topic.first )
 		{
-			case TopicType::Goodbye:
+			case TopicType::Undecided:
 				ASSERT( false );
-				return "";
+				return "something";
 			case TopicType::Food:
 				return "food";
 			case TopicType::Sports:
@@ -182,11 +174,9 @@ namespace ld
 		}
 	}
 	
-	std::string World::createInitiatingSpeechText( Topic topic, real value ) const
+	std::string World::createInitiatingSpeechText( Topic topic, Value value ) const
 	{
-		auto discrete = discreteValue( value );
-		
-		const std::string attitude = descriptiveForValue( discrete );
+		const std::string attitude = descriptiveForValue( value );
 		const std::string topicDescription = descriptiveForTopic( topic );
 		
 		std::ostringstream stream;

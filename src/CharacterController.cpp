@@ -10,7 +10,8 @@
 #include "Character.h"
 #include "World.h"
 #include "TileGrid.h"
-#include "ConversationDisplay.h"
+#include "Conversation.h"
+#include "ConversationOpinion.h"
 using namespace fr;
 
 namespace
@@ -19,8 +20,6 @@ namespace
 	const real MAX_WANDER_DISTANCE = 4 * UNITS_PER_TILE;
 	const real MIN_CONVERSATION_DISTANCE = 0.5 * UNITS_PER_TILE;
 	const real MAX_CONVERSATION_DISTANCE = 2.0 * UNITS_PER_TILE;
-	
-	const TimeType SPEECH_RESPONSE_DELAY = 2.0;
 }
 
 #if 0
@@ -37,61 +36,6 @@ namespace
 
 namespace ld
 {
-	FRESH_DEFINE_CLASS( SpeechResponse )
-	DEFINE_DVAR( SpeechResponse, size_t, m_speechIndex );
-	DEFINE_VAR( SpeechResponse, SmartPtr< ConversationDisplay >, m_display );
-	DEFINE_DVAR( SpeechResponse, TimeType, m_deliveryTime );
-	DEFINE_VAR( SpeechResponse, WeakPtr< Character >, m_speaker );
-	DEFINE_VAR( SpeechResponse, WeakPtr< Character >, m_conversant );
-	DEFINE_DVAR( SpeechResponse, Topic, m_topic );
-	DEFINE_DVAR( SpeechResponse, real, m_value );
-	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( SpeechResponse )
-	
-	void SpeechResponse::schedule( size_t speechIndex, TimeType deliveryTime, SmartPtr< ConversationDisplay > display, Character& me, Character& conversant, Topic topic, real value )
-	{
-		m_speechIndex = speechIndex;
-		m_deliveryTime = deliveryTime;
-		m_display = display;
-		m_speaker = &me;
-		m_conversant = &conversant;
-		m_topic = topic;
-		m_value = value;
-	}
-	
-	bool SpeechResponse::isDeliveryTime( TimeType now ) const
-	{
-		return now >= m_deliveryTime;
-	}
-	
-	void SpeechResponse::deliver()
-	{
-		ASSERT( m_speaker );
-		ASSERT( m_conversant );
-
-		m_speaker->displaySpeech( m_display, m_topic, m_value, m_speechIndex );
-		m_conversant->receiveSpeechStatement( m_display, *m_speaker, m_topic, m_value, m_speechIndex );
-	}
-
-	//////////////////////////////////
-	
-	FRESH_DEFINE_CLASS( SpeechResponseGoodbye )
-	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( SpeechResponseGoodbye )
-	
-	void SpeechResponseGoodbye::scheduleGoodbye( TimeType deliveryTime, Character& me, Character& conversant )
-	{
-		schedule( 0, deliveryTime, nullptr, me, conversant, std::make_pair( TopicType::Goodbye, -1 ), 0 );
-	}
-	
-	void SpeechResponseGoodbye::deliver()
-	{
-		ASSERT( m_speaker );
-		ASSERT( m_conversant );
-		m_speaker->onConversationEnding();
-		m_conversant->onConversationEnding();
-	}
-
-	//////////////////////////////////
-	
 	FRESH_DEFINE_CLASS( CharacterController )
 	DEFINE_DVAR( CharacterController, State, m_state );
 	DEFINE_DVAR( CharacterController, TimeType, m_nextThinkTime );
@@ -101,9 +45,8 @@ namespace ld
 	DEFINE_VAR( CharacterController, SmartPtr< Character >, m_targetConversant );
 	DEFINE_VAR( CharacterController, SmartPtr< Character >, m_conversant );
 	DEFINE_VAR( CharacterController, WeakPtr< Character >, m_conversationInitiator );
-	DEFINE_VAR( CharacterController, SpeechResponse::ptr, m_pendingSpeech );
+	DEFINE_VAR( CharacterController, SmartPtr< Conversation >, m_conversation );
 	DEFINE_VAR( CharacterController, TopicTypeMap, m_topicValues );
-	DEFINE_VAR( CharacterController, CharacterValueMap, m_characterValues );
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( CharacterController )
 	
 	Character& CharacterController::character() const
@@ -222,12 +165,8 @@ namespace ld
 		//
 		ASSERT( m_conversant );
 		ASSERT( m_state == Talking );
-		
-		if( m_pendingSpeech && m_pendingSpeech->isDeliveryTime( character().world().time() ))
-		{
-			m_pendingSpeech->deliver();
-			m_pendingSpeech = nullptr;
-		}		
+
+		// TODO!!
 	}
 	
 	void CharacterController::updatePanicked()
@@ -327,21 +266,7 @@ namespace ld
 			//
 			// TODO!!!
 			
-			// Choose a topic of conversation.
-			//
-			auto topic = pickTopic( *m_conversant );
-			auto value = valueForTopic( topic );
-			
-			auto display = me.world().createConversationDisplay();
-			ASSERT( display );
-			
-			display->beginConversation( 2 );		// TODO!!!
-			
-			ASSERT( !m_pendingSpeech );
-			
-			m_pendingSpeech = createObject< SpeechResponse >();
-			m_pendingSpeech->schedule( 0, me.world().time() + SPEECH_RESPONSE_DELAY,
-									   display, me, *m_conversant, topic, value );
+			m_conversation = me.world().createConversation< ConversationOpinion >( m_conversationInitiator, m_conversant );
 		}
 		
 		return wasConversationAccepted;
@@ -349,8 +274,28 @@ namespace ld
 	
 	Topic CharacterController::pickTopic( const Character& forUseWithCharacter ) const
 	{
-		// TODO!!!
-		return std::make_pair( TopicType::Food, -1 );
+		using Pair = typename decltype( m_topicValues )::value_type;
+		
+		std::vector< Pair > validTopics;
+		std::copy_if( m_topicValues.begin(), m_topicValues.end(), std::back_inserter( validTopics ),
+					 [&]( const Pair& pair )
+					 {
+						 return pair.second != Value::Undecided;
+					 } );
+		
+		if( !validTopics.empty() )
+		{
+			return randomElement( validTopics ).first;
+		}
+		else
+		{
+			return std::make_pair( TopicType::Undecided, -1 );
+		}
+	}
+	
+	Value CharacterController::pickTopicResponse( const Character& forUseWithCharacter, const Topic& topic ) const
+	{
+		return valueForTopic( forUseWithCharacter, topic );
 	}
 	
 	void CharacterController::chooseNextBehavior()
@@ -458,8 +403,6 @@ namespace ld
 		m_targetConversant = nullptr;
 		m_state = Talking;
 		character().stopTravel();
-		
-		ASSERT( !m_pendingSpeech );
 	}
 	
 	void CharacterController::endConversation()
@@ -475,8 +418,10 @@ namespace ld
 	
 	void CharacterController::onConversationInterrupted()
 	{
-		// TODO!!!
-		onConversationEnding();
+		if( m_conversation )
+		{
+			m_conversation->onParticipantInterrupted( &character() );
+		}
 	}
 	
 	void CharacterController::onConversationEnding()
@@ -484,93 +429,43 @@ namespace ld
 		if( m_state == Talking )
 		{
 			ASSERT( !m_targetConversant );
+			m_conversation = nullptr;
 			m_conversationInitiator = nullptr;
 			m_conversant = nullptr;
-			m_pendingSpeech = nullptr;
 			m_state = Idle;
 		}
 		PROMISES( !occupied() );
 	}
 	
-	void CharacterController::receiveSpeechStatement( SmartPtr< ConversationDisplay > display, Character& from, const Topic& topic, real value, size_t speechIndex )
+	Value CharacterController::valueForTopic( const Character& forUseWithCharacter, const Topic& topic ) const
 	{
-		if( m_state == Talking )
-		{
-			ASSERT( &from == m_conversant );
-
-			auto& me = character();
-			
-			if( m_conversationInitiator == &character() )
-			{
-				auto goodbyeSpeech = createObject< SpeechResponseGoodbye >();
-				goodbyeSpeech->scheduleGoodbye( me.world().time() + SPEECH_RESPONSE_DELAY,
-											    me, from );
-				m_pendingSpeech = goodbyeSpeech;
-			}
-			else
-			{
-				// Schedule a response.
-				//
-				ASSERT( !m_pendingSpeech );
-				
-				m_pendingSpeech = createObject< SpeechResponse >();
-				m_pendingSpeech->schedule( speechIndex, me.world().time() + SPEECH_RESPONSE_DELAY,
-										   display, me, from, topic, valueForTopic( topic ));
-			}
-		}
-	}
-	
-	real CharacterController::valueForTopic( const Topic& topic ) const
-	{
-		if( topic.first == TopicType::Character )
-		{
-			return valueForCharacter( topic.second );
-		}
-		else
-		{
-			auto iter = m_topicValues.find( topic.first );
-			if( iter != m_topicValues.end() )
-			{
-				return iter->second;
-			}
-			else
-			{
-				return 0;
-			}
-		}
-	}
-	
-	real CharacterController::valueForCharacter( size_t iCharacter ) const
-	{
-		auto iter = m_characterValues.find( iCharacter );
-		if( iter != m_characterValues.end() )
+		auto iter = m_topicValues.find( topic );
+		if( iter != m_topicValues.end() )
 		{
 			return iter->second;
 		}
 		else
 		{
-			return 0;
+			return Value::Undecided;
 		}
 	}
 	
-	void CharacterController::displaySpeech( SmartPtr< ConversationDisplay > display, Topic topic, real value, size_t speechIndex )
+	std::string CharacterController::getOpinionInitiatingText( const Character& forUseWithCharacter, const Topic& topic, Value value ) const
 	{
-		auto& me = character();
-
-		std::string speechText;
-		if( speechIndex == 0 )
-		{
-			speechText = me.world().createInitiatingSpeechText( topic, value );
-		}
-		else
-		{
-			// TODO non-initiating.
-			speechText = me.world().createInitiatingSpeechText( topic, value );
-		}
-		
-		display->showSpeech( &me, speechText );
-		
-		m_conversant->receiveSpeechStatement( display, me, topic, value, speechIndex );
+		return character().world().createInitiatingSpeechText( topic, value );
 	}
+
+	std::string CharacterController::getOpinionResponseText( const Character& forUseWithCharacter, const Topic& topic, Value value ) const
+	{
+		// TODO
+		return character().world().createInitiatingSpeechText( topic, value );
+	}
+
+	void CharacterController::hearSpeech( const Character& fromCharacter, const Topic& topic, Value value )
+	{
+		// TODO!!! Affect opinions.
+	}
+
+
 }
 

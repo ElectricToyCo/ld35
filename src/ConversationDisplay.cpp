@@ -30,6 +30,8 @@ namespace ld
 	void ConversationDisplay::showSpeech( SmartPtr< Character > speaker, const std::string& annotatedString )
 	{
 		REQUIRES( speaker );
+		
+		dev_trace( speaker << " says, \"" << annotatedString << "\"" );
 
 		ASSERT( m_speechTextClass );
 

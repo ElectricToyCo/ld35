@@ -12,12 +12,13 @@
 #include "Essentials.h"
 #include "FreshWorld.h"
 #include "Camera.h"
+#include "Character.h"
+#include "Conversation.h"
+#include "ConversationDisplay.h"
 
 namespace ld
 {
 	class TileGrid;
-	class Character;
-	class ConversationDisplay;
 	
 	class World : public fr::FreshWorld
 	{
@@ -32,10 +33,25 @@ namespace ld
 		
 		// CONVERSATION
 		
-		SmartPtr< ConversationDisplay > createConversationDisplay();
+		template< typename ConversationT >
+		SmartPtr< Conversation > createConversation( SmartPtr< Character > initiator, SmartPtr< Character > second )
+		{
+			ASSERT( m_conversationDisplayClass );
+			auto display = fr::createObject< ConversationDisplay >( *m_conversationDisplayClass );
+			ASSERT( display );
+			
+			hudOverlayHost().addChild( display );
+			
+			auto conversation = fr::createObject< ConversationT >();
+			ASSERT( conversation );
+			
+			conversation->start( this, initiator, second, display );
+			return conversation;
+		}
+		
 		std::string descriptiveForValue( Value value ) const;
 		std::string descriptiveForTopic( Topic topic ) const;
-		std::string createInitiatingSpeechText( Topic topic, real value ) const;
+		std::string createInitiatingSpeechText( Topic topic, Value value ) const;
 
 		// ROOMS
 		
@@ -59,6 +75,7 @@ namespace ld
 		VAR( std::vector< rect >, m_roomRects );
 		VAR( ClassInfo::cptr, m_conversationDisplayClass );
 		VAR( std::vector< SmartPtr< Character >>, m_characters );
+		VAR( std::vector< SmartPtr< Conversation >>, m_conversations );
 		
 	};
 	
