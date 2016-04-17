@@ -22,6 +22,7 @@ namespace ld
 	DEFINE_VAR( TutorialStep, std::string, m_message );
 	DEFINE_DVAR( TutorialStep, TimeType, m_startTime );
 	DEFINE_DVAR( TutorialStep, TimeType, m_completionTime );
+	DEFINE_DVAR( TutorialStep, bool, m_reallyBegun );
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( TutorialStep )
 
 	World& TutorialStep::world() const
@@ -43,6 +44,11 @@ namespace ld
 	Character& TutorialStep::player() const
 	{
 		return world().player();
+	}
+	
+	TimeType TutorialStep::age() const
+	{
+		return m_startTime >= 0 ? now() - m_startTime : 0;
 	}
 	
 	TimeType TutorialStep::now() const
@@ -84,6 +90,7 @@ namespace ld
 		REQUIRES( world );
 		m_world = world;
 
+		m_reallyBegun = false;
 		m_startTime = now();
 		m_completionTime = -1;
 	}
@@ -106,9 +113,9 @@ namespace ld
 				markCompleted();
 				end();
 			}
-			else if( m_startTime >= 0 && now() >= m_startTime + m_preDelay )
+			else if( !m_reallyBegun && now() >= m_startTime + m_preDelay )
 			{
-				m_startTime = -1.0;
+				m_reallyBegun = true;
 				reallyBegin();
 			}
 		}

@@ -133,9 +133,14 @@ namespace ld
 		FRESH_DECLARE_CLASS( TutorialStep01_Correct, TutorialStep );
 	public:
 		
+		virtual size_t nextStep() const override
+		{
+			return 9;
+		}
+		
 		virtual bool conditionCompleted() const override
 		{
-			return false;
+			return age() > 4.0;
 		}
 	};
 	
@@ -155,6 +160,19 @@ namespace ld
 		}
 		
 	};
+	
+	class TutorialStep01_Done : public TutorialStep
+	{
+		FRESH_DECLARE_CLASS( TutorialStep01_Done, TutorialStep );
+	public:
+		
+		virtual bool conditionCompleted() const override
+		{
+			return age() > 6.0;
+		}
+	};
+	
+	
 }
 
 #endif

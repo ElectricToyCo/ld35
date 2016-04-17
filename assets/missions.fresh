@@ -29,7 +29,7 @@ class MissionCharacterSetupDefault extends MissionCharacterSetup {
 
 class PlayerCharacterSetupDefault extends MissionCharacterSetup {
 	character object CharacterPlayer player {}
-	initialRoom 0
+	initialRoom -1
 	position 64
 }
 
@@ -44,7 +44,9 @@ class Mission01 extends Mission {
 		}
 		object MissionCharacterSetup {
 			character object Character01 {
-				percentChanceWanderToNewRoom 0
+				controller object CharacterControllerDefault {					
+					percentChanceWanderToNewRoom 0
+				}
 			}
 			initialRoom 0
 			opinions [
@@ -101,13 +103,17 @@ class Mission01 extends Mission {
 			}
 			object TutorialStep01_Correct {
 				preDelay 0.0
-				postDelay 4.0
+				postDelay 0.0
 				message "!TutorialCorrectResult"
 			}
 			object TutorialStep01_Incorrect {
 				preDelay 0.0
 				message "!TutorialIncorrectResult"
 			}
+
+			object TutorialStep01_Done {
+				message "!TutorialWrapUp"
+			}			
 		]
 	}
 }

@@ -38,6 +38,8 @@ namespace ld
 	FRESH_DEFINE_CLASS( TutorialStep01_Incorrect )
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( TutorialStep01_Incorrect )
 	
+	FRESH_DEFINE_CLASS( TutorialStep01_Done )
+	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( TutorialStep01_Done )
 	
 	
 	

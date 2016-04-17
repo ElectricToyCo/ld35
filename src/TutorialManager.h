@@ -32,7 +32,8 @@ namespace ld
 		virtual size_t nextStep() const;
 		
 	protected:
-		
+				
+		TimeType age() const;
 		TimeType now() const;
 
 		virtual void reallyBegin();
@@ -57,6 +58,7 @@ namespace ld
 		VAR( std::string, m_message );
 		DVAR( TimeType, m_startTime, -1 );
 		DVAR( TimeType, m_completionTime, -1 );
+		DVAR( bool, m_reallyBegun, false );
 	};
 	
 	//////////////////////////////////////////////////////////////////
