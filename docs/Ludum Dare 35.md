@@ -218,3 +218,9 @@ TutorialValue "Tell Tiffany you LOVE this topic."
 TutorialCorrectResult "You just changed Tiffany's opinion! Because Tiffany LIKES you, she listened to what you said about SPORTS and now LIKES them too."
 
 TutorialIncorrectResult "Oops. You need to tell Tiffany you LOVE SPORTS. Hit the Z key to talk to her again."
+
+8:44 AM Sunday Time for Church!
+
+10:34 AM Back to work
+
+11:51 AM Designing the big one: The Player Conversation Interface

@@ -26,7 +26,10 @@ namespace ld
 		
 		void showTutorialMessage( const std::string& message );
 		void hideTutorialMessage();
-	private:
+
+		bool isPlayerConversationPanelShowing() const;
+		void beginPlayerInitiatedConversation( SmartPtr< Character > player, SmartPtr< Character > character );
+		void togglePlayerInitiatedConversation( SmartPtr< Character > player, SmartPtr< Character > character );
 		
 	};
 	

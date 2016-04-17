@@ -9,6 +9,7 @@
 #include "HUD.h"
 #include "CharacterInspector.h"
 #include "Character.h"
+#include "PlayerConversationPanel.h"
 using namespace fr;
 
 namespace ld
@@ -49,6 +50,26 @@ namespace ld
 	{
 		auto& popup = getExpectedDescendant< UIPopup >( *this, "_tutorialMessage" );
 		popup.hide();
+	}
+
+	bool HUD::isPlayerConversationPanelShowing() const
+	{
+		auto& popup = getExpectedDescendant< PlayerConversationPanel >( *this, "_playerConversationPanel" );
+		return popup.isFullyShown();
+	}
+	
+	void HUD::beginPlayerInitiatedConversation( SmartPtr< Character > player, SmartPtr< Character > character )
+	{
+		REQUIRES( player );
+		auto& popup = getExpectedDescendant< PlayerConversationPanel >( *this, "_playerConversationPanel" );
+		popup.beginPlayerInitiatedConversation( player, character );
+	}
+	
+	void HUD::togglePlayerInitiatedConversation( SmartPtr< Character > player, SmartPtr< Character > character )
+	{
+		REQUIRES( player );
+		auto& popup = getExpectedDescendant< PlayerConversationPanel >( *this, "_playerConversationPanel" );
+		popup.togglePlayerInitiatedConversation( player, character );
 	}
 }
 

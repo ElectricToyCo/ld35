@@ -2,7 +2,7 @@
 
 class DefaultText extends TextField {
 	font Font'04b03_8'
-	fontSize 4
+	fontSize 8
 	color White
 	textSpacing 1
 	lineHeight 1
@@ -22,13 +22,18 @@ class TutorialFrame extends UIFrame {
 class TutorialText extends DefaultText {
 	position -96,0
 	color LightGray
-	fontSize 8
 	enforcedBounds 192,5
 	verticalAlignment Middle
 }
 
-class ConversationSpeechText extends DefaultText {
+class CloseButton extends SimpleButton {
+	color 80
+	onTapCalleeMethodExpression "hide"
+	texture Texture'button_close'
+}
 
+class ConversationSpeechText extends DefaultText {
+	fontSize 4
 }
 
 class ConversationSpeechPopup extends UIPopup {
@@ -105,12 +110,9 @@ class CharacterInspectorDefault extends CharacterInspector {
 			]
 		}
 
-		object SimpleButton {
-			position -32,-96
-			color 80
+		object CloseButton {
+			position -32,-98
 			onTapCallee CharacterInspectorDefault'$^^'
-			onTapCalleeMethodExpression "hide"
-			texture Texture'button_close'
 		}
 	]
 }
@@ -118,8 +120,8 @@ class CharacterInspectorDefault extends CharacterInspector {
 class TutorialDisplay extends UIPopup {
 	isTouchEnabled false
 	ignoreFrameAttachment false
-	parentFrameAttachPoint 0,-1
-	position 0,28
+	parentFrameAttachPoint -1,-1
+	position 120,28
 	startHidden true
 	hiddenTranslation 0,-36
 	hiddenColor Invisible
@@ -133,10 +135,102 @@ class TutorialDisplay extends UIPopup {
 	]
 }
 
+class PlayerConversationPanelFrame extends TutorialFrame {
+	frame "-120,-30,120,30"
+	color ff666666
+}
+
+class PlayerConversationContentHost extends UIPopup {
+	isTouchEnabled true
+	position -106,-26
+	startHidden true
+	hiddenTranslation 118,0
+	defaultShowDuration 0.25
+	defaultHideDuration 0.15
+	hiddenColor White
+}
+
+class PlayerConversationPromptText extends DefaultText {
+	isTouchEnabled true
+	color Gray
+	enforcedBounds 240,6
+}
+
+class PlayerConversationButtonText extends PlayerConversationPromptText {
+	color LightGray
+}
+
+class ChoiceButton extends SimpleButton {
+}
+
+class ConversationTypeSelector extends DisplayObjectContainer {
+	children [
+		object PlayerConversationPromptText $^_instructions {
+			text "What do you want to say?\n\n\n\n\nPress 1 or 2"
+		}
+
+		object ChoiceButton $^_opinion {
+			position 0,16
+			children [
+				object PlayerConversationButtonText {
+					text "    1. Say my OPINION."
+				}		    
+		    ]
+		}
+
+		object ChoiceButton $^_send {
+			position 0,24
+			children [
+				object PlayerConversationButtonText {
+					text "    2. SEND this character to talk to someone."
+				}		    
+		    ]
+		}	
+	]
+}
+
+class PlayerConversationPanelDefault extends PlayerConversationPanel {
+	ignoreFrameAttachment false
+	parentFrameAttachPoint -1,1
+	position 118,-30
+	startHidden true
+	hiddenTranslation 0,62
+	defaultShowDuration 0.25
+	defaultHideDuration 0.15
+	hiddenColor White
+
+	mask object PlayerConversationPanelFrame {}
+
+	children [
+		object PlayerConversationPanelFrame {}
+
+		object CloseButton {
+			position -112,-24
+			onTapCallee PlayerConversationPanelDefault'$^^'
+		}
+
+		object PlayerConversationContentHost $^_conversationTypeSelectorHost {
+			startHidden false
+			hiddenTranslation -118,0
+			children [
+				object ConversationTypeSelector $^_proper {}
+			]
+		}
+
+		object PlayerConversationContentHost $^_opinionHost {
+			children [
+				
+			]
+		}
+	]
+}
+
 class HUDDefault extends HUD {
 	inheritParentFrame true
 	children [
 		object CharacterInspectorDefault {}
+
+		object PlayerConversationPanelDefault $^_playerConversationPanel {}
 
 		// Towards the top
 		object TutorialDisplay $^_tutorialMessage {}

@@ -32,7 +32,7 @@ namespace ld
 		
 		virtual bool conditionCompleted() const override
 		{
-			return distance( player().position(), m_playerStartPos ) > 2.0f * UNITS_PER_TILE;
+			return distance( player().position(), m_playerStartPos ) > 1.5f * UNITS_PER_TILE;
 		}
 		
 	private:
@@ -49,6 +49,18 @@ namespace ld
 		virtual bool conditionCompleted() const override
 		{
 			return hud().isInspectorShowing();
+		}
+		
+	};
+	
+	class TutorialStep01_03 : public TutorialStep
+	{
+		FRESH_DECLARE_CLASS( TutorialStep01_03, TutorialStep );
+	public:
+		
+		virtual bool conditionCompleted() const override
+		{
+			return hud().isPlayerConversationPanelShowing();
 		}
 		
 	};

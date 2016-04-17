@@ -35,7 +35,7 @@ class PlayerCharacterSetupDefault extends MissionCharacterSetup {
 
 class TutorialStepDefault extends TutorialStep {
 	preDelay 1.0
-	postDelay 0.5
+	postDelay 1.0
 }
 
 class Mission01 extends Mission {
@@ -75,7 +75,7 @@ class Mission01 extends Mission {
 			object TutorialStep01_02 {
 				message "!TutorialInspection"
 			}
-			object TutorialStepDefault {
+			object TutorialStep01_03 {
 				message "!TutorialMission"
 			}
 			object TutorialStepDefault {
@@ -98,7 +98,6 @@ class Mission02 extends Mission {
 	characters [
 		object MissionCharacterSetupDefault {
 			character object CharacterPlayer player {}
-			initialRoom 0
 		}
 		object MissionCharacterSetupDefault {
 			character object Character01 {}

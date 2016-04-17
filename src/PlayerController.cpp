@@ -106,9 +106,7 @@ namespace ld
 		
 		ASSERT( other != me );
 		
-		other->onAddressedBy( me );
-		
-		// TODO!!!
+		me->ldStage().hud().togglePlayerInitiatedConversation( me, other );
 	}
 	
 	Topic PlayerController::pickTopic( const Character& forUseWithCharacter ) const
