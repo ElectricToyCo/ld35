@@ -24,5 +24,12 @@ namespace ld
 		inspector.inspectCharacter( character );
 	}
 	
+	void HUD::toggleCharacterInspection( SmartPtr< Character > character )
+	{
+		auto& inspector = getExpectedDescendant< CharacterInspector >( *this );
+		
+		inspector.toggleCharacterInspection( character );
+	}
+	
 }
 

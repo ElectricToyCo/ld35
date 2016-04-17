@@ -18,6 +18,7 @@ namespace ld
 {	
 	FRESH_DEFINE_CLASS( Character )
 	DEFINE_VAR( Character, std::string, m_characterName );
+	DEFINE_VAR( Character, Color, m_favoriteColor );
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( Character )
 
 	void Character::setOpinion( const Topic& topic, Value value )
@@ -45,6 +46,24 @@ namespace ld
 			}
 		}
 		return true;
+	}
+	
+	fr::DisplayObject::ptr Character::visual() const
+	{
+		return getDescendantByName< DisplayObject >( "_visual" );
+	}
+
+	void Character::highlight( Color highlightColor )
+	{
+		auto& highlighter = getExpectedDescendant< UIPopup >( *this, "_highlighter" );
+		highlighter.color( highlightColor );
+		highlighter.show();
+	}
+	
+	void Character::unhighlight()
+	{
+		auto& highlighter = getExpectedDescendant< UIPopup >( *this, "_highlighter" );
+		highlighter.hide();
 	}
 
 	bool Character::onAddressedBy( SmartPtr< Character > initiator )

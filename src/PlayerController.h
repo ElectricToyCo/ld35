@@ -45,6 +45,7 @@ namespace ld
 		virtual void onActionButtonDown( fr::Gamepad::Button button ) override;
 
 		void attemptInitiatingConversation();
+		void toggleInspectNearest();
 		void beginConversationWith( SmartPtr< Character > other );
 
 	private:

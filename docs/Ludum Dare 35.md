@@ -194,3 +194,27 @@ Walking around to think and wake up (11:12pm)
 4:20 PM Saturday. Time for a break.
 
 5:04 PM. Back.
+
+1:05 AM Sunday morning. To sleep, perchance to dream.
+
+7:37 AM Sunday morning. Up and at 'em. Concerned about time.
+
+# Tutorial Sequence
+
+## Intro Text
+
+IntroText "Your name is EMMA. You're a not-particularly popular girl at a not-particularly interesting school. But you have a little secret: you're a SHAPESHIFTER. You can take on the form of your fellow students.\n\nAnd this is handy, because all they ever do is talk, talk, talk about what they LOVE and what they HATE. Sometimes they LOVE the wrong things; sometimes they HATE the wrong things. But by SHAPESHIFTING, you can join in the conversation and CHANGE THEIR MINDS.\n\nInfluencing people to see things (and each other!) the way YOU want them to see them: THAT is your special gift."
+
+TutorialPlayerCharacter "This is Emma. Use WASD to move."
+
+TutorialInspection "This is Tiffany. Get close to her and hit SPACE to see what she's thinking."
+
+TutorialMission "Tiffany is indifferent to SPORTS. That's too bad. You should help her appreciate SPORTS.\n\nHit the Z key to talk to Tiffany."
+
+TutorialTalk "Pick the SPORTS topic."
+
+TutorialValue "Tell Tiffany you LOVE this topic."
+
+TutorialCorrectResult "You just changed Tiffany's opinion! Because Tiffany LIKES you, she listened to what you said about SPORTS and now LIKES them too."
+
+TutorialIncorrectResult "Oops. You need to tell Tiffany you LOVE SPORTS. Hit the Z key to talk to her again."

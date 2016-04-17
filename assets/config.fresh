@@ -1,7 +1,7 @@
 // ld35 Application Configuration - Any Platform 
 
 object AppStageConfig config {
-	desiredTitle "Ludum Dare 35"
+	desiredTitle "Emma: Teen Shapeshifter"
 	documentsSubfolder "The Electric Toy Co/ld35"
 	logFileName "runlog.txt"
 	desiredFramesPerSecond "60"

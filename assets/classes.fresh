@@ -179,6 +179,18 @@ class CharacterControllerDefault extends CharacterController {
 	percentChanceToInitiateTalk 80		// TODO!!!
 }
 
+class CharacterHighlighter extends UIPopup {	
+	isTouchEnabled false
+	defaultShowDuration 0.1
+	defaultHideDuration 0.1
+	startHidden true
+	children [
+		object Sprite {
+			texture Texture'character_highlighter'
+		}
+	]
+}
+
 class CharacterDefault extends Character {
 	airControl 1
 	jumpImpulseScale 0
@@ -192,6 +204,7 @@ class CharacterDefault extends Character {
 	controller object CharacterControllerDefault {}
 	
 	children [
+		object CharacterHighlighter $^_highlighter {}
 		object CharacterVisualDefault $^_visual {
 		}
 	]
@@ -199,45 +212,57 @@ class CharacterDefault extends Character {
 
 class Character01 extends CharacterDefault {
 	characterName "Tiffany"
+	favoriteColor ffa6fe
 	children [
+		object CharacterHighlighter $^_highlighter {}
 		object CharacterVisual01 $^_visual {
 		}
 	]
 }
 class Character02 extends CharacterDefault {
 	characterName "Pat"
+	favoriteColor 616723
 	dimensions 8,2
 	children [
+		object CharacterHighlighter $^_highlighter {}
 		object CharacterVisual02 $^_visual {
 		}
 	]
 }
 class Character03 extends CharacterDefault {
 	characterName "Delilah"
+	favoriteColor d2111c
 	children [
+		object CharacterHighlighter $^_highlighter {}
 		object CharacterVisual03 $^_visual {
 		}
 	]
 }
 class Character04 extends CharacterDefault {
 	characterName "Flash"
+	favoriteColor 0048ff
 	dimensions 10,2
 	children [
+		object CharacterHighlighter $^_highlighter {}
 		object CharacterVisual04 $^_visual {
 		}
 	]
 }
 class Character05 extends CharacterDefault {
 	characterName "Amber"
+	favoriteColor ff9000
 	children [
+		object CharacterHighlighter $^_highlighter {}
 		object CharacterVisual05 $^_visual {
 		}
 	]
 }
 class Character06 extends CharacterDefault {
 	characterName "Ambrosia"
+	favoriteColor b075b7
 	dimensions 10,2
 	children [
+		object CharacterHighlighter $^_highlighter {}
 		object CharacterVisual06 $^_visual {
 		}
 	]

@@ -15,12 +15,15 @@ namespace ld
 {
 	class Character;
 	
-	class CharacterInspector : public fr::DisplayObjectContainer
+	class CharacterInspector : public fr::UIPopup
 	{
-		FRESH_DECLARE_CLASS( CharacterInspector, DisplayObjectContainer );
+		FRESH_DECLARE_CLASS( CharacterInspector, UIPopup );
 	public:
 		
 		void inspectCharacter( SmartPtr< Character > character );
+		void toggleCharacterInspection( SmartPtr< Character > character );
+
+		virtual void hideWithDuration( TimeType duration, bool deleteWhenHidden = false, TimeType queueIfShowingWithDelay = -1.0 ) override;
 		
 	private:
 		

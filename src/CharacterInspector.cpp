@@ -21,47 +21,75 @@ namespace ld
 	
 	void CharacterInspector::inspectCharacter( SmartPtr< Character > character )
 	{
-		m_character = character;
-		
-		if( auto popup = firstAncestorOfType< UIPopup >( *this ))
+		// Prior character?
+		//
+		if( m_character )
 		{
-			if( m_character )
-			{
-				popup->show();
-			}
-			else
-			{
-				popup->hide();
-			}
+			m_character->unhighlight();
 		}
 		
-		getExpectedDescendant< DisplayObjectProxy >( *this, "_proxyProper" ).object( m_character );
-		getExpectedDescendant< DisplayObjectProxy >( *this, "_proxyShadow" ).object( m_character );
-		
-		getExpectedDescendant< TextField >( *this, "_charName" ).text( m_character ? m_character->characterName() : "-" );
+		m_character = character;
 		
 		if( m_character )
 		{
-			const auto showTopic = [&]( TopicType type, const std::string& displayName )
+			show();
+			m_character->highlight();
+			
+			getExpectedDescendant< DisplayObjectProxy >( *this, "_proxyProper" ).object( m_character->visual() );
+			getExpectedDescendant< DisplayObjectProxy >( *this, "_proxyShadow" ).object( m_character->visual() );
+			
+			getExpectedDescendant< TextField >( *this, "_charName" ).text( m_character ? m_character->characterName() : "-" );
+			
+			if( m_character )
 			{
-				auto value = m_character->valueForTopic( *m_character, std::make_pair( type, -1 ));
-				
-				if( auto display = getDescendantByName< Sprite >( displayName ))
+				const auto showTopic = [&]( TopicType type, const std::string& displayName )
 				{
-					display->setTextureByName( textureNameForValue( value ));
-				}
-			};
-			
-			// TODO!!! Create these with their unchanging topic indicators.
-			showTopic( TopicType::Food, "_food" );
-			showTopic( TopicType::Sports, "_sports" );
-			showTopic( TopicType::Music, "_music" );
-			
-			// Show character values.
-			//
-			// TODO
+					auto value = m_character->valueForTopic( *m_character, std::make_pair( type, -1 ));
+					
+					if( auto display = getDescendantByName< Sprite >( displayName ))
+					{
+						display->setTextureByName( textureNameForValue( value ));
+					}
+				};
+				
+				// TODO!!! Create these with their unchanging topic indicators.
+				showTopic( TopicType::Food, "_food" );
+				showTopic( TopicType::Sports, "_sports" );
+				showTopic( TopicType::Music, "_music" );
+				
+				// Show character values.
+				//
+				// TODO
+			}
 		}
+		else
+		{
+			hide();
+		}
+
 	}
 
+	void CharacterInspector::toggleCharacterInspection( SmartPtr< Character > character )
+	{
+		if( isShown() )
+		{
+			hide();
+		}
+		else
+		{
+			inspectCharacter( character );
+		}
+	}
+	
+	void CharacterInspector::hideWithDuration( TimeType duration, bool deleteWhenHidden, TimeType queueIfShowingWithDelay )
+	{
+		Super::hideWithDuration( duration, deleteWhenHidden, queueIfShowingWithDelay );
+		
+		if( m_character )
+		{
+			m_character->unhighlight();
+			m_character = nullptr;
+		}
+	}
 }
 

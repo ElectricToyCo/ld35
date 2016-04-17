@@ -21,6 +21,7 @@ namespace ld
 	public:
 		
 		void inspectCharacter( SmartPtr< Character > character );
+		void toggleCharacterInspection( SmartPtr< Character > character );
 		
 	private:
 		

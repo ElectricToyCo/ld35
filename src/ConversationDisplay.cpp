@@ -48,6 +48,7 @@ namespace ld
 		interpretAnnotations( displayString );
 		
 		textField->text( displayString );
+		textField->color( speaker->favoriteColor() );
 		
 		popup->host()->addChild( textField );
 		popup->position( speaker->position() + m_speechTextOffset + m_speechSpacing * ( -m_nExpectedSpeeches + m_nSpeeches ));

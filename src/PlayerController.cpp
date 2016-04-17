@@ -8,6 +8,8 @@
 
 #include "PlayerController.h"
 #include "World.h"
+#include "AppStage.h"
+#include "HUD.h"
 #include "Character.h"
 #include "ConversationDisplay.h"
 using namespace fr;
@@ -56,9 +58,11 @@ namespace ld
 	{
 		switch( key )
 		{
-			case Keyboard::Space:
+			case Keyboard::Z:
 				attemptInitiatingConversation();
 				break;
+			case Keyboard::Space:
+				toggleInspectNearest();
 			default:
 				break;
 		}
@@ -142,5 +146,24 @@ namespace ld
 		// TODO!!! Possibly add to memory/known facts.
 	}
 
+	void PlayerController::toggleInspectNearest()
+	{
+		auto& me = character();
+		const auto myPosition = me.position();
+		auto best = me.world().bestCharacter( [&]( const Character& other )
+										  {
+											  if( &me != &other )
+											  {
+												  const auto distSquared = distanceSquared( other.position(), myPosition );
+												  return 1.0f / ( distSquared > 0 ? distSquared : 0.1f );
+											  }
+											  else
+											  {
+												  return -1.0f;
+											  }
+										  } );
+		
+		me.ldStage().hud().toggleCharacterInspection( best );
+	}
 }
 

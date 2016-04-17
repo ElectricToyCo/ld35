@@ -11,6 +11,22 @@ class DefaultText extends TextField {
 	enforcedBounds 300,0
 }
 
+
+class TutorialFrame extends UIFrame {
+	texture "Texture'tutorial_frame'"
+	pixelCoordinatesInnerArea "1,2,6,6"
+	frame "-108,-24,108,24"
+	color ffaaaaaa
+}
+
+class TutorialText extends DefaultText {
+	position -96,0
+	color LightGray
+	fontSize 8
+	enforcedBounds 192,5
+	verticalAlignment Middle
+}
+
 class ConversationSpeechText extends DefaultText {
 
 }
@@ -33,15 +49,32 @@ class ConversationDisplayDefault extends ConversationDisplay {
 }
 
 class CharacterInspectorDefault extends CharacterInspector {
+	ignoreFrameAttachment false
+	parentFrameAttachPoint 1,0
+	position -40,0
+	startHidden true
+	hiddenTranslation 80,0
+	hiddenColor White
+	defaultShowDuration 0.35
+	defaultHideDuration 0.25
+
 	children [
-		object DisplayObjectProxy $^_proxyShadow {
-			position 0,-72
-			scale 2
+		object Sprite {
+			texture Texture'white_simple'
+			scale 40,108
 			color DarkGray
 		}
-		object DisplayObjectProxy $^_proxyProper {
-			position 0,-74
+
+		object DisplayObjectProxy $^_proxyShadow {
+			position 0,-84
 			scale 2
+			color DarkGray
+			blendMode AlphaPremultiplied
+		}
+		object DisplayObjectProxy $^_proxyProper {
+			position 0,-86
+			scale 2
+			blendMode AlphaPremultiplied
 		}
 		object DefaultText $^_charName {
 			fontSize 8
@@ -71,44 +104,42 @@ class CharacterInspectorDefault extends CharacterInspector {
 				}
 			]
 		}
-	]
-}
-
-class CharacterInspectorPanel extends UIPopup {
-	ignoreFrameAttachment false
-	parentFrameAttachPoint 1,0
-	position -40,0
-	startHidden true
-	hiddenTranslation 80,0
-	hiddenColor White
-	defaultShowDuration 0.35
-	defaultHideDuration 0.25
-
-	children [
-
-		object Sprite {
-			texture Texture'white_simple'
-			scale 40,108
-			color DarkGray
-		}
-
-		object CharacterInspectorDefault {			
-		}
 
 		object SimpleButton {
 			position -32,-96
 			color 80
-			onTapCallee CharacterInspectorPanel'$^^'
+			onTapCallee CharacterInspectorDefault'$^^'
 			onTapCalleeMethodExpression "hide"
 			texture Texture'button_close'
 		}
 	]
 }
 
+class TutorialDisplay extends UIPopup {
+	isTouchEnabled false
+	ignoreFrameAttachment false
+	parentFrameAttachPoint 0,-1
+	position 0,26
+	startHidden false
+	hiddenTranslation 0,-24
+	hiddenColor Invisible
+	defaultShowDuration 0.35
+	defaultHideDuration 0.25
+
+	children [
+		object TutorialFrame {}
+		object TutorialText {
+			text "!TutorialMission"
+		}
+	]
+}
 
 class HUDDefault extends HUD {
 	inheritParentFrame true
 	children [
-		object CharacterInspectorPanel {}
+		object CharacterInspectorDefault {}
+
+		// Towards the top
+		object TutorialDisplay {}
 	]
 }

@@ -19,10 +19,19 @@ namespace ld
 		FRESH_DECLARE_CLASS( Character, Actor );
 	public:
 
+		virtual std::string characterName() const;
+		
+		SYNTHESIZE_GET( Color, favoriteColor )
+		
 		bool occupied() const;
 		
-		void setOpinion( const Topic& topic, Value value );
+		fr::DisplayObject::ptr visual() const;
 		
+		void setOpinion( const Topic& topic, Value value );
+
+		void highlight( Color highlightColor = 0xffdbcbff );
+		void unhighlight();		
+
 		virtual bool onAddressedBy( SmartPtr< Character > initator );
 		virtual void onConversationBeginning();
 		virtual void onConversationEnding();
@@ -35,13 +44,12 @@ namespace ld
 		
 		virtual void hearSpeech( const Character& fromCharacter, const Topic& topic, Value value );
 		
-		virtual std::string characterName() const;
-		
 		virtual void onTapped( const fr::EventTouch& event ) override;
 		
 	private:
 		
 		VAR( std::string, m_characterName );
+		VAR( Color, m_favoriteColor );
 		
 	};
 	
