@@ -262,5 +262,37 @@ namespace ld
 						   return other == conversation;
 					   } );
 	}
+	
+	
+	fr::DisplayObjectContainer::ptr World::digestAnnotatedText( const std::string& annotatedText, fr::TextField::ptr textField ) const
+	{
+		ASSERT( textField );
+		
+		auto container = createObject< DisplayObjectContainer >();
+		container->addChild( textField );
+		
+		// Move through the annotated string looking for :blah: annotations.
+		// When we see one, replace it with space and create a sprite with the appropriate image for that text.
+		//
+//		std::string amendedText;
+//		for( auto iter = annotatedText.begin(); iter != annotatedText.end(); ++iter )
+//		{
+//			const auto c = *iter;
+//
+//			if( c == ':' )
+//			{
+//				// Is the next character a non-space?
+////				TODO!!!
+//			}
+//			
+//			// TDOO!!!
+//		}
+		
+		// TODO!!!
+		textField->text( annotatedText );
+		
+		return container;
+	}
+
 }
 

@@ -19,6 +19,8 @@
 #include "FreshFile.h"
 #include "DisplayPackage.h"
 #include "AudioSystem.h"
+#include "TextField.h"
+#include "UIPopup.h"
 #include "StructSerialization.h"
 
 #if FRESH_TELEMETRY_ENABLED
@@ -115,33 +117,22 @@ namespace ld
 	FRESH_ENUM_STREAM_OUT_END()
 
 	
-	// |   |   |   |   |   |
-	// |         +         |
-	
-	inline Value discreteValue( real value )
+	inline fr::ObjectName textureNameForValue( Value value )
 	{
-		const size_t divisions = 5;
-		const real span = 1.0f / divisions;
-		
-		if( value < -1.5f * span )
+		switch( value )
 		{
-			return Value::Hate;
-		}
-		else if( value < -0.5f * span )
-		{
-			return Value::Dislike;
-		}
-		else if( value > 0.5f * span )
-		{
-			return Value::Like;
-		}
-		else if( value > 1.5f * span )
-		{
-			return Value::Love;
-		}
-		else
-		{
-			return Value::Neutral;
+			case Value::Undecided:
+				return "value_display_undecided";
+			case Value::Hate:
+				return "value_display_hate";
+			case Value::Dislike:
+				return "value_display_dislike";
+			case Value::Neutral:
+				return "value_display_neutral";
+			case Value::Like:
+				return "value_display_like";
+			case Value::Love:
+				return "value_display_love";
 		}
 	}
 }

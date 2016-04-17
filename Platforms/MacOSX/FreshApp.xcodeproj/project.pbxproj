@@ -36,6 +36,7 @@
 		1F9567A71CC31114008499A7 /* Mission.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F9567A51CC31114008499A7 /* Mission.cpp */; };
 		1F9567AA1CC338B2008499A7 /* CharacterInspector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F9567A81CC338B2008499A7 /* CharacterInspector.cpp */; };
 		1F9567AD1CC33E23008499A7 /* HUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F9567AB1CC33E23008499A7 /* HUD.cpp */; };
+		1F9567B21CC3484F008499A7 /* DisplayObjectProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F9567B01CC3484F008499A7 /* DisplayObjectProxy.cpp */; };
 		1FB348F01A2D0D0300536EC8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1FB348EC1A2D0D0300536EC8 /* InfoPlist.strings */; };
 		1FB348F11A2D0D0300536EC8 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1FB348EE1A2D0D0300536EC8 /* MainMenu.xib */; };
 /* End PBXBuildFile section */
@@ -170,6 +171,8 @@
 		1F9567A91CC338B2008499A7 /* CharacterInspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterInspector.h; sourceTree = "<group>"; };
 		1F9567AB1CC33E23008499A7 /* HUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HUD.cpp; sourceTree = "<group>"; };
 		1F9567AC1CC33E23008499A7 /* HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUD.h; sourceTree = "<group>"; };
+		1F9567B01CC3484F008499A7 /* DisplayObjectProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DisplayObjectProxy.cpp; sourceTree = "<group>"; };
+		1F9567B11CC3484F008499A7 /* DisplayObjectProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayObjectProxy.h; sourceTree = "<group>"; };
 		1FB348ED1A2D0D0300536EC8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = FreshApp/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		1FB348EF1A2D0D0300536EC8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = FreshApp/en.lproj/MainMenu.xib; sourceTree = SOURCE_ROOT; };
 		1FE0FE3B192EFA9700B86F2F /* Fresh.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Fresh.xcodeproj; path = ../../Fresh/Platforms/MacOSX/Fresh.xcodeproj; sourceTree = "<group>"; };
@@ -290,7 +293,11 @@
 				1F95679A1CC2D2B2008499A7 /* ConversationDisplay.h */,
 				1F9567A21CC30389008499A7 /* ConversationOpinion.cpp */,
 				1F9567A31CC30389008499A7 /* ConversationOpinion.h */,
+				1F9567B01CC3484F008499A7 /* DisplayObjectProxy.cpp */,
+				1F9567B11CC3484F008499A7 /* DisplayObjectProxy.h */,
 				1F51FBEA1A324548008EEAA1 /* Essentials.h */,
+				1F9567AB1CC33E23008499A7 /* HUD.cpp */,
+				1F9567AC1CC33E23008499A7 /* HUD.h */,
 				1F8BF06418C67355007C5E7F /* main.cpp */,
 				1F9567A51CC31114008499A7 /* Mission.cpp */,
 				1F9567A61CC31114008499A7 /* Mission.h */,
@@ -300,8 +307,6 @@
 				1F9567811CC1F866008499A7 /* TileGrid.h */,
 				1F9567931CC21340008499A7 /* World.cpp */,
 				1F9567941CC21340008499A7 /* World.h */,
-				1F9567AB1CC33E23008499A7 /* HUD.cpp */,
-				1F9567AC1CC33E23008499A7 /* HUD.h */,
 			);
 			name = src;
 			path = ../../src;
@@ -455,6 +460,7 @@
 			files = (
 				1F9567821CC1F866008499A7 /* TileGrid.cpp in Sources */,
 				1F9567951CC21340008499A7 /* World.cpp in Sources */,
+				1F9567B21CC3484F008499A7 /* DisplayObjectProxy.cpp in Sources */,
 				1F51FBEB1A324548008EEAA1 /* AppStage.cpp in Sources */,
 				1F9567AD1CC33E23008499A7 /* HUD.cpp in Sources */,
 				1F8BF06618C67355007C5E7F /* main.cpp in Sources */,

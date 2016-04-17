@@ -22,8 +22,6 @@ namespace ld
 		
 		void inspectCharacter( SmartPtr< Character > character );
 		
-		virtual void drawChildren( TimeType relativeFrameTime, RenderInjector* injector ) override;
-		
 	private:
 		
 		SmartPtr< Character > m_character;

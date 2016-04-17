@@ -10,6 +10,7 @@
 #include "Character.h"
 #include "TextField.h"
 #include "UIPopup.h"
+#include "DisplayObjectProxy.h"
 using namespace fr;
 
 namespace ld
@@ -34,26 +35,33 @@ namespace ld
 			}
 		}
 		
+		getExpectedDescendant< DisplayObjectProxy >( *this, "_proxyProper" ).object( m_character );
+		getExpectedDescendant< DisplayObjectProxy >( *this, "_proxyShadow" ).object( m_character );
+		
 		getExpectedDescendant< TextField >( *this, "_charName" ).text( m_character ? m_character->characterName() : "-" );
+		
+		if( m_character )
+		{
+			const auto showTopic = [&]( TopicType type, const std::string& displayName )
+			{
+				auto value = m_character->valueForTopic( *m_character, std::make_pair( type, -1 ));
+				
+				if( auto display = getDescendantByName< Sprite >( displayName ))
+				{
+					display->setTextureByName( textureNameForValue( value ));
+				}
+			};
+			
+			// TODO!!! Create these with their unchanging topic indicators.
+			showTopic( TopicType::Food, "_food" );
+			showTopic( TopicType::Sports, "_sports" );
+			showTopic( TopicType::Music, "_music" );
+			
+			// Show character values.
+			//
+			// TODO
+		}
 	}
 
-	void CharacterInspector::drawChildren( TimeType relativeFrameTime, RenderInjector* injector )
-	{
-		Renderer::instance().pushMatrix();
-		Renderer::instance().pushColor();
-		
-		Renderer::instance().translate( 0, -72 );
-		Renderer::instance().scale( vec2( 2 ));
-		Renderer::instance().multiplyColor( Color::DarkGray );
-		m_character->draw( relativeFrameTime, injector );
-		Renderer::instance().popColor();
-		
-		Renderer::instance().translate( 0, -1 );
-		m_character->draw( relativeFrameTime, injector );
-
-		Renderer::instance().popMatrix();
-		
-		Super::drawChildren( relativeFrameTime, injector );
-	}
 }
 

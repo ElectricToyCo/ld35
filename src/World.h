@@ -58,6 +58,8 @@ namespace ld
 		std::string descriptiveForTopic( Topic topic ) const;
 		std::string createInitiatingSpeechText( Topic topic, Value value ) const;
 
+		fr::DisplayObjectContainer::ptr digestAnnotatedText( const std::string& annotatedText, fr::TextField::ptr textField ) const;
+		
 		// ROOMS
 		
 		size_t numRooms() const;
@@ -89,7 +91,7 @@ namespace ld
 		VAR( SmartPtr< Mission >, m_mission );
 		
 	};
-	
+
 }
 
 #endif

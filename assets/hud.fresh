@@ -34,12 +34,42 @@ class ConversationDisplayDefault extends ConversationDisplay {
 
 class CharacterInspectorDefault extends CharacterInspector {
 	children [
+		object DisplayObjectProxy $^_proxyShadow {
+			position 0,-72
+			scale 2
+			color DarkGray
+		}
+		object DisplayObjectProxy $^_proxyProper {
+			position 0,-74
+			scale 2
+		}
 		object DefaultText $^_charName {
-			fontSize 12
-			position 0,-70
+			fontSize 8
+			position 0,-68
 			alignment Centered
 			enforcedBounds 80,1
 			color b3a398
+		}
+
+		object Sprite {
+			texture Texture'topic_display'
+			position 0,-40
+		}
+
+		object DisplayObjectContainer {
+			position 0,-23
+
+			children [
+				object Sprite $^_food {
+					position -20,0
+				}
+				object Sprite $^_sports {
+					position 0,0
+				}
+				object Sprite $^_music {
+					position 20,0
+				}
+			]
 		}
 	]
 }
