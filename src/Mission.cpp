@@ -9,6 +9,7 @@
 #include "Mission.h"
 #include "Character.h"
 #include "World.h"
+#include "TutorialManager.h"
 using namespace fr;
 
 namespace ld
@@ -35,11 +36,15 @@ namespace ld
 	////////////////
 	
 	FRESH_DEFINE_CLASS( Mission )
+	DEFINE_VAR( Mission, WeakPtr< World >, m_world );
 	DEFINE_VAR( Mission, std::vector< MissionCharacterSetup::ptr >, m_characters );
+	DEFINE_VAR( Mission, SmartPtr< TutorialManager >, m_tutorial );
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( Mission )
 	
-	void Mission::setup( World& world )
+	void Mission::setup( WeakPtr< World > world )
 	{
+		REQUIRES( world );
+		m_world = world;
 		for( auto character : m_characters )
 		{
 			ASSERT( character );
@@ -50,7 +55,21 @@ namespace ld
 				character->m_character->setOpinion( std::make_pair( opinion->m_topic, opinion->m_character ), opinion->m_value );
 			}
 			
-			world.addCharacter( character->m_character, character->m_initialRoom );
+			world->addCharacter( character->m_character, character->m_initialRoom );
+		}
+		
+		if( m_tutorial )
+		{
+			m_tutorial->setup( m_world );
+		}
+	}
+
+
+	void Mission::update()
+	{
+		if( m_tutorial )
+		{
+			m_tutorial->update();
 		}
 	}
 	

@@ -22,7 +22,8 @@ namespace ld
 		
 		void inspectCharacter( SmartPtr< Character > character );
 		void toggleCharacterInspection( SmartPtr< Character > character );
-		
+		void showTutorialMessage( const std::string& message );
+		void hideTutorialMessage();
 	private:
 		
 	};

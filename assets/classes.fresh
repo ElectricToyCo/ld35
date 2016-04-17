@@ -268,33 +268,6 @@ class Character06 extends CharacterDefault {
 	]
 }
 
-class MissionCharacterSetupDefault extends MissionCharacterSetup {
-	opinions [
-		object MissionCharacterOpinion {
-			topic Food
-			value Love
-		}
-		object MissionCharacterOpinion {
-			topic Sports
-			value Like
-		}
-		object MissionCharacterOpinion {
-			topic Music
-			value Hate
-		}
-		object MissionCharacterOpinion {
-			topic Character
-			character 0
-			value Dislike
-		}
-		object MissionCharacterOpinion {
-			topic Character
-			character 1
-			value Love
-		}
-	]
-}
-
 class CharacterPlayer extends Character04 {				// TODO which?
 	controllerImpulseScale 600
 	controller object PlayerControllerDefault {}
@@ -305,6 +278,8 @@ class CameraDefault extends Camera {
 	targetZoomRatio 2
 	zoomRatio 2
 }
+
+include "assets/missions.fresh"
 
 class WorldDefault extends World {
 	gravity 0
@@ -333,39 +308,7 @@ class WorldDefault extends World {
 		target CharacterPlayer'player'
 	}
 
-	mission object Mission {
-		characters [
-			object MissionCharacterSetupDefault {
-				character object Character01 {
-				}
-				initialRoom 0
-			}
-			object MissionCharacterSetupDefault {
-				character object Character02 {
-				}
-				initialRoom 0
-			}
-			object MissionCharacterSetupDefault {
-				character object Character03 {
-				}
-				initialRoom 1
-			}
-			object MissionCharacterSetupDefault {
-				character object CharacterPlayer player {
-				}
-				initialRoom 1
-			}
-			object MissionCharacterSetupDefault {
-				character object Character05 {
-				}
-				initialRoom 2
-			}
-			object MissionCharacterSetupDefault {
-				character object Character06 {
-				}
-				initialRoom 3
-			}
-		]
+	mission object Mission01 {
 	}
 }
 

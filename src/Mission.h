@@ -49,12 +49,16 @@ namespace ld
 	
 	////////////////
 
+	class TutorialManager;
+	
 	class Mission : public fr::Object
 	{
 		FRESH_DECLARE_CLASS( Mission, Object );
 	public:
 		
-		void setup( World& world );
+		virtual void setup( WeakPtr< World > world );
+		
+		virtual void update();
 		
 		enum class Status
 		{
@@ -67,7 +71,9 @@ namespace ld
 		
 	private:
 		
+		VAR( WeakPtr< World >, m_world );
 		VAR( std::vector< MissionCharacterSetup::ptr >, m_characters );
+		VAR( SmartPtr< TutorialManager >, m_tutorial );
 		
 	};
 	

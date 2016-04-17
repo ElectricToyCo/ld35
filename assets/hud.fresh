@@ -119,17 +119,16 @@ class TutorialDisplay extends UIPopup {
 	isTouchEnabled false
 	ignoreFrameAttachment false
 	parentFrameAttachPoint 0,-1
-	position 0,26
-	startHidden false
-	hiddenTranslation 0,-24
+	position 0,28
+	startHidden true
+	hiddenTranslation 0,-36
 	hiddenColor Invisible
 	defaultShowDuration 0.35
 	defaultHideDuration 0.25
 
 	children [
 		object TutorialFrame {}
-		object TutorialText {
-			text "!TutorialMission"
+		object TutorialText $^_message {
 		}
 	]
 }
@@ -140,6 +139,6 @@ class HUDDefault extends HUD {
 		object CharacterInspectorDefault {}
 
 		// Towards the top
-		object TutorialDisplay {}
+		object TutorialDisplay $^_tutorialMessage {}
 	]
 }

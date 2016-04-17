@@ -7,6 +7,7 @@
 //
 
 #include "World.h"
+#include "AppStage.h"
 #include "TileGrid.h"
 #include "Mission.h"
 using namespace fr;
@@ -20,6 +21,13 @@ namespace ld
 	DEFINE_VAR( World, std::vector< SmartPtr< Conversation >>, m_conversations );
 	DEFINE_VAR( World, SmartPtr< Mission >, m_mission );
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( World )
+	
+	AppStage& World::ldStage() const
+	{
+		auto cast = stage().as< AppStage >();
+		ASSERT( cast );
+		return *cast;
+	}
 	
 	TileGrid& World::tileGrid() const
 	{
@@ -47,6 +55,8 @@ namespace ld
 		
 		if( m_mission )
 		{
+			m_mission->update();
+			
 			// Check for mission complete.
 			//
 			const auto missionStatus = m_mission->conclusionStatus( *this );
@@ -188,7 +198,7 @@ namespace ld
 		
 		if( m_mission )
 		{
-			m_mission->setup( *this );
+			m_mission->setup( this );
 		}
 	}
 	

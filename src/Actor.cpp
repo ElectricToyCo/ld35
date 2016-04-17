@@ -39,7 +39,7 @@ namespace ld
 
 	AppStage& Actor::ldStage() const
 	{
-		return static_cast< AppStage& >( stage() );
+		return world().ldStage();
 	}
 	
 	bool Actor::travelTo( const vec2& pos )

@@ -18,6 +18,7 @@
 
 namespace ld
 {
+	class AppStage;
 	class TileGrid;
 	class Mission;
 	
@@ -25,7 +26,8 @@ namespace ld
 	{
 		FRESH_DECLARE_CLASS( World, FreshWorld );
 	public:
-		
+
+		AppStage& ldStage() const;
 		TileGrid& tileGrid() const;
 		DisplayObjectContainer& actorHost() const;
 		DisplayObjectContainer& hudOverlayHost() const;
