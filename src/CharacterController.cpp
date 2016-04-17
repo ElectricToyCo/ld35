@@ -62,6 +62,11 @@ namespace ld
 		return m_conversant != nullptr || m_targetConversant != nullptr;
 	}
 	
+	void CharacterController::setOpinion( const Topic& topic, Value value )
+	{
+		m_topicValues[ topic ] = value;
+	}
+	
 	void CharacterController::update()
 	{
 		const auto now = character().world().time();

@@ -23,7 +23,7 @@ class TileGridDefault extends TileGrid {
 
 	templates [
 		object FloorTileTemplate floor_hallway {
-			atlasSubTexture 1,0
+			atlasSubTexture 0,1
 			creationColor White
 		}
 		object FloorTileTemplate floor_classroom {
@@ -197,12 +197,14 @@ class CharacterDefault extends Character {
 }
 
 class Character01 extends CharacterDefault {
+	characterName "Tiffany"
 	children [
 		object CharacterVisual01 $^_visual {
 		}
 	]
 }
 class Character02 extends CharacterDefault {
+	characterName "Pat"
 	dimensions 8,2
 	children [
 		object CharacterVisual02 $^_visual {
@@ -210,12 +212,14 @@ class Character02 extends CharacterDefault {
 	]
 }
 class Character03 extends CharacterDefault {
+	characterName "Delilah"
 	children [
 		object CharacterVisual03 $^_visual {
 		}
 	]
 }
 class Character04 extends CharacterDefault {
+	characterName "Flash"
 	dimensions 10,2
 	children [
 		object CharacterVisual04 $^_visual {
@@ -223,15 +227,44 @@ class Character04 extends CharacterDefault {
 	]
 }
 class Character05 extends CharacterDefault {
+	characterName "Amber"
 	children [
 		object CharacterVisual05 $^_visual {
 		}
 	]
 }
 class Character06 extends CharacterDefault {
+	characterName "Ambrosia"
 	dimensions 10,2
 	children [
 		object CharacterVisual06 $^_visual {
+		}
+	]
+}
+
+class MissionCharacterSetupDefault extends MissionCharacterSetup {
+	opinions [
+		object MissionCharacterOpinion {
+			topic Food
+			value Love
+		}
+		object MissionCharacterOpinion {
+			topic Sports
+			value Like
+		}
+		object MissionCharacterOpinion {
+			topic Music
+			value Hate
+		}
+		object MissionCharacterOpinion {
+			topic Character
+			character 0
+			value Dislike
+		}
+		object MissionCharacterOpinion {
+			topic Character
+			character 1
+			value Love
 		}
 	]
 }
@@ -252,9 +285,9 @@ class WorldDefault extends World {
 	positionQuantum 1
 
 	roomRects [
-		(1,1,6,6),
-		(10,1,15,6),
-		(1,10,6,15),
+		(1,2,5,5),
+		(10,2,14,5),
+		(1,10,5,15),
 		(10,10,15,15),
 	]
 
@@ -264,26 +297,6 @@ class WorldDefault extends World {
 		object TileGridDefault $^_tileGrid {}
 
 		object DisplayObjectContainer $^_actorHost {
-			children [
-				object Character01 {
-					position 64
-				}
-				object Character02 {
-					position 64,80
-				}
-				object Character03 {
-					position 128
-				}
-				object CharacterPlayer player {
-					position 80
-				}
-				object Character05 {
-					position 200,64
-				}
-				object Character06 {
-					position 64,200
-				}
-			]
 		}
 
 		object DisplayObjectContainer $^_hudOverlayHost {
@@ -292,7 +305,42 @@ class WorldDefault extends World {
 
 	camera object CameraDefault {
 		target CharacterPlayer'player'
-	}	
+	}
+
+	mission object Mission {
+		characters [
+			object MissionCharacterSetupDefault {
+				character object Character01 {
+				}
+				initialRoom 0
+			}
+			object MissionCharacterSetupDefault {
+				character object Character02 {
+				}
+				initialRoom 0
+			}
+			object MissionCharacterSetupDefault {
+				character object Character03 {
+				}
+				initialRoom 1
+			}
+			object MissionCharacterSetupDefault {
+				character object CharacterPlayer player {
+				}
+				initialRoom 1
+			}
+			object MissionCharacterSetupDefault {
+				character object Character05 {
+				}
+				initialRoom 2
+			}
+			object MissionCharacterSetupDefault {
+				character object Character06 {
+				}
+				initialRoom 3
+			}
+		]
+	}
 }
 
 class ScreenContents extends DisplayObjectContainer {

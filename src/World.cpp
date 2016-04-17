@@ -8,6 +8,7 @@
 
 #include "World.h"
 #include "TileGrid.h"
+#include "Mission.h"
 using namespace fr;
 
 namespace ld
@@ -17,6 +18,7 @@ namespace ld
 	DEFINE_VAR( World, ClassInfo::cptr, m_conversationDisplayClass );
 	DEFINE_VAR( World, std::vector< SmartPtr< Character >>, m_characters );
 	DEFINE_VAR( World, std::vector< SmartPtr< Conversation >>, m_conversations );
+	DEFINE_VAR( World, SmartPtr< Mission >, m_mission );
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( World )
 	
 	TileGrid& World::tileGrid() const
@@ -42,6 +44,19 @@ namespace ld
 								 {
 									 return a->position().y < b->position().y;
 								 } );
+		
+		if( m_mission )
+		{
+			// Check for mission complete.
+			//
+			const auto missionStatus = m_mission->conclusionStatus( *this );
+			if( missionStatus != Mission::Status::Undecided )
+			{
+				// Time to conclude the world.
+				//
+				// TODO!!!
+			}
+		}
 	}
 	
 	size_t World::numRooms() const
@@ -84,6 +99,33 @@ namespace ld
 		return randInRange( rect.ulCorner() * UNITS_PER_TILE, rect.brCorner() * UNITS_PER_TILE );
 	}
 	
+	void World::addCharacter( Character::ptr character, size_t initialRoom )
+	{
+		REQUIRES( character );
+		
+		// Position the character.
+		//
+		if( initialRoom != -1 )
+		{
+			character->position( randomPointInRoom( initialRoom ));
+		}
+		else
+		{
+			const auto gridExtents = vector_cast< real >( tileGrid().extents() ) - UNITS_PER_TILE * 6.0f;
+			const auto halfExtents = gridExtents / 2.0f;
+			const auto clearSpot = tileGrid().findClearLocationNearby( halfExtents,
+																	  halfExtents.minorAxisValue(), []( const vec2& p )
+																	  {
+																		  return randInRange( 1.0f, 2.0f );
+																	  } );
+			
+			character->position( clearSpot );
+		}
+		
+		actorHost().addChild( character );
+		m_characters.push_back( character );
+	}
+	
 	SmartPtr< Character > World::bestCharacter( std::function< real( const Character& ) >&& scoringFunction )
 	{
 		real bestScore = 0;
@@ -123,6 +165,16 @@ namespace ld
 												   } );
 	}
 	
+	void World::onAddedToStage()
+	{
+		Super::onAddedToStage();
+		
+		if( m_mission )
+		{
+			m_mission->setup( *this );
+		}
+	}
+	
 	std::string World::descriptiveForValue( Value value ) const
 	{
 		std::vector< std::string > options;
@@ -145,8 +197,8 @@ namespace ld
 				options = { "like", "dig", "am into" };
 				break;
 			case Value::Love:
-				break;
 				options = { "love", "adore", "can't get enough of" };
+				break;
 		}
 		
 		ASSERT( options.empty() == false );

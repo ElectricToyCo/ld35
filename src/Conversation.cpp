@@ -103,7 +103,7 @@ namespace ld
 			}
 			else
 			{
-				dev_trace( speaker << " had nothing to say." );
+				dev_trace( speaker->characterName() << " had nothing to say." );
 			}
 			
 			scheduleCallback( m_speechDelay );

@@ -18,6 +18,8 @@ namespace ld
 	{
 		FRESH_DECLARE_CLASS( Character, Actor );
 	public:
+
+		void setOpinion( const Topic& topic, Value value );
 		
 		virtual bool onAddressedBy( SmartPtr< Character > initator );
 		virtual void onConversationEnding();

@@ -31,7 +31,7 @@ namespace ld
 	{
 		REQUIRES( speaker );
 		
-		dev_trace( speaker << " says, \"" << annotatedString << "\"" );
+		dev_trace( speaker->characterName() << " says, \"" << annotatedString << "\"" );
 
 		ASSERT( m_speechTextClass );
 

@@ -19,6 +19,7 @@
 namespace ld
 {
 	class TileGrid;
+	class Mission;
 	
 	class World : public fr::FreshWorld
 	{
@@ -63,12 +64,15 @@ namespace ld
 
 		// CHARACTERS
 		
+		void addCharacter( Character::ptr character, size_t initialRoom = -1 );
+		
 		SmartPtr< Character > bestCharacter( std::function< real( const Character& ) >&& scoringFunction );
 		
 		size_t numCharacters() const;
 		SmartPtr< Character > characterAt( size_t iCharacter ) const;
 		
 		virtual void postLoad() override;
+		virtual void onAddedToStage() override;
 		
 	private:
 		
@@ -76,6 +80,7 @@ namespace ld
 		VAR( ClassInfo::cptr, m_conversationDisplayClass );
 		VAR( std::vector< SmartPtr< Character >>, m_characters );
 		VAR( std::vector< SmartPtr< Conversation >>, m_conversations );
+		VAR( SmartPtr< Mission >, m_mission );
 		
 	};
 	

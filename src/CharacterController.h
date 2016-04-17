@@ -34,6 +34,8 @@ namespace ld
 		
 		bool occupied() const;
 		
+		void setOpinion( const Topic& topic, Value value );
+
 		bool onAddressedBy( SmartPtr< Character > other );
 		void endConversation();
 		

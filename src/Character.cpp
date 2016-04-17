@@ -18,6 +18,17 @@ namespace ld
 	FRESH_DEFINE_CLASS( Character )
 	DEFINE_VAR( Character, std::string, m_characterName );
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( Character )
+
+	void Character::setOpinion( const Topic& topic, Value value )
+	{
+		if( controller() )
+		{
+			if( auto characterController = controller()->as< CharacterController >() )
+			{
+				return characterController->setOpinion( topic, value );
+			}
+		}
+	}
 	
 	bool Character::onAddressedBy( SmartPtr< Character > initiator )
 	{
