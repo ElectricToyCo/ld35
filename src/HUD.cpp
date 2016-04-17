@@ -31,6 +31,12 @@ namespace ld
 		inspector.toggleCharacterInspection( character );
 	}
 	
+	bool HUD::isInspectorShowing() const
+	{
+		auto& inspector = getExpectedDescendant< CharacterInspector >( *this );
+		return inspector.isFullyShown();
+	}
+	
 	void HUD::showTutorialMessage( const std::string& message )
 	{
 		auto& popup = getExpectedDescendant< UIPopup >( *this, "_tutorialMessage" );

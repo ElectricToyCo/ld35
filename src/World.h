@@ -31,6 +31,8 @@ namespace ld
 		TileGrid& tileGrid() const;
 		DisplayObjectContainer& actorHost() const;
 		DisplayObjectContainer& hudOverlayHost() const;
+		
+		Character& player();
 
 		virtual void update() override;
 		
@@ -72,7 +74,7 @@ namespace ld
 
 		// CHARACTERS
 		
-		void addCharacter( Character::ptr character, size_t initialRoom = -1 );
+		void addCharacter( Character::ptr character, const vec2& position, size_t initialRoom = -1 );
 		
 		SmartPtr< Character > bestCharacter( std::function< real( const Character& ) >&& scoringFunction );
 		

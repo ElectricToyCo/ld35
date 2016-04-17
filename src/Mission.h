@@ -44,7 +44,8 @@ namespace ld
 		FRESH_DECLARE_CLASS( MissionCharacterSetup, MissionCharacterState );
 	public:
 		
-		DVAR( size_t, m_initialRoom, -1 );
+		VAR( vec2, m_position );				// Ignored if 0,0
+		DVAR( size_t, m_initialRoom, -1 );		// Trumped by non-zero position
 	};
 	
 	////////////////

@@ -13,7 +13,10 @@
 
 namespace ld
 {
+	class AppStage;
 	class World;
+	class HUD;
+	class Character;
 	class TutorialManager;
 
 	class TutorialStep : public fr::Object
@@ -22,7 +25,7 @@ namespace ld
 	public:
 
 		bool completed() const;
-		void begin( WeakPtr< World > world );
+		virtual void begin( WeakPtr< World > world );
 		void update();
 		virtual void end();
 		
@@ -37,6 +40,9 @@ namespace ld
 		void markCompleted();
 		
 		World& world() const;
+		AppStage& ldStage() const;
+		HUD& hud() const;
+		Character& player() const;
 
 		void showMessage( const std::string& message );
 		void hideMessage();

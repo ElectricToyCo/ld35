@@ -1,0 +1,124 @@
+// ld35 missions
+
+class MissionCharacterSetupDefault extends MissionCharacterSetup {
+	opinions [
+		object MissionCharacterOpinion {
+			topic Food
+			value Love
+		}
+		object MissionCharacterOpinion {
+			topic Sports
+			value Like
+		}
+		object MissionCharacterOpinion {
+			topic Music
+			value Hate
+		}
+		object MissionCharacterOpinion {
+			topic Character
+			character 0
+			value Dislike
+		}
+		object MissionCharacterOpinion {
+			topic Character
+			character 1
+			value Love
+		}
+	]
+}
+
+class PlayerCharacterSetupDefault extends MissionCharacterSetup {
+	character object CharacterPlayer player {}
+	initialRoom 0
+	position 64
+}
+
+class TutorialStepDefault extends TutorialStep {
+	preDelay 1.0
+	postDelay 0.5
+}
+
+class Mission01 extends Mission {
+	characters [
+		object PlayerCharacterSetupDefault {
+		}
+		object MissionCharacterSetup {
+			character object Character01 {}
+			initialRoom 0
+			opinions [
+				object MissionCharacterOpinion {
+					topic Food
+					value Like
+				}
+				object MissionCharacterOpinion {
+					topic Sports
+					value Neutral
+				}
+				object MissionCharacterOpinion {
+					topic Music
+					value Love
+				}
+				object MissionCharacterOpinion {
+					topic Character
+					character 0
+					value Like
+				}			
+			]
+		}
+	]
+
+	tutorial object TutorialManager {
+		steps [			
+			object TutorialStep01_01 {
+				message "!TutorialPlayerCharacter"
+			}
+			object TutorialStep01_02 {
+				message "!TutorialInspection"
+			}
+			object TutorialStepDefault {
+				message "!TutorialMission"
+			}
+			object TutorialStepDefault {
+				message "!TutorialTalk"
+			}
+			object TutorialStepDefault {
+				message "!TutorialValue"
+			}
+			object TutorialStepDefault {
+				message "!TutorialCorrectResult"
+			}
+			object TutorialStepDefault {
+				message "!TutorialIncorrectResult"
+			}
+		]
+	}
+}
+
+class Mission02 extends Mission {
+	characters [
+		object MissionCharacterSetupDefault {
+			character object CharacterPlayer player {}
+			initialRoom 0
+		}
+		object MissionCharacterSetupDefault {
+			character object Character01 {}
+			initialRoom 1
+		}
+		object MissionCharacterSetupDefault {
+			character object Character02 {}
+			initialRoom 0
+		}
+		object MissionCharacterSetupDefault {
+			character object Character03 {}
+			initialRoom 1
+		}
+		object MissionCharacterSetupDefault {
+			character object Character05 {}
+			initialRoom 2
+		}
+		object MissionCharacterSetupDefault {
+			character object Character06 {}
+			initialRoom 3
+		}
+	]
+}

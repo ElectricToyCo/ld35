@@ -9,6 +9,7 @@
 #include "TutorialManager.h"
 #include "World.h"
 #include "HUD.h"
+#include "Character.h"
 #include "AppStage.h"
 using namespace fr;
 
@@ -29,6 +30,21 @@ namespace ld
 		return *m_world;
 	}
 
+	AppStage& TutorialStep::ldStage() const
+	{
+		return world().ldStage();
+	}
+	
+	HUD& TutorialStep::hud() const
+	{
+		return world().ldStage().hud();
+	}
+	
+	Character& TutorialStep::player() const
+	{
+		return world().player();
+	}
+	
 	TimeType TutorialStep::now() const
 	{
 		return world().time();
@@ -46,7 +62,7 @@ namespace ld
 	
 	void TutorialStep::markCompleted()
 	{
-		if( !conditionCompleted() )
+		if( !isMarkedCompleted() )
 		{
 			m_completionTime = now();
 		}
@@ -162,7 +178,9 @@ namespace ld
 		//
 		if( m_currentStep < m_steps.size() )
 		{
-			m_steps[ m_currentStep ]->begin( m_world );
+			auto step = m_steps[ m_currentStep ];
+			ASSERT( step );
+			step->begin( m_world );
 		}
 		
 		onStepBeginning( m_currentStep );

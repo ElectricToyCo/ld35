@@ -10,6 +10,7 @@
 #include "AppStage.h"
 #include "TileGrid.h"
 #include "Mission.h"
+#include "PlayerController.h"
 using namespace fr;
 
 namespace ld
@@ -42,6 +43,17 @@ namespace ld
 	DisplayObjectContainer& World::hudOverlayHost() const
 	{
 		return getExpectedDescendant< DisplayObjectContainer >( *this, "_hudOverlayHost" );
+	}
+	
+	Character& World::player()
+	{
+		auto theChosenOne = bestCharacter( [&]( const Character& character )
+										  {
+											  return character.controller()->as< PlayerController >() ? 1.0f : -1.0f;
+										  } );
+		
+		ASSERT( theChosenOne );
+		return *theChosenOne;
 	}
 	
 	void World::update()
@@ -109,13 +121,22 @@ namespace ld
 		return randInRange( rect.ulCorner() * UNITS_PER_TILE, rect.brCorner() * UNITS_PER_TILE );
 	}
 	
-	void World::addCharacter( Character::ptr character, size_t initialRoom )
+	void World::addCharacter( Character::ptr character, const vec2& position, size_t initialRoom )
 	{
 		REQUIRES( character );
 		
 		// Position the character.
 		//
-		if( initialRoom != -1 )
+		if( position != vec2::ZERO )
+		{
+			character->position( position );
+			
+			if( initialRoom != -1 )
+			{
+				dev_trace( character->characterName() << " ignoring initialRoom of " << initialRoom << " when position is non-zero." );
+			}
+		}
+		else if( initialRoom != -1 )
 		{
 			character->position( randomPointInRoom( initialRoom ));
 		}

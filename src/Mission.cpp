@@ -30,6 +30,7 @@ namespace ld
 	////////////////
 	
 	FRESH_DEFINE_CLASS( MissionCharacterSetup )
+	DEFINE_VAR( MissionCharacterSetup, vec2, m_position );
 	DEFINE_DVAR( MissionCharacterSetup, size_t, m_initialRoom );
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( MissionCharacterSetup )
 	
@@ -55,7 +56,7 @@ namespace ld
 				character->m_character->setOpinion( std::make_pair( opinion->m_topic, opinion->m_character ), opinion->m_value );
 			}
 			
-			world->addCharacter( character->m_character, character->m_initialRoom );
+			world->addCharacter( character->m_character, character->m_position, character->m_initialRoom );
 		}
 		
 		if( m_tutorial )
