@@ -20,6 +20,24 @@ namespace
 	const real MAX_WANDER_DISTANCE = 4 * UNITS_PER_TILE;
 	const real MIN_CONVERSATION_DISTANCE = 0.5 * UNITS_PER_TILE;
 	const real MAX_CONVERSATION_DISTANCE = 2.0 * UNITS_PER_TILE;
+	
+	int getInfluenceAmount( Value valueForInfluencer, Value influencersValue )
+	{
+		const auto influencerAmount = valueToInfluence( valueForInfluencer );
+		const auto valueInt = valueToInfluence( influencersValue );
+		
+		return clamp( influencerAmount * valueInt, -2, 2 );		// TODO!!! Significant game logic.
+	}
+	
+	Value influencedValue( Value value, int influence )
+	{
+		const int intValue = static_cast< int >( value != Value::Undecided ? value : Value::Neutral ) - 3;
+		ASSERT( -2 <= intValue && intValue <= 2 );
+		
+		const int newIntValue = clamp( intValue + influence, -2, 2 ) + 3;
+		ASSERT( 1 <= newIntValue && newIntValue <= 5 );
+		return static_cast< Value >( newIntValue );
+	}
 }
 
 #if 0
@@ -549,7 +567,9 @@ namespace ld
 		auto iter = m_topicValues.find( topic );
 		if( iter != m_topicValues.end() )
 		{
-			return iter->second;
+			const auto baseValue = iter->second;
+			const auto influenced = influencedValue( baseValue, totalInfluence( topic ));
+			return influenced;
 		}
 		else
 		{
@@ -570,9 +590,38 @@ namespace ld
 
 	void CharacterController::hearSpeech( const Character& fromCharacter, const Topic& topic, Value value )
 	{
-		// TODO!!! Affect opinions.
+		setInfluenceFromCharacter( fromCharacter, topic, value );
 	}
 
-
+	void CharacterController::setInfluenceFromCharacter( const Character& other, Topic topic, Value value )
+	{
+		const auto hisIndex = character().world().indexForCharacter( other );
+		
+		const auto valueForInfluencer = valueForTopic( character(), std::make_pair( TopicType::Character, hisIndex ));
+		
+		const auto influence = getInfluenceAmount( valueForInfluencer, value );
+		m_perTopicInfluences[ topic ][ hisIndex ] = influence;
+	}
+	
+	int CharacterController::totalInfluence( Topic topic ) const
+	{
+		auto iter = m_perTopicInfluences.find( topic );
+		if( iter != m_perTopicInfluences.end() )
+		{
+			int influence = 0;
+			
+			const auto& map = iter->second;
+			for( auto pair : map )
+			{
+				influence += pair.second;
+			}
+			
+			return influence;
+		}
+		else
+		{
+			return 0;
+		}
+	}
 }
 

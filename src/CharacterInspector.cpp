@@ -19,6 +19,33 @@ namespace ld
 	
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( CharacterInspector )
 	
+	void CharacterInspector::update()
+	{
+		Super::update();
+		
+		if( m_character )
+		{
+			const auto showTopic = [&]( TopicType type, const std::string& displayName )
+			{
+				auto value = m_character->valueForTopic( *m_character, std::make_pair( type, -1 ));
+				
+				if( auto display = getDescendantByName< Sprite >( displayName ))
+				{
+					display->setTextureByName( textureNameForValue( value ));
+				}
+			};
+			
+			// TODO!!! Create these with their unchanging topic indicators.
+			showTopic( TopicType::Food, "_food" );
+			showTopic( TopicType::Sports, "_sports" );
+			showTopic( TopicType::Music, "_music" );
+			
+			// Show per-character values.
+			//
+			// TODO
+		}
+	}
+	
 	void CharacterInspector::inspectCharacter( SmartPtr< Character > character )
 	{
 		// Prior character?
@@ -39,28 +66,6 @@ namespace ld
 			getExpectedDescendant< DisplayObjectProxy >( *this, "_proxyShadow" ).object( m_character->visual() );
 			
 			getExpectedDescendant< TextField >( *this, "_charName" ).text( m_character ? m_character->characterName() : "-" );
-			
-			if( m_character )
-			{
-				const auto showTopic = [&]( TopicType type, const std::string& displayName )
-				{
-					auto value = m_character->valueForTopic( *m_character, std::make_pair( type, -1 ));
-					
-					if( auto display = getDescendantByName< Sprite >( displayName ))
-					{
-						display->setTextureByName( textureNameForValue( value ));
-					}
-				};
-				
-				// TODO!!! Create these with their unchanging topic indicators.
-				showTopic( TopicType::Food, "_food" );
-				showTopic( TopicType::Sports, "_sports" );
-				showTopic( TopicType::Music, "_music" );
-				
-				// Show character values.
-				//
-				// TODO
-			}
 		}
 		else
 		{

@@ -23,6 +23,8 @@ namespace ld
 		void inspectCharacter( SmartPtr< Character > character );
 		void toggleCharacterInspection( SmartPtr< Character > character );
 
+		virtual void update() override;
+		
 		virtual void hideWithDuration( TimeType duration, bool deleteWhenHidden = false, TimeType queueIfShowingWithDelay = -1.0 ) override;
 		
 	private:

@@ -79,6 +79,9 @@ namespace ld
 		real attitudeToward( const Character& withCharacter ) const;
 		TimeType timeSinceLastConversation( const Character& withCharacter ) const;
 		
+		void setInfluenceFromCharacter( const Character& other, Topic topic, Value value );
+		int totalInfluence( Topic ) const;
+		
 	private:
 		
 		DVAR( State, m_state, State::Idle );
@@ -99,6 +102,9 @@ namespace ld
 		using TopicTypeMap = std::map< Topic, Value >;
 
 		VAR( TopicTypeMap, m_topicValues );
+		
+		using CharacterInfluences = std::map< size_t, int >;
+		std::map< Topic, CharacterInfluences > m_perTopicInfluences;
 	};
 	
 	FRESH_ENUM_STREAM_IN_BEGIN( CharacterController, State )

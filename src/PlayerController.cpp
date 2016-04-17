@@ -140,7 +140,7 @@ namespace ld
 	std::string PlayerController::getOpinionResponseText( const Character& forUseWithCharacter, const Topic& topic, Value value ) const
 	{
 		// TODO
-		return character().world().createInitiatingSpeechText( topic, value );
+		return "Uh, okay.";
 	}
 	
 	void PlayerController::hearSpeech( const Character& fromCharacter, const Topic& topic, Value value )

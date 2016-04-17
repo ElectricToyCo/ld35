@@ -135,6 +135,25 @@ namespace ld
 				return "value_display_love";
 		}
 	}
+	
+	inline int valueToInfluence( Value value )
+	{
+		switch( value )
+		{
+			case Value::Undecided:
+				return 0;
+			case Value::Hate:
+				return -2;
+			case Value::Dislike:
+				return -1;
+			case Value::Neutral:
+				return 0;
+			case Value::Like:
+				return 1;
+			case Value::Love:
+				return 2;
+		}
+	}
 }
 
 #endif
