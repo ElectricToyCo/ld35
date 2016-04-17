@@ -15,6 +15,7 @@ namespace ld
 {	
 	FRESH_DEFINE_CLASS( ConversationDisplay )
 	DEFINE_VAR( ConversationDisplay, ClassInfo::cptr, m_speechTextClass );
+	DEFINE_VAR( ConversationDisplay, ClassInfo::cptr, m_speechPopupClass );
 	DEFINE_VAR( ConversationDisplay, vec2, m_speechTextOffset );
 	DEFINE_VAR( ConversationDisplay, vec2, m_speechSpacing );
 	DEFINE_DVAR( ConversationDisplay, TimeType, m_showTextDuration );
@@ -34,7 +35,12 @@ namespace ld
 		dev_trace( speaker->characterName() << " says, \"" << annotatedString << "\"" );
 
 		ASSERT( m_speechTextClass );
+		ASSERT( m_speechPopupClass );
 
+		auto popup = createObject< UIPopup >( *m_speechPopupClass );
+		ASSERT( popup );
+		host()->addChild( popup );
+		
 		auto textField = createObject< TextField >( *m_speechTextClass );
 		ASSERT( textField );
 		
@@ -43,11 +49,10 @@ namespace ld
 		
 		textField->text( displayString );
 		
-		addChild( textField );
-		textField->position( speaker->position() + m_speechTextOffset + m_speechSpacing * ( -m_nExpectedSpeeches + m_nSpeeches ));
+		popup->host()->addChild( textField );
+		popup->position( speaker->position() + m_speechTextOffset + m_speechSpacing * ( -m_nExpectedSpeeches + m_nSpeeches ));
 		
 		show();
-		hideWithDuration( m_showTextDuration, false, true );
 		
 		++m_nSpeeches;
 	}

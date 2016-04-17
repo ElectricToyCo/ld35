@@ -29,7 +29,23 @@ namespace ld
 			}
 		}
 	}
-	
+
+	bool Character::occupied() const
+	{
+		if( controller() )
+		{
+			if( auto playerController = controller()->as< PlayerController >() )
+			{
+				return playerController->occupied();
+			}
+			else if( auto characterController = controller()->as< CharacterController >() )
+			{
+				return characterController->occupied();
+			}
+		}
+		return true;
+	}
+
 	bool Character::onAddressedBy( SmartPtr< Character > initiator )
 	{
 		if( controller() )
@@ -44,6 +60,21 @@ namespace ld
 			}
 		}
 		return false;
+	}
+	
+	void Character::onConversationBeginning()
+	{
+		if( controller() )
+		{
+			if( auto playerController = controller()->as< PlayerController >() )
+			{
+				return playerController->onConversationBeginning();
+			}
+			else if( auto characterController = controller()->as< CharacterController >() )
+			{
+				return characterController->onConversationBeginning();
+			}
+		}
 	}
 	
 	void Character::onConversationEnding()

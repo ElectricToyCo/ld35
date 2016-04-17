@@ -154,6 +154,23 @@ namespace ld
 		return m_characters[ iCharacter ];
 	}
 	
+	size_t World::indexForCharacter( const Character& character ) const
+	{
+		const auto iter = std::find_if( m_characters.begin(), m_characters.end(), [&]( const Character::ptr& other )
+								   {
+									   return other == &character;
+								   } );
+		
+		if( iter != m_characters.end() )
+		{
+			return std::distance( m_characters.begin(), iter );
+		}
+		else
+		{
+			return -1;
+		}
+	}
+	
 	void World::postLoad()
 	{
 		Super::postLoad();
@@ -236,5 +253,14 @@ namespace ld
 		return stream.str();
 	}
 
+	void World::onConversationFinished( Conversation::ptr conversation )
+	{
+		REQUIRES( conversation );
+		
+		removeElements( m_conversations, [&]( const Conversation::ptr& other )
+					   {
+						   return other == conversation;
+					   } );
+	}
 }
 

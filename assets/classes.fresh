@@ -176,6 +176,7 @@ class CharacterControllerDefault extends CharacterController {
 	state Idle
 	wanderDelayRange 1,4
 	percentChanceWanderToNewRoom 10
+	percentChanceToInitiateTalk 80		// TODO!!!
 }
 
 class CharacterDefault extends Character {

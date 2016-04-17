@@ -19,9 +19,12 @@ namespace ld
 		FRESH_DECLARE_CLASS( Character, Actor );
 	public:
 
+		bool occupied() const;
+		
 		void setOpinion( const Topic& topic, Value value );
 		
 		virtual bool onAddressedBy( SmartPtr< Character > initator );
+		virtual void onConversationBeginning();
 		virtual void onConversationEnding();
 		virtual Topic pickTopic( const Character& forUseWithCharacter ) const;
 		virtual Value pickTopicResponse( const Character& forUseWithCharacter, const Topic& topic ) const;

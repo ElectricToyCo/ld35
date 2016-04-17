@@ -18,6 +18,12 @@ namespace ld
 	
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( PlayerController )
 	
+	bool PlayerController::occupied() const
+	{
+		// TODO!!!
+		return true;
+	}
+	
 	Character& PlayerController::character() const
 	{
 		ASSERT( dynamic_cast< Character* >( host().get() ));
@@ -34,6 +40,11 @@ namespace ld
 		// TODO!!!
 		
 		return false;		// TODO!!!
+	}
+
+	void PlayerController::onConversationBeginning()
+	{
+		// TODO
 	}
 	
 	void PlayerController::onConversationEnding()

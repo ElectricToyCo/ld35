@@ -32,6 +32,7 @@ namespace ld
 	private:
 		
 		VAR( ClassInfo::cptr, m_speechTextClass );
+		VAR( ClassInfo::cptr, m_speechPopupClass );
 		VAR( vec2, m_speechTextOffset );
 		VAR( vec2, m_speechSpacing );
 		DVAR( TimeType, m_showTextDuration, 8.0 );

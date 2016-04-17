@@ -15,10 +15,19 @@ class ConversationSpeechText extends DefaultText {
 
 }
 
+class ConversationSpeechPopup extends UIPopup {
+	defaultShowDuration 0.35
+	defaultHideDuration 0.25
+	hiddenTranslation 0,4
+	startHidden true
+	startBecomeShown true
+}
+
 class ConversationDisplayDefault extends ConversationDisplay {
 	speechTextClass ConversationSpeechText
-	speechTextOffset -2,-8
-	speechSpacing 0,4
-	defaultShowDuration 0.25
-	defaultHideDuration 2.0
+	speechPopupClass ConversationSpeechPopup
+	speechTextOffset -8,-16
+	speechSpacing 0,6
+	defaultShowDuration 0.1
+	defaultHideDuration 0.5
 }

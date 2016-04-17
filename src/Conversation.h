@@ -31,6 +31,8 @@ namespace ld
 		void finish();
 
 	protected:
+		
+		bool valid() const;
 
 		WeakPtr< World > m_world;
 		SmartPtr< Character > m_initiator;
@@ -49,7 +51,8 @@ namespace ld
 	private:
 		
 		DVAR( TimeType, m_initialDelay, 1.0 );
-		DVAR( TimeType, m_speechDelay, 4.0 );
+		DVAR( TimeType, m_speechDelay, 2.5 );
+		DVAR( TimeType, m_finalDelay, 4.0 );
 		
 		size_t m_nSpeechesMade = 0;
 		

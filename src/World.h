@@ -46,9 +46,13 @@ namespace ld
 			auto conversation = fr::createObject< ConversationT >();
 			ASSERT( conversation );
 			
+			m_conversations.push_back( conversation );
+			
 			conversation->start( this, initiator, second, display );
 			return conversation;
 		}
+		
+		void onConversationFinished( Conversation::ptr conversation );
 		
 		std::string descriptiveForValue( Value value ) const;
 		std::string descriptiveForTopic( Topic topic ) const;
@@ -70,6 +74,8 @@ namespace ld
 		
 		size_t numCharacters() const;
 		SmartPtr< Character > characterAt( size_t iCharacter ) const;
+		
+		size_t indexForCharacter( const Character& character ) const;
 		
 		virtual void postLoad() override;
 		virtual void onAddedToStage() override;

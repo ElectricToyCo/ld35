@@ -22,14 +22,14 @@ namespace
 	const real MAX_CONVERSATION_DISTANCE = 2.0 * UNITS_PER_TILE;
 }
 
-#if 0
-#	define ai_trace( x ) dev_trace( x )
+#if 1
+#	define ai_trace( x ) dev_trace( character().characterName() << ": " << x )
 #else
 #	define ai_trace( x )
 #endif
 
-#if 0
-#	define conversation_trace( x ) dev_trace( x )
+#if 1
+#	define conversation_trace( x ) dev_trace( character().characterName() << ": " << x )
 #else
 #	define conversation_trace( x )
 #endif
@@ -46,6 +46,7 @@ namespace ld
 	DEFINE_VAR( CharacterController, SmartPtr< Character >, m_conversant );
 	DEFINE_VAR( CharacterController, WeakPtr< Character >, m_conversationInitiator );
 	DEFINE_VAR( CharacterController, SmartPtr< Conversation >, m_conversation );
+	DEFINE_DVAR( CharacterController, real, m_percentChanceWanderlust );
 	DEFINE_VAR( CharacterController, TopicTypeMap, m_topicValues );
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( CharacterController )
 	
@@ -59,7 +60,8 @@ namespace ld
 	
 	bool CharacterController::occupied() const
 	{
-		return m_conversant != nullptr || m_targetConversant != nullptr;
+		ASSERT( valid() );
+		return m_state != Idle;
 	}
 	
 	void CharacterController::setOpinion( const Topic& topic, Value value )
@@ -69,6 +71,8 @@ namespace ld
 	
 	void CharacterController::update()
 	{
+		ASSERT( valid() );
+
 		const auto now = character().world().time();
 		
 		if( m_nextThinkTime < 0 || now >= m_nextThinkTime )
@@ -96,6 +100,8 @@ namespace ld
 		}
 		
 		Super::update();
+		
+		ASSERT( valid() );
 	}
 	
 	bool CharacterController::travelNear( const vec2& pos, real maxDistance, size_t room, real minDistance )
@@ -154,40 +160,55 @@ namespace ld
 	
 	void CharacterController::updateIdle()
 	{
+		ASSERT( valid() );
+
 		// TODO
+		
+		ASSERT( valid() );
 	}
 	
 	void CharacterController::updatePursuing()
 	{
+		ASSERT( valid() );
+
 		// Move near the target character.
-		//
-		// TODO
+
+		ASSERT( valid() );
 	}
 	
 	void CharacterController::updateTalking()
 	{
+		ASSERT( valid() );
+
 		// Time to deliver a speech?
 		//
 		ASSERT( m_conversant );
 		ASSERT( m_state == Talking );
 
 		// TODO!!
+
+		ASSERT( valid() );
 	}
 	
 	void CharacterController::updatePanicked()
 	{
+		ASSERT( valid() );
 		// Run away from the repulsive character (the player).
 		//
 		// TODO
+		
+		ASSERT( valid() );
 	}
 	
 	void CharacterController::wanderSomewhere()
 	{
+		ASSERT( valid() );
+
 		const World& world = character().world();
 
 		// Should I go to a whole new room?
 		//
-		const auto wantNewRoom = pctChance( m_percentChanceWanderToNewRoom );
+		const auto wantNewRoom = pctChance( std::max( m_percentChanceWanderToNewRoom, m_percentChanceWanderlust ));
 		const bool wantNonRoom = wantNewRoom && pctChance( 10 );
 
 		for( size_t tries = 0; tries < 4; ++tries )
@@ -221,15 +242,21 @@ namespace ld
 			
 			if( foundDestination )
 			{
+				m_percentChanceWanderlust = 0;
 				m_nextThinkTime = world.time() + 30.0;		// Escape clause just in case onTravelCompleted is never called.
-				break;
+				ASSERT( valid() );
+				return;
 			}
 		}
-		ai_trace( "Done (maybe gave up) finding a wander destination." );
+		ai_trace( "Gave up finding a wander destination." );
+		
+		ASSERT( valid() );
 	}
 	
 	void CharacterController::onTravelCompleted()
 	{
+		ASSERT( valid() );
+
 		if( m_state == Pursuing && m_targetConversant && distanceSquared( character().position(), m_targetConversant->position() ))
 		{
 			// Start talking if possible.
@@ -239,53 +266,72 @@ namespace ld
 			
 			if( succeeded )
 			{
+				ASSERT( valid() );
 				return;
 			}
 			else
 			{
 				ASSERT( !m_conversant );
 				m_targetConversant = nullptr;
+				m_state = Idle;
 			}
 		}
 		
 		m_nextThinkTime = character().world().time() + randInRange( m_wanderDelayRange );
+		
+		ASSERT( valid() );
 	}
 	
 	bool CharacterController::initiateConversation( Character& withCharacter )
 	{
+		ASSERT( valid() );
+
 		auto& me = character();
 		
 		conversation_trace( &me << " talks to " << &withCharacter );
 		
-		const bool wasConversationAccepted = withCharacter.onAddressedBy( &me );
-
-		if( wasConversationAccepted )
+		if( withCharacter.occupied() )
 		{
-			m_conversationInitiator = &me;
-			m_conversant = m_targetConversant;
-			ASSERT( m_conversant == &withCharacter );
-			
-			onConversationBeginning();
-			
-			// Choose a conversation type.
-			//
-			// TODO!!!
-			
-			m_conversation = me.world().createConversation< ConversationOpinion >( m_conversationInitiator, m_conversant );
+			return false;
 		}
-		
-		return wasConversationAccepted;
+		else
+		{
+			const bool wasConversationAccepted = withCharacter.onAddressedBy( &me );
+
+			if( wasConversationAccepted )
+			{
+				m_conversationInitiator = &me;
+				m_conversant = m_targetConversant;
+				ASSERT( m_conversant == &withCharacter );
+				
+				// Choose a conversation type.
+				//
+				// TODO!!!
+				
+				m_conversation = me.world().createConversation< ConversationOpinion >( m_conversationInitiator, m_conversant );
+			}
+			
+			ASSERT( valid() );
+
+			return wasConversationAccepted;
+		}
 	}
 	
 	Topic CharacterController::pickTopic( const Character& forUseWithCharacter ) const
 	{
+		const auto myIndex = character().world().indexForCharacter( character() );
+		const auto hisIndex = character().world().indexForCharacter( forUseWithCharacter );
+		
 		using Pair = typename decltype( m_topicValues )::value_type;
 		
 		std::vector< Pair > validTopics;
 		std::copy_if( m_topicValues.begin(), m_topicValues.end(), std::back_inserter( validTopics ),
 					 [&]( const Pair& pair )
 					 {
-						 return pair.second != Value::Undecided;
+						 return pair.second != Value::Undecided &&
+						 
+						 // Characters don't offer to talk about themselves or their partner.
+						 ( pair.first.first != TopicType::Character || ( pair.first.second != myIndex && pair.first.second != hisIndex ));
 					 } );
 		
 		if( !validTopics.empty() )
@@ -305,8 +351,11 @@ namespace ld
 	
 	void CharacterController::chooseNextBehavior()
 	{
+		ASSERT( valid() );
+
 		ASSERT( !m_conversant );
 		ASSERT( !m_targetConversant );
+		ASSERT( m_state == Idle );
 		
 		// Should we go talk to someone?
 		//
@@ -316,7 +365,7 @@ namespace ld
 			
 			if( m_targetConversant )
 			{
-				conversation_trace( &character() << " pursuing " << m_targetConversant );
+				conversation_trace( character().characterName() << " pursuing " << m_targetConversant->characterName() );
 
 				m_state = Pursuing;
 				
@@ -326,6 +375,7 @@ namespace ld
 				if( !foundDestination )
 				{
 					m_targetConversant = nullptr;
+					m_state = Idle;
 					m_nextThinkTime = -1;	// Immediately.
 				}
 			}
@@ -337,10 +387,14 @@ namespace ld
 			m_state = Idle;
 			wanderSomewhere();
 		}
+		
+		ASSERT( valid() );
 	}
 	
 	Character::ptr CharacterController::findConversant() const
 	{
+		ASSERT( valid() );
+
 		const auto& me = character();
 		const auto myPosition = me.position();
 		const auto myCurrentRoom = me.currentRoom();
@@ -383,13 +437,22 @@ namespace ld
 
 	bool CharacterController::onAddressedBy( SmartPtr< Character > other )
 	{
+		ASSERT( valid() );
+		
 		REQUIRES( other );
 		REQUIRES( other != &character() );
 		
-		if( m_conversant || ( m_targetConversant && m_targetConversant != other ) )
+		if( m_conversant )
 		{
 			onConversationInterrupted();
-		}		
+		}
+		else if( m_targetConversant && m_targetConversant != other )
+		{
+			// Was pursuing someone other than the person trying to talk to me.
+			//
+			m_targetConversant = nullptr;
+			m_state = Idle;
+		}
 		
 		m_targetConversant = nullptr;
 		m_conversant = other;
@@ -398,20 +461,41 @@ namespace ld
 		
 		travelNear( m_conversant->position(), MAX_CONVERSATION_DISTANCE, -1 /* room don't care */, MIN_CONVERSATION_DISTANCE );
 
+		ASSERT( valid() );
+
 		return true;
+	}
+	
+	bool CharacterController::valid() const
+	{
+		switch( m_state )
+		{
+			case Idle:
+			case Panicked:
+				return !m_conversant && !m_targetConversant && !m_conversationInitiator && !m_conversation;
+			case Pursuing:
+				return m_targetConversant && !m_conversant && !m_conversationInitiator && !m_conversation;
+			case Talking:
+				return !m_targetConversant && m_conversant && m_conversationInitiator;
+		}
 	}
 	
 	void CharacterController::onConversationBeginning()
 	{
 		REQUIRES( m_conversant );
 		
+		character().stopTravel();
+
 		m_targetConversant = nullptr;
 		m_state = Talking;
-		character().stopTravel();
+		
+		ASSERT( valid() );
 	}
 	
 	void CharacterController::endConversation()
 	{
+		ASSERT( valid() );
+
 		REQUIRES( m_conversant );
 		REQUIRES( m_conversationInitiator == &character() );
 		ASSERT( m_state == Talking );
@@ -419,27 +503,40 @@ namespace ld
 		
 		m_conversant->onConversationEnding();
 		onConversationEnding();
+		
+		ASSERT( valid() );
 	}
 	
 	void CharacterController::onConversationInterrupted()
 	{
+		ASSERT( valid() );
+
 		if( m_conversation )
 		{
 			m_conversation->onParticipantInterrupted( &character() );
 		}
+		
+		ASSERT( valid() );
 	}
 	
 	void CharacterController::onConversationEnding()
 	{
-		if( m_state == Talking )
-		{
-			ASSERT( !m_targetConversant );
-			m_conversation = nullptr;
-			m_conversationInitiator = nullptr;
-			m_conversant = nullptr;
-			m_state = Idle;
-		}
+		ASSERT( valid() );
+
+		ASSERT( m_state == Talking );
+		
+		ASSERT( !m_targetConversant );
+		
+		m_conversation = nullptr;
+		m_conversationInitiator = nullptr;
+		m_conversant = nullptr;
+		m_state = Idle;
+		
+		m_percentChanceWanderlust = 100;
+	
 		PROMISES( !occupied() );
+		
+		ASSERT( valid() );
 	}
 	
 	Value CharacterController::valueForTopic( const Character& forUseWithCharacter, const Topic& topic ) const

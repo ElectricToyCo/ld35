@@ -17,6 +17,7 @@ namespace ld
 	FRESH_DEFINE_CLASS( Conversation )
 	DEFINE_DVAR( Conversation, TimeType, m_initialDelay );
 	DEFINE_DVAR( Conversation, TimeType, m_speechDelay );
+	DEFINE_DVAR( Conversation, TimeType, m_finalDelay );
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( Conversation )
 
 	bool Conversation::active() const
@@ -31,17 +32,17 @@ namespace ld
 	
 	void Conversation::start( WeakPtr< World > world, SmartPtr< Character > initiator, SmartPtr< Character > second, SmartPtr< ConversationDisplay > display )
 	{
-		ASSERT( world );
-		ASSERT( initiator );
-		ASSERT( second );
-		ASSERT( display );
-		
 		m_world = world;
 		m_initiator = initiator;
 		m_second = second;
 		m_display = display;
-		
+
+		ASSERT( valid() );
+
 		m_nSpeechesMade = 0;
+		
+		m_initiator->onConversationBeginning();
+		m_second->onAddressedBy( m_initiator );
 		
 		scheduleCallback( m_initialDelay );
 		
@@ -57,10 +58,17 @@ namespace ld
 	{
 		if( active() )
 		{
+			ASSERT( valid() );
+
 			m_world->cancelCallback( FRESH_CALLBACK( onTimeForNextStep ));
 			
 			m_initiator->onConversationEnding();
 			m_second->onConversationEnding();
+		
+			if( m_display )
+			{
+				m_display->endConversation();
+			}
 			
 			m_world = nullptr;
 			m_initiator = nullptr;
@@ -83,6 +91,8 @@ namespace ld
 	
 	void Conversation::continueConversation()
 	{
+		ASSERT( valid() );
+
 		if( m_nSpeechesMade >= maxSpeechesMade() )
 		{
 			// All done.
@@ -106,19 +116,33 @@ namespace ld
 				dev_trace( speaker->characterName() << " had nothing to say." );
 			}
 			
-			scheduleCallback( m_speechDelay );
+			// Was that the last speech?
+			//
+			scheduleCallback( ( m_nSpeechesMade >= maxSpeechesMade() ) ? m_finalDelay : m_speechDelay );
 		}
 	}
 	
 	void Conversation::scheduleCallback( TimeType delay )
 	{
-		ASSERT( m_world );
+		ASSERT( valid() );
+
 		m_world->scheduleCallback( FRESH_CALLBACK( onTimeForNextStep ), delay );
 	}
 	
 	FRESH_DEFINE_CALLBACK( Conversation, onTimeForNextStep, fr::Event )
 	{
-		continueConversation();
+		if( active() )
+		{
+			continueConversation();
+		}
+	}
+	
+	bool Conversation::valid() const
+	{
+		return !m_world ||
+		( m_initiator &&
+		m_second &&
+		m_display );
 	}
 }
 

@@ -24,7 +24,10 @@ namespace ld
 		
 		Character& character() const;
 		
+		bool occupied() const;
+		
 		bool onAddressedBy( SmartPtr< Character > other );
+		void onConversationBeginning();
 		void onConversationEnding();
 
 		virtual Topic pickTopic( const Character& forUseWithCharacter ) const;

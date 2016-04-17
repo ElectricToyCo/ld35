@@ -42,6 +42,7 @@ namespace ld
 		virtual void update() override;
 		
 		void onTravelCompleted();
+		void onConversationBeginning();
 		void onConversationEnding();
 
 		Topic pickTopic( const Character& forUseWithCharacter ) const;
@@ -55,8 +56,9 @@ namespace ld
 		virtual void hearSpeech( const Character& fromCharacter, const Topic& topic, Value value );
 
 	protected:
+		
+		bool valid() const;
 
-		void onConversationBeginning();
 		void onConversationInterrupted();
 		
 		bool travelNear( const vec2& pos, real maxDistance, size_t room = -1, real minDistance = 0 );
@@ -91,6 +93,8 @@ namespace ld
 		VAR( WeakPtr< Character >, m_conversationInitiator );
 		
 		VAR( SmartPtr< Conversation >, m_conversation );
+
+		DVAR( real, m_percentChanceWanderlust, 0 );			// Gets higher right after a speech.
 
 		using TopicTypeMap = std::map< Topic, Value >;
 
