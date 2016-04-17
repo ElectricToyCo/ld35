@@ -51,6 +51,8 @@ namespace ld
 	
 	void PlayerController::onConversationEnding()
 	{
+		ASSERT( m_conversation );
+		character().world().onConversationFinished( m_conversation );
 		m_conversation = nullptr;
 		m_pendingTopic = std::make_pair( TopicType::Undecided, -1 );
 		m_pendingValue = Value::Undecided;
@@ -104,11 +106,14 @@ namespace ld
 	{
 		ASSERT( other );
 		
-		auto me = &character();
-		
-		ASSERT( other != me );
-		
-		me->ldStage().hud().togglePlayerInitiatedConversation( me, other );
+		if( !m_conversation )
+		{
+			auto me = &character();
+			
+			ASSERT( other != me );
+			
+			me->ldStage().hud().togglePlayerInitiatedConversation( me, other );
+		}
 	}
 	
 	Topic PlayerController::pickTopic( const Character& forUseWithCharacter ) const
@@ -148,12 +153,14 @@ namespace ld
 	void PlayerController::sayOpinion( SmartPtr< Character > to, const Topic& topic, Value value )
 	{
 		REQUIRES( to );
-		m_pendingTopic = topic;
-		m_pendingValue = value;
 		
-		ASSERT( !m_conversation );
-		
-		m_conversation = character().world().createConversation< ConversationOpinion >( &character(), to );
+		if( !m_conversation )
+		{
+			m_pendingTopic = topic;
+			m_pendingValue = value;
+			
+			m_conversation = character().world().createConversation< ConversationOpinion >( &character(), to );
+		}
 	}
 
 	void PlayerController::toggleInspectNearest()

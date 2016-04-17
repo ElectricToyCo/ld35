@@ -527,6 +527,11 @@ namespace ld
 		
 		ASSERT( !m_targetConversant );
 		
+		if( m_conversation )
+		{
+			character().world().onConversationFinished( m_conversation );
+		}
+		
 		m_conversation = nullptr;
 		m_conversationInitiator = nullptr;
 		m_conversant = nullptr;

@@ -116,10 +116,6 @@ namespace ld
 	
 	void PlayerConversationPanel::chooseOpinionValue( Value value )
 	{
-		auto& selector = getExpectedDescendant< UIPopup >( *this, "_valueHost" );
-		selector.hiddenTranslation( -selector.hiddenTranslation() );
-		selector.hide();
-		
 		m_opinionValue = value;
 		
 		// Enact this speech.
