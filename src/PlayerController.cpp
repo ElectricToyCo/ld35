@@ -123,26 +123,24 @@ namespace ld
 	
 	Value PlayerController::pickTopicResponse( const Character& forUseWithCharacter, const Topic& topic ) const
 	{
-		// TODO!!! Prompt the human.
+		// TODO
 		return Value::Undecided;
 	}
 	
 	Value PlayerController::valueForTopic( const Character& forUseWithCharacter, const Topic& topic ) const
 	{
-		// TODO!!! Prompt the human.
 		return m_pendingValue;
 	}
 	
 	std::string PlayerController::getOpinionInitiatingText( const Character& forUseWithCharacter, const Topic& topic, Value value ) const
 	{
-		// TODO!!! Just concoct it.
-		return "I love it or something TODO.";
+		return character().world().createInitiatingSpeechText( topic, value );
 	}
 	
 	std::string PlayerController::getOpinionResponseText( const Character& forUseWithCharacter, const Topic& topic, Value value ) const
 	{
-		// TODO!!! Just concoct it.
-		return "I love it or something TODO.";
+		// TODO
+		return character().world().createInitiatingSpeechText( topic, value );
 	}
 	
 	void PlayerController::hearSpeech( const Character& fromCharacter, const Topic& topic, Value value )
