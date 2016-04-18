@@ -56,6 +56,8 @@ namespace ld
 	{
 		FRESH_DECLARE_CLASS( Mission, Object );
 	public:
+
+		SYNTHESIZE_GET( std::string, message );
 		
 		virtual void setup( WeakPtr< World > world );
 		
@@ -81,6 +83,7 @@ namespace ld
 		VAR( std::vector< MissionCharacterSetup::ptr >, m_characters );
 		VAR( SmartPtr< TutorialManager >, m_tutorial );
 		DVAR( bool, m_endWithTutorial, false );
+		VAR( std::string, m_message );
 	};
 	
 }

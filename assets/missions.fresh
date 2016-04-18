@@ -35,6 +35,7 @@ class PlayerCharacterSetupDefault extends MissionCharacterSetup {
 
 class Mission01 extends Mission {
 	endWithTutorial true
+	message "Breakfast with Tiffany"
 	characters [
 		object PlayerCharacterSetupDefault {
 		}

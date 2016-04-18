@@ -27,6 +27,8 @@ namespace ld
 		FRESH_DECLARE_CLASS( World, FreshWorld );
 	public:
 
+		std::string message() const;
+		
 		AppStage& ldStage() const;
 		TileGrid& tileGrid() const;
 		DisplayObjectContainer& actorHost() const;

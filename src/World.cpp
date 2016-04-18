@@ -23,6 +23,11 @@ namespace ld
 	DEFINE_VAR( World, SmartPtr< Mission >, m_mission );
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( World )
 	
+	std::string World::message() const
+	{
+		return m_mission ? m_mission->message() : "";
+	}
+	
 	AppStage& World::ldStage() const
 	{
 		auto cast = stage().as< AppStage >();

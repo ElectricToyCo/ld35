@@ -76,5 +76,16 @@ namespace ld
 		auto& popup = playerConversationPanel();
 		popup.togglePlayerInitiatedConversation( player, character );
 	}
+	
+	void HUD::announceMission( const std::string& heading, const std::string& message )
+	{
+		auto& host = getExpectedDescendant< UIPopup >( *this, "_missionAnnouncement" );
+		
+		getExpectedDescendant< TextField >( host, "_heading" ).text( heading );
+		getExpectedDescendant< TextField >( host, "_message" ).text( message );
+		
+		host.show();
+		host.hideWithDuration( 1.0, false, 2.0 );
+	}
 }
 

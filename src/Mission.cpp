@@ -41,6 +41,7 @@ namespace ld
 	DEFINE_VAR( Mission, std::vector< MissionCharacterSetup::ptr >, m_characters );
 	DEFINE_VAR( Mission, SmartPtr< TutorialManager >, m_tutorial );
 	DEFINE_DVAR( Mission, bool, m_endWithTutorial );
+	DEFINE_VAR( Mission, std::string, m_message );
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( Mission )
 	
 	void Mission::setup( WeakPtr< World > world )

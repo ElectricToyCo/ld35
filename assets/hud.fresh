@@ -369,6 +369,29 @@ class PlayerConversationPanelDefault extends PlayerConversationPanel {
 	]
 }
 
+class AnnouncementText extends DefaultText {
+	alignment Centered
+	color d0aeff
+}
+
+class MissionAnnouncement extends UIPopup {
+	isTouchEnabled false
+	startHidden true
+	defaultShowDuration 0.5
+	defaultHideDuration 0.5
+	hiddenColor Invisible
+	children [
+		object AnnouncementText $^_heading {
+			position 0,-12
+			fontSize 16
+			color f1e7ff
+		}
+		object AnnouncementText $^_message {
+			position 0,6
+		}
+	]
+}
+
 class HUDDefault extends HUD {
 	inheritParentFrame true
 	children [
@@ -378,5 +401,7 @@ class HUDDefault extends HUD {
 
 		// Towards the top
 		object TutorialDisplay $^_tutorialMessage {}
+
+		object MissionAnnouncement $^_missionAnnouncement {}
 	]
 }

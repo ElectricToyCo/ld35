@@ -33,6 +33,8 @@ namespace ld
 		bool isPlayerConversationPanelShowing() const;
 		void beginPlayerInitiatedConversation( SmartPtr< Character > player, SmartPtr< Character > character );
 		void togglePlayerInitiatedConversation( SmartPtr< Character > player, SmartPtr< Character > character );
+		
+		void announceMission( const std::string& heading, const std::string& message );
 	};
 	
 }

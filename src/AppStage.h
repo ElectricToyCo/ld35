@@ -31,8 +31,11 @@ namespace ld
 		void onWorldFinished( Mission::Status result );
 		
 		virtual void onTouchBegin( const fr::EventTouch& event ) override;
+		virtual void onKeyUp( const fr::EventKeyboard& event ) override;
 		
 	protected:
+		
+		void maybeAdvanceIntro();
 		
 		fr::UIPopup& worldHost() const;
 		

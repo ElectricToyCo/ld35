@@ -44,7 +44,12 @@ namespace ld
 	void AppStage::onTouchBegin( const EventTouch& event )
 	{
 		Super::onTouchBegin( event );
-		
+
+		maybeAdvanceIntro();
+	}
+	
+	void AppStage::maybeAdvanceIntro()
+	{
 		switch( m_introStep )
 		{
 			case 0:
@@ -59,6 +64,12 @@ namespace ld
 				// Do nothing.
 				break;
 		}
+	}
+	
+	void AppStage::onKeyUp( const fr::EventKeyboard& event )
+	{
+		Super::onKeyUp( event );
+		maybeAdvanceIntro();
 	}
 
 	void AppStage::update()
@@ -164,6 +175,11 @@ namespace ld
 		m_world = createObject< World >( *worldClass );
 		worldHost().host()->addChild( m_world );
 		worldHost().show();
+		
+		
+		auto heading = createString( "Mission " << ( world + 1 ));
+		
+		hud().announceMission( heading, m_world->message() );
 	}
 
 	void AppStage::endCampaign()
