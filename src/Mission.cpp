@@ -40,6 +40,7 @@ namespace ld
 	DEFINE_VAR( Mission, WeakPtr< World >, m_world );
 	DEFINE_VAR( Mission, std::vector< MissionCharacterSetup::ptr >, m_characters );
 	DEFINE_VAR( Mission, SmartPtr< TutorialManager >, m_tutorial );
+	DEFINE_DVAR( Mission, bool, m_endWithTutorial );
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( Mission )
 	
 	void Mission::setup( WeakPtr< World > world )
@@ -76,8 +77,35 @@ namespace ld
 	
 	Mission::Status Mission::conclusionStatus( const World& world ) const
 	{
-		// TODO!!!
+		if( m_endWithTutorial && m_tutorial && m_tutorial->completed() )
+		{
+			return Status::Succeeded;
+		}
+		else
+		{
+			if( hasAchievedGoals( world ))
+			{
+				return Status::Succeeded;
+			}
+			else if( isUnsolvable( world ))
+			{
+				return Status::Failed;
+			}
+		}
 		return Status::Undecided;
 	}
+	
+	bool Mission::hasAchievedGoals( const World& world ) const
+	{
+		// TODO!!!
+		return false;
+	}
+	
+	bool Mission::isUnsolvable( const World& world ) const
+	{
+		// TODO
+		return false;
+	}
+	
 }
 

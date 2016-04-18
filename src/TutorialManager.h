@@ -53,8 +53,8 @@ namespace ld
 	private:
 
 		VAR( WeakPtr< World >, m_world );
-		DVAR( TimeType, m_preDelay, 2.0 );
-		DVAR( TimeType, m_postDelay, 1.0 );
+		DVAR( TimeType, m_preDelay, 0.5 );
+		DVAR( TimeType, m_postDelay, 0.0 );
 		VAR( std::string, m_message );
 		DVAR( TimeType, m_startTime, -1 );
 		DVAR( TimeType, m_completionTime, -1 );
@@ -70,10 +70,9 @@ namespace ld
 		
 		virtual void setup( WeakPtr< World > world );
 		virtual void update();
-
-	protected:
-		
 		virtual bool completed() const;
+		
+	protected:
 		
 		void beginStep( size_t step );
 		virtual void onStepBeginning( size_t step );

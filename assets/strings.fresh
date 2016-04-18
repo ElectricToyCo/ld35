@@ -14,9 +14,9 @@ object StringTable strings {
 
 		TutorialType "Press 1 to pick an OPINION conversation."
 
-		TutorialTalk "Pick the SPORTS topic."
+		TutorialTalk "Pick the SPORTS topic [2]."
 
-		TutorialValue "Tell Tiffany you LOVE this topic."
+		TutorialValue "Tell Tiffany you LOVE [5] this topic."
 
 		TutorialCorrectResult "You just changed Tiffany's opinion! Because Tiffany LIKES you, she listened to what you said about SPORTS and now LIKES them too."
 

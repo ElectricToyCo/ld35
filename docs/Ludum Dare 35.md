@@ -226,3 +226,5 @@ TutorialIncorrectResult "Oops. You need to tell Tiffany you LOVE SPORTS. Hit the
 11:51 AM Designing the big one: The Player Conversation Interface
 
 2:04 PM. 3 hours before I have an appointment. Big decision time.
+
+4:47 PM. Alas. It's getting close, but I have a meeting that will last a couple of hours. Looks like I'm falling back to the Jam.

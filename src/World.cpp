@@ -76,7 +76,7 @@ namespace ld
 			{
 				// Time to conclude the world.
 				//
-				// TODO!!!
+				ldStage().onWorldFinished( missionStatus );
 			}
 		}
 	}

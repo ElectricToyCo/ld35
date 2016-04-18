@@ -64,18 +64,23 @@ namespace ld
 		enum class Status
 		{
 			Undecided,
-			Succeed,
+			Succeeded,
 			Failed
 		};
 		
 		Status conclusionStatus( const World& world ) const;
+
+	protected:
+		
+		bool hasAchievedGoals( const World& world ) const;
+		bool isUnsolvable( const World& world ) const;
 		
 	private:
 		
 		VAR( WeakPtr< World >, m_world );
 		VAR( std::vector< MissionCharacterSetup::ptr >, m_characters );
 		VAR( SmartPtr< TutorialManager >, m_tutorial );
-		
+		DVAR( bool, m_endWithTutorial, false );
 	};
 	
 }

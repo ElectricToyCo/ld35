@@ -120,6 +120,14 @@ class CharacterVisualDefault extends MovieClip {
 	]
 }
 
+class CharacterVisualEmma extends CharacterVisualDefault {
+	passthrough [
+		object keyframe {
+			texture Texture'character_emma'
+		}
+	]
+}
+
 class CharacterVisual01 extends CharacterVisualDefault {
 	passthrough [
 		object keyframe {
@@ -266,7 +274,7 @@ class CharacterPlayer extends CharacterDefault {
 	favoriteColor ff9000
 	children [
 		object CharacterHighlighter $^_highlighter {}
-		object CharacterVisual05 $^_visual {
+		object CharacterVisualEmma $^_visual {
 		}
 	]
 }
@@ -305,16 +313,13 @@ class WorldDefault extends World {
 	camera object CameraDefault {
 		target CharacterPlayer'player'
 	}
-
-	mission object Mission01 {
-	}
 }
 
-class ScreenContents extends DisplayObjectContainer {
+class WorldHost extends UIPopup {
 	inheritParentFrame true
-	children [
-		object WorldDefault $^_world {}
-		object HUDDefault $^_hud {}
-	]
+	startHidden true
+	startBecomeShown true
+	hiddenColor Black
+	defaultShowDuration 1.0
+	defaultHideDuration 2.0
 }
-

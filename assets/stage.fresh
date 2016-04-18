@@ -1,10 +1,21 @@
 // ld35 Normal Stage 
 
+class World01 extends WorldDefault {
+	mission object Mission01 {}
+}
+
 object AppStage theStage {
+
+	worldClasses [
+		World01
+	]
+
+	clearColor Black
 
 	stageDimensions "320,0"
 
 	children [
-		object ScreenContents {}
+		object WorldHost $^_worldHost {}
+		object HUDDefault $^_hud {}
 	]
 }
