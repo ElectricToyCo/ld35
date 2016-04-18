@@ -53,7 +53,7 @@ namespace ld
 	private:
 
 		VAR( WeakPtr< World >, m_world );
-		DVAR( TimeType, m_preDelay, 0.5 );
+		DVAR( TimeType, m_preDelay, 0.25 );
 		DVAR( TimeType, m_postDelay, 0.0 );
 		VAR( std::string, m_message );
 		DVAR( TimeType, m_startTime, -1 );
