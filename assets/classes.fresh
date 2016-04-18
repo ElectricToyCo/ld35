@@ -321,5 +321,5 @@ class WorldHost extends UIPopup {
 	startBecomeShown true
 	hiddenColor Black
 	defaultShowDuration 1.0
-	defaultHideDuration 2.0
+	defaultHideDuration 1.0
 }

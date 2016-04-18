@@ -1,5 +1,69 @@
 // ld35 Normal Stage 
 
+class IntroSequence extends MovieClip {
+	children [
+		object Sprite {
+			texture Texture'ui_title'
+		}
+		object Sprite {
+			texture Texture'ui_instructions'
+		}
+	]
+
+	isPlaying true
+	isLooping false
+	passthrough [
+		object keyframe {
+			label "start"
+			children [
+				object child "$1" {
+					color Invisible
+				}
+			]
+			tween object QuadEaseInOut {
+			}
+		}
+		object keyframe {
+			label "title"
+			action stop
+			children [
+				object child "$1" {
+					color White
+				}
+				object child "$2" {
+					color Invisible
+				}
+			]
+			tween object QuadEaseInOut {
+			}
+		}
+		object keyframe {
+			label "instructions"
+			children [
+				object child "$1" {
+					color Invisible
+				}
+				object child "$2" {
+					color White
+				}
+			]
+			tween object QuadEaseInOut {
+			}
+		}
+		object keyframe {
+			label "done"
+			rel_s 1.0
+			children [
+				object child "$2" {
+					color Invisible
+				}
+			]
+			tween object QuadEaseInOut {
+			}
+		}
+	]
+}
+
 class World01 extends WorldDefault {
 	mission object Mission01 {}
 }
@@ -17,5 +81,6 @@ object AppStage theStage {
 	children [
 		object WorldHost $^_worldHost {}
 		object HUDDefault $^_hud {}
+		object IntroSequence $^_intro {}
 	]
 }

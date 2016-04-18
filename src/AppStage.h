@@ -30,6 +30,8 @@ namespace ld
 		
 		void onWorldFinished( Mission::Status result );
 		
+		virtual void onTouchBegin( const fr::EventTouch& event ) override;
+		
 	protected:
 		
 		fr::UIPopup& worldHost() const;
@@ -48,6 +50,8 @@ namespace ld
 		
 		VAR( std::vector< ClassInfo::cptr >, m_worldClasses );
 		DVAR( size_t, m_currentWorldIndex, 0 );
+
+		size_t m_introStep = 0;
 		
 		size_t m_pendingWorldIndex = -1;
 		

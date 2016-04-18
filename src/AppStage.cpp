@@ -33,6 +33,7 @@ namespace ld
 	FRESH_DEFINE_CLASS( AppStage )
 	DEFINE_VAR( AppStage, std::vector< ClassInfo::cptr >, m_worldClasses );
 	DEFINE_DVAR( AppStage, size_t, m_currentWorldIndex );
+
 	FRESH_IMPLEMENT_STANDARD_CONSTRUCTORS( AppStage )
 	
 	HUD& AppStage::hud() const
@@ -40,10 +41,41 @@ namespace ld
 		return getExpectedDescendant< HUD >( *this );
 	}
 
+	void AppStage::onTouchBegin( const EventTouch& event )
+	{
+		Super::onTouchBegin( event );
+		
+		switch( m_introStep )
+		{
+			case 0:
+				getExpectedDescendant< MovieClip >( *this, "_intro" ).tweenToKeyframe( "instructions", 0.5 );
+				++m_introStep;
+				break;
+			case 1:
+				getExpectedDescendant< MovieClip >( *this, "_intro" ).tweenToKeyframe( "done", 0.5 );
+				++m_introStep;
+				break;
+			default:
+				// Do nothing.
+				break;
+		}
+	}
+
 	void AppStage::update()
 	{
 		Super::update();
-	
+		
+		if( m_introStep < 3 )
+		{
+			auto& intro = getExpectedDescendant< MovieClip >( *this, "_intro" );
+			if( intro.currentLabel() == "done" )
+			{
+				intro.visible( false );
+				beginWorld( m_currentWorldIndex );
+				m_introStep = 3;
+			}
+		}
+		
 		if( m_pendingWorldIndex != -1 )
 		{
 			if( worldHost().isFullyHidden() )
@@ -61,8 +93,6 @@ namespace ld
 		}
 
 		Super::onStageLoaded();
-		
-		beginWorld( m_currentWorldIndex );
 	}
 	
 	void AppStage::onWorldFinished( Mission::Status result )
